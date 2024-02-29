@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/userRoutes");
-// const postRoutes = require("./routes/postRoutes");
+const postRoutes = require("./routes/postRoutes");
 // const commentRoutes = require("./routes/commentRoutes");
 
 const app = express();
@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use("/api/users", userRoutes);
-// app.use('/api/posts', postRoutes);
+app.use("/api/posts", postRoutes);
 // app.use('/api/comments', commentRoutes);
 
 // Start the server
