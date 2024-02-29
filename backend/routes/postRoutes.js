@@ -5,8 +5,8 @@ const postController = require("../controllers/postController");
 const router = express.Router();
 
 // Define post routes here
-// router.get("/getPost", postController.getAllPosts);
-router.post("/createpost", postController.createPost);
+router.get("/getallpost", postController.getAllPosts); // api/posts/getPost
+router.post("/createpost", postController.createPost); // /api/posts/createpost
 // ...
 
 module.exports = router;
