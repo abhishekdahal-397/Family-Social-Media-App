@@ -58,7 +58,45 @@ async function getUsers(req, res) {
   }
 }
 
+async function loginUser(req, res) {
+  try {
+    const { email, password } = req.body;
+
+    // Check if any required field is missing
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
+
+    // Check if the user exists in the database
+    const existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    // Compare the provided password with the hashed password in the database
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      existingUser.password
+    );
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    // If the credentials are valid, generate a JWT token
+    const token = jwt.sign({ userId: existingUser._id }, "your-secret-key", {
+      expiresIn: "1h",
+    });
+
+    // Respond with success message and token
+    res.status(200).json({ message: "Login successful", token });
+  } catch (error) {
+    console.error("Error logging in user:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 module.exports = {
   createUser,
   getUsers,
+  loginUser,
 };

@@ -2,6 +2,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors"); // Added this line to import the cors middleware
+
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
 const commentRoutes = require("./routes/commentRoutes");
@@ -21,6 +23,7 @@ mongoose
   });
 // Middleware
 app.use(bodyParser.json());
+app.use(cors()); // Added this line
 
 // Routes
 app.use("/api/users", userRoutes);
