@@ -1,10 +1,10 @@
 import "./App.css";
-import RegisterForm from "./components/registerpage/register";
+import Counter from "./reduxTrial/Counter";
 
 function App() {
   return (
     <div className="App ">
-      <RegisterForm />
+      <Counter />
     </div>
   );
 }
