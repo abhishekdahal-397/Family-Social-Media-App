@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -65,6 +66,11 @@ const LoginForm = () => {
       >
         Login
       </button>
+      New Here?
+      <Link to="/register" className="text-blue-300">
+        {" "}
+        Register
+      </Link>
     </form>
   );
 };
