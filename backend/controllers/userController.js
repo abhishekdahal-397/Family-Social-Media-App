@@ -70,7 +70,7 @@ async function loginUser(req, res) {
     // Check if the user exists in the database
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
-      return res.status(401).json({ error: "Invalid email or password" });
+      return res.status(401).json({ error: "Invalid email " });
     }
 
     // Compare the provided password with the hashed password in the database
@@ -79,7 +79,7 @@ async function loginUser(req, res) {
       existingUser.password
     );
     if (!isPasswordValid) {
-      return res.status(401).json({ error: "Invalid email or password" });
+      return res.status(401).json({ error: "Invalid  password" });
     }
 
     // If the credentials are valid, generate a JWT token
