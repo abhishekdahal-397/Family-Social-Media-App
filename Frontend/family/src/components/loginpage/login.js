@@ -8,6 +8,8 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [seePassword, setSeePassword] = useState(false);
+
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -16,7 +18,7 @@ const LoginForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/users/loginUser",
+        "http://localhost:3001/api/users/login",
         {
           email,
           password,
@@ -31,6 +33,9 @@ const LoginForm = () => {
     } finally {
       setLoading(false);
     }
+  };
+  const handleTogglePassword = () => {
+    setSeePassword(!seePassword);
   };
 
   return (
@@ -58,13 +63,17 @@ const LoginForm = () => {
           Password:
         </label>
         <input
+          type={seePassword ? "text" : "password"}
           className="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           id="password"
-          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <button type="button" onClick={handleTogglePassword}>
+          {seePassword ? "Hide" : "Show"} Password
+        </button>
       </div>
+
       <button
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         type="submit"

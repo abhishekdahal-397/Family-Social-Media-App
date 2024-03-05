@@ -37,7 +37,9 @@ async function createUser(req, res) {
     const token = newUser.generateAuthToken();
 
     // Respond with success message and token
+
     res.status(201).json({ message: "User created successfully", token });
+    console.log(username + " " + "logged in to family");
   } catch (error) {
     console.error("Error creating user:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -75,10 +77,16 @@ async function loginUser(req, res) {
 
     // Compare the provided password with the hashed password in the database
     const isPasswordValid = await bcrypt.compare(
-      password,
-      existingUser.password
+      password.trim(),
+      existingUser.password.trim()
     );
-    if (!isPasswordValid) {
+    console.log("Provided Password:", password);
+    console.log("Hashed Password from Database:", existingUser.password);
+    console.log("Is Password Valid?", isPasswordValid);
+
+    if (!isPasswordValid === true) {
+      console.log("validating user with password");
+
       return res.status(401).json({ error: "Invalid  password" });
     }
 
