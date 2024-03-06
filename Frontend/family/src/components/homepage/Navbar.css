@@ -12,8 +12,6 @@
   align-items: center;
   border-radius: 20%;
   border: 2px solid skyblue;
-
-  position: absolute;
   right: 20vh;
   top: 9vh;
   animation: slideInPosition 0.2s ease, boxSize 0.2s ease;
