@@ -7,15 +7,13 @@
 
 .button-like {
   display: inline-block;
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
+  padding: 0 20px;
+  margin: 2px;
   text-align: center;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 10px;
   cursor: pointer;
-  border: none;
-  border-radius: 5px;
+  border: 1px solid black;
 }
 .post-photo {
   overflow: hidden;
@@ -24,11 +22,13 @@
   top: 28vh;
   overflow: hidden;
 }
-.post {
-  .post {
-    position: relative;
-    top: 22vh;
-    left: -0.5vw;
-    transform: translate(5%, -50%);
-  }
+
+/* .post {
+  position: relative;
+  top: 22vh;
+  left: -0.5vw;
+  transform: translate(5%, -40%);
+} */
+.button-like {
+  user-select: none;
 }

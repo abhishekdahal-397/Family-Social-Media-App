@@ -33,7 +33,7 @@ const Navbar = () => {
   }, [showOptions]);
   return (
     <>
-      <nav className="bg-green-300 p-4">
+      <nav className="fullnavbar bg-green-300 p-4">
         <div className="container h-1 mx-auto flex items-center justify-between">
           <Link to="/" className="text-white text-sm font-semibold">
             Family Logo
