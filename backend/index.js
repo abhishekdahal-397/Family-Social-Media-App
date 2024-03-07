@@ -8,12 +8,14 @@ const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
+require("dotenv").config();
+
 mongoose
-  .connect(
-    "mongodb+srv://abhishekdahal397:9pIcePaGFhwRVXRB@cluster0.aocgadv.mongodb.net/",
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("MongoDB connected successfully");
   })
@@ -23,7 +25,7 @@ mongoose
   });
 // Middleware
 app.use(bodyParser.json());
-app.use(cors()); // Added this line
+app.use(cors({ origin: "*" })); // Allow all origins
 
 // Routes
 app.use("/api/users", userRoutes);
