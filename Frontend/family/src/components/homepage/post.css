@@ -18,8 +18,6 @@
 .post-photo {
   overflow: hidden;
 
-  left: 4vw;
-  top: 28vh;
   overflow: hidden;
 }
 
@@ -31,4 +29,10 @@
 } */
 .button-like {
   user-select: none;
+}
+.post {
+  width: 100%; /* Set the width of the image to 100% of the container */
+  height: 100%; /* Set the height of the image to 100% of the container */
+  object-fit: cover; /* Maintain the aspect ratio and cover the entire container */
+  display: block;
 }

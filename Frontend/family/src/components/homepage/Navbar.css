@@ -52,3 +52,9 @@
 .fullnavbar {
   background-image: url("./background.webp");
 }
+.familyLogo {
+  width: 14vh;
+  height: 14vh;
+  user-select: none;
+  cursor: pointer;
+}

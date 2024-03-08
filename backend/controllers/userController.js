@@ -91,7 +91,7 @@ async function loginUser(req, res) {
     }
 
     // If the credentials are valid, generate a JWT token
-    const token = jwt.sign({ userId: existingUser._id }, "your-secret-key", {
+    const token = jwt.sign({ userId: existingUser._id },  process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
