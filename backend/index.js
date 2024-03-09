@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const cors = require("cors"); // Added this line to import the cors middleware
 
 const userRoutes = require("./routes/userRoutes");
-const postRoutes = require("./routes/postRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -29,9 +28,8 @@ app.use(cors({ origin: "*" })); // Allow all origins
 
 // Routes
 app.use("/api/users", userRoutes);
-app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
-app.use("/api/upload", uploadRoutes);
+app.use("/api/posts", uploadRoutes);
 
 // Start the server
 app.listen(PORT, () => {
