@@ -10,7 +10,7 @@ const commentRoutes = require("./routes/commentRoutes");
 const app = express();
 const PORT = process.env.PORT || 3001;
 require("dotenv").config();
-
+const uploadRoutes = require("./routes/uploadRoutes");
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -31,6 +31,7 @@ app.use(cors({ origin: "*" })); // Allow all origins
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
+app.use("/api/upload", uploadRoutes);
 
 // Start the server
 app.listen(PORT, () => {

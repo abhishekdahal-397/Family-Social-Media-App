@@ -15,6 +15,9 @@ const Post = () => {
   };
   return (
     <div className=" post relative left-[20vw]">
+      <button className="rounded  bg-green-300 h-[40px] w-[60px]">
+        Upload
+      </button>
       <div>
         <div>
           <div className="flex h-3 items-center  p-4 bg-white rounded-lg">
