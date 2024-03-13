@@ -12,6 +12,8 @@ userSchema.pre("save", async function (next) {
   try {
     // Only hash the password if it has been modified (or is new)
     if (this.isModified("password")) {
+      console.log("actual password is ", this.password);
+
       const hashedPassword = await bcrypt.hash(this.password, 10);
       this.password = hashedPassword;
     }
@@ -21,7 +23,7 @@ userSchema.pre("save", async function (next) {
   }
 });
 userSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({ _id: this._id }, "your-secret-key"); // Replace 'your-secret-key' with your actual secret key
+  const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET); // Replace 'your-secret-key' with your actual secret key
   return token;
 };
 

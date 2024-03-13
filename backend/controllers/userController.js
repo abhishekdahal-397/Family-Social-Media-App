@@ -77,23 +77,29 @@ async function loginUser(req, res) {
 
     // Compare the provided password with the hashed password in the database
     const isPasswordValid = await bcrypt.compare(
-      password.trim(),
-      existingUser.password.trim()
+      password,
+      existingUser.password
     );
+    // Temporary bypass for debugging
+    // const isPasswordValid = true;
+    console.log("length of hashed password : ", existingUser.password.length);
+
     console.log("Provided Password:", password);
     console.log("Hashed Password from Database:", existingUser.password);
     console.log("Is Password Valid?", isPasswordValid);
 
-    if (!isPasswordValid === true) {
-      console.log("validating user with password");
-
+    if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid  password" });
     }
 
     // If the credentials are valid, generate a JWT token
-    const token = jwt.sign({ userId: existingUser._id },  process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { userId: existingUser._id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     // Respond with success message and token
     res.status(200).json({ message: "Login successful", token });
