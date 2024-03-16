@@ -22,13 +22,12 @@ async function createUser(req, res) {
     }
 
     // Hash the password before saving
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user
     const newUser = new User({
       username,
       email,
-      password: hashedPassword,
+      password,
     });
 
     await newUser.save();
@@ -62,10 +61,10 @@ async function getUsers(req, res) {
 
 async function loginUser(req, res) {
   try {
-    const { email, password } = req.body;
+    const { email, Password } = req.body;
 
     // Check if any required field is missing
-    if (!email || !password) {
+    if (!email || !Password) {
       return res.status(400).json({ error: "Email and password are required" });
     }
 
@@ -74,25 +73,24 @@ async function loginUser(req, res) {
     if (!existingUser) {
       return res.status(401).json({ error: "Invalid email " });
     }
-
-    // Compare the provided password with the hashed password in the database
-    const isPasswordValid = await bcrypt.compare(
-      password,
-      existingUser.password
-    );
     // Temporary bypass for debugging
     // const isPasswordValid = true;
     console.log("length of hashed password : ", existingUser.password.length);
 
-    console.log("Provided Password:", password);
+    console.log("Provided Password:", Password);
     console.log("Hashed Password from Database:", existingUser.password);
-    console.log("Is Password Valid?", isPasswordValid);
+
+    // Compare the provided password with the hashed password in the database
+    const isPasswordValid = await bcrypt.compare(
+      Password,
+      existingUser.password
+    );
 
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid  password" });
     }
-
-    // If the credentials are valid, generate a JWT token
+    console.log("Is Password Valid?", isPasswordValid);
+    // // If the credentials are valid, generate a JWT token
     const token = jwt.sign(
       { userId: existingUser._id },
       process.env.JWT_SECRET,
