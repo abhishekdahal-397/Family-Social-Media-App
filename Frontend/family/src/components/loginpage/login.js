@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "./login.css";
 import { MdVisibility } from "react-icons/md";
 import { MdVisibilityOff } from "react-icons/md";
 const LoginForm = () => {
+  const navigate = useNavigate();
+  // You can use 'navigate' to navigate programmatically
+
   const [email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -33,6 +37,7 @@ const LoginForm = () => {
       );
 
       console.log("Token:", response.data.token);
+      navigate("/");
     } catch (error) {
       console.error("Login failed:", error.response.data.error);
     } finally {
