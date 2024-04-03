@@ -1,37 +1,40 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+
 import "./login.css";
 import { MdVisibility } from "react-icons/md";
 import { MdVisibilityOff } from "react-icons/md";
 const LoginForm = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [Password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [seePassword, setSeePassword] = useState(false);
-
-  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      if (!email) {
+        console.log("no email provided");
+      } else {
+        console.log(email);
+      }
+      console.log(Password);
+
       const response = await axios.post(
         "http://localhost:3001/api/users/login",
         {
           email,
-          password,
+          Password,
         }
       );
 
       console.log("Token:", response.data.token);
-      navigate("/");
     } catch (error) {
       console.error("Login failed:", error.response.data.error);
-      setErrorMessage("Invalid email or password");
     } finally {
       setLoading(false);
     }
@@ -72,7 +75,7 @@ const LoginForm = () => {
             type={seePassword ? "text" : "password"}
             className="appearance-none  border rounded w-[80%] py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
             id="password"
-            value={password}
+            value={Password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <div className="visibility" onClick={handleTogglePassword}>

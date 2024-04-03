@@ -1,0 +1,79 @@
+.regForm {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: url("./regbackground.png");
+  background-size: cover;
+}
+.regusername {
+  margin: 2px;
+  padding: 1px;
+  margin-top: 5px;
+}
+.regconfirm {
+  padding: 3px;
+  margin-top: 5px;
+}
+.regemail {
+  padding: 3px;
+  margin: 1px;
+  margin-top: 5px;
+}
+
+.regpassword {
+  padding: 3px;
+  margin: 1px;
+  margin-top: 5px;
+}
+.submitbtn {
+  position: relative;
+  left: 118px;
+  margin-top: 15px;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  background-color: aquamarine;
+}
+.submitbtn:hover {
+  background-color: mediumspringgreen;
+  transition: 1s ease;
+}
+.alreadyhere {
+  position: relative;
+  left: 90px;
+}
+.inpregpassword,
+.inpregemail,
+.inpregconfirm,
+.inpregusername {
+  position: relative;
+}
+.inpregconfirm {
+  left: 19px;
+  padding: 5px;
+}
+.inpregpassword {
+  left: 78px;
+  padding: 5px;
+}
+.inpregemail {
+  padding: 5px;
+
+  left: 106px;
+}
+.inpregusername {
+  padding: 5px;
+
+  left: 73px;
+}
+
+.inpregconfirm,
+.inpregemail,
+.inpregpassword,
+.inpregusername {
+  border-radius: 5px;
+}

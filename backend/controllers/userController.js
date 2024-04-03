@@ -62,6 +62,8 @@ async function getUsers(req, res) {
 async function loginUser(req, res) {
   try {
     const { email, Password } = req.body;
+    console.log(`${email} is trying to log in`);
+    console.log(Password);
 
     // Check if any required field is missing
     if (!email || !Password) {
@@ -73,18 +75,13 @@ async function loginUser(req, res) {
     if (!existingUser) {
       return res.status(401).json({ error: "Invalid email " });
     }
-    // Temporary bypass for debugging
-    // const isPasswordValid = true;
-    console.log("length of hashed password : ", existingUser.password.length);
-
-    console.log("Provided Password:", Password);
-    console.log("Hashed Password from Database:", existingUser.password);
 
     // Compare the provided password with the hashed password in the database
     const isPasswordValid = await bcrypt.compare(
       Password,
       existingUser.password
     );
+    console.log(isPasswordValid);
 
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid  password" });

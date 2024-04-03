@@ -67,7 +67,7 @@ const Post = () => {
         <div>
           <div className="flex h-3 items-center  p-4 bg-white rounded-lg">
             <div className="usericon h-7 w-7 bg-gray-300 rounded-full"></div>
-            <p className="text-lg   z-2 font-semibold relative top-1">
+            <p className="text-lg   z-1 font-semibold relative top-1">
               Abhishek Dahal
             </p>
           </div>

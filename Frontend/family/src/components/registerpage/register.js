@@ -7,6 +7,7 @@ const RegisterForm = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -52,66 +53,61 @@ const RegisterForm = () => {
   };
 
   return (
-    <form className="max-w-md mx-auto mt-8" onSubmit={handleRegister}>
-      <div className="i">
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="username"
-          >
-            Username:
-          </label>
+    <form className="regForm" onSubmit={handleRegister}>
+      <div>
+        <div className="regusername">
+          <label htmlFor="username">Username :</label>
           <input
-            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="username"
+            className="inpregusername"
             id="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="email"
-          >
-            Email:
-          </label>
+        <div className="regemail">
+          <label htmlFor="email">Email :</label>
           <input
-            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="email"
+            className="inpregemail"
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="password"
-          >
-            Password:
-          </label>
+        <div className="regpassword">
+          <label htmlFor="password">Password :</label>
           <input
-            className="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="password"
+            className="inpregpassword"
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-      </div>
-      <button
-        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        type="submit"
-      >
-        Register
-      </button>
-      <div>
-        {" "}
-        Already here?{" "}
-        <Link className="text-blue-400" to="/login">
-          Login
-        </Link>
+        <div className="regconfirm">
+          <label htmlFor="confirm_password">Confirm Password :</label>
+          <input
+            placeholder="confirm"
+            className="inpregconfirm"
+            id="confirm_password"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </div>
+        <button className="submitbtn" type="submit">
+          Register
+        </button>
+        <div className="alreadyhere">
+          Already here?{" "}
+          <Link style={{ color: "skyblue" }} to="/login">
+            Login
+          </Link>
+        </div>
       </div>
     </form>
   );
