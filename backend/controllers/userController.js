@@ -72,6 +72,9 @@ async function loginUser(req, res) {
 
     // Check if the user exists in the database
     const existingUser = await User.findOne({ email });
+
+    console.log(existingUser);
+
     if (!existingUser) {
       return res.status(401).json({ error: "Invalid email " });
     }
@@ -95,9 +98,9 @@ async function loginUser(req, res) {
         expiresIn: "1h",
       }
     );
-
+    const userId = existingUser._id;
     // Respond with success message and token
-    res.status(200).json({ message: "Login successful", token });
+    res.status(200).json({ message: "Login successful", token, userId });
   } catch (error) {
     console.error("Error logging in user:", error);
     res.status(500).json({ error: "Internal server error" });

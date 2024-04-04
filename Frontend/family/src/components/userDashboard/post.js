@@ -3,11 +3,12 @@ import "./post.css";
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
-
+import { useSelector } from "react-redux";
 const Post = () => {
   const [likeColor, setLikeColor] = useState("white");
   const [selectedFile, setSelectedFile] = useState(null);
   const [posts, setPosts] = useState([]);
+  const userId = useSelector((state) => state.user.userId);
   const handleLikeColor = () => {
     if (likeColor === "white") {
       setLikeColor("#3b82f6");
@@ -56,6 +57,7 @@ const Post = () => {
   }, []);
   return (
     <div className=" post relative left-[20vw]">
+      <h2>User ID: {userId}</h2>
       <input type="file" onChange={handleFileChange} />
       <button
         onClick={handleUpload}

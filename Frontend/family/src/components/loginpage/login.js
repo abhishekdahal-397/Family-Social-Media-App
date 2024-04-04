@@ -35,6 +35,13 @@ const LoginForm = () => {
           Password,
         }
       );
+      const { token } = response.data;
+      console.log(token);
+
+      console.log(response.data);
+      // Extract userId and token from the response
+
+      // Store the token in localStorage for future requests
 
       console.log("Token:", response.data.token);
       navigate("/");
