@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { setUserId } from "../../reduxToolkit/actions/index";
 import "./login.css";
 import { MdVisibility } from "react-icons/md";
 import { MdVisibilityOff } from "react-icons/md";
 const LoginForm = () => {
   const navigate = useNavigate();
-  // You can use 'navigate' to navigate programmatically
-
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [seePassword, setSeePassword] = useState(false);
+  const [userId, setId] = useState(null);
+  const [userData, setData] = useState({});
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -35,7 +37,8 @@ const LoginForm = () => {
           Password,
         }
       );
-      const { token } = response.data;
+      const { token, userId } = response.data;
+      dispatch(setUserId(userId));
       console.log(token);
 
       console.log(response.data);
@@ -54,6 +57,23 @@ const LoginForm = () => {
   const handleTogglePassword = () => {
     setSeePassword(!seePassword);
   };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/api/users/${userId}`
+        );
+        setData(response.data);
+        console.log(response.data._id);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    if (userId) {
+      fetchUserData();
+    }
+  }, [userId]);
 
   return (
     <div className="fullloginpage">

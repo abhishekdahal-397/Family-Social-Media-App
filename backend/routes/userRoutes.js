@@ -8,5 +8,6 @@ const router = express.Router();
 router.post("/register", userController.createUser); // /api/users/register
 router.get("/getUsers", userController.getUsers); // /api/users/getUsers
 router.post("/login", userController.loginUser); // /api/users/login
+router.get("/getUser/:id", userController.getUser); // /api/users/getUser
 
 module.exports = router;

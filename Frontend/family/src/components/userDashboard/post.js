@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./post.css";
-import { useState } from "react";
 import axios from "axios";
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
+
 const Post = () => {
   const [likeColor, setLikeColor] = useState("white");
   const [selectedFile, setSelectedFile] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [username, setUsername] = useState(null);
   const userId = useSelector((state) => state.user.userId);
+  const [User, setUserData] = useState({});
   const handleLikeColor = () => {
     if (likeColor === "white") {
       setLikeColor("#3b82f6");
@@ -31,7 +32,6 @@ const Post = () => {
         formData
       );
 
-      console.log(response.data);
       console.log("uploaded");
 
       // Handle the response (e.g., update UI)
@@ -47,6 +47,7 @@ const Post = () => {
         const response = await axios.get(
           "http://localhost:3001/api/posts/getposts"
         );
+
         setPosts(response.data);
       } catch (error) {
         console.error("Error fetching posts:", error);
@@ -55,9 +56,35 @@ const Post = () => {
 
     fetchPosts();
   }, []);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/api/users/getUser/${userId}`
+        );
+        console.log(response.data.user.username);
+
+        setUsername(response.data.username);
+        console.log(response.data.username);
+        setUserData(response.data.user);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    if (userId) {
+      fetchUserData();
+    }
+  }, [userId]);
+  useEffect(() => {
+    setUsername(User.username);
+
+    console.log(User.email + " is my email");
+    console.log(User.username + " is my name.");
+  }, [User]);
+
   return (
     <div className=" post relative left-[20vw]">
-      <h2>User ID: {userId}</h2>
       <input type="file" onChange={handleFileChange} />
       <button
         onClick={handleUpload}
@@ -69,9 +96,15 @@ const Post = () => {
         <div>
           <div className="flex h-3 items-center  p-4 bg-white rounded-lg">
             <div className="usericon h-7 w-7 bg-gray-300 rounded-full"></div>
-            <p className="text-lg   z-1 font-semibold relative top-1">
-              Abhishek Dahal
-            </p>
+            {User ? (
+              <p className="text-lg   z-1 font-semibold relative top-1">
+                {User.username}
+              </p>
+            ) : (
+              <p className="text-lg   z-1 font-semibold relative top-1">
+                hello
+              </p>
+            )}
           </div>
         </div>
         <h1 className="relative left-[60px] top-[5px] ">#caption</h1>
