@@ -7,7 +7,7 @@ const router = express.Router();
 // Define user routes here
 router.post("/register", userController.createUser); // /api/users/register
 router.get("/getUsers", userController.getUsers); // /api/users/getUsers
-router.post("/login", userController.loginUser); // /api/users/login
-router.get("/getUser/:id", userController.getUser); // /api/users/getUser
+router.post("/login", userController.loginUser); // http://localhost:3001/api/users/login
+router.get("/getUser/:id", userController.getUser); // http://localhost:3001/api/users/getUser/:id
 
 module.exports = router;

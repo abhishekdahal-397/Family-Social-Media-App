@@ -4,18 +4,18 @@ import HomePage from "./components/userDashboard/Homepage";
 import RegisterForm from "./components/registerpage/register";
 import LoginForm from "./components/loginpage/login";
 import Navbar from "./components/userDashboard/Navbar";
-import axios from "axios";
-
+// import axios from "axios";
+import ManageFriends from "./components/manageFriends/ManageFriends";
 function App() {
-  async function getUserData(userId) {
-    try {
-      const response = await axios.get(`/api/users/${userId}`); // Replace with your actual API endpoint
-      return response.data; // Extract the data from the response
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-      throw error; // Propagate the error to the caller
-    }
-  }
+  // async function getUserData(userId) {
+  //   try {
+  //     const response = await axios.get(`/api/users/${userId}`);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Error fetching user data:", error);
+  //     throw error;
+  //   }
+  // }
   // Function to handle successful login and fetch user data
   // const handleLogin = async (userId) => {
   //   try {
@@ -35,6 +35,8 @@ function App() {
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/dashboard/:userId" element={<HomePage />} />
+          <Route path="/requests" element={<ManageFriends />}></Route>
+          {/* <Route path="/userProfile/:id" element={<UserProfile />}></Route> */}
         </Routes>
       </div>
     </Router>

@@ -1,7 +1,8 @@
 import React from "react";
-
-const profile = () => {
-  return <div></div>;
+import { useParams } from "react-router-dom";
+const UserProfile = () => {
+  const { userId } = useParams();
+  return <div>this is my profile</div>;
 };
 
-export default profile;
+export default UserProfile;

@@ -10,6 +10,10 @@ import { RiMessage2Fill } from "react-icons/ri";
 import { IoReorderThreeSharp } from "react-icons/io5";
 import { useRef } from "react";
 import { MdPeopleAlt } from "react-icons/md";
+import { IoNotifications } from "react-icons/io5";
+import { BsMenuButton } from "react-icons/bs";
+import { CgMenuGridR } from "react-icons/cg";
+import { FaFacebookMessenger } from "react-icons/fa6";
 const Navbar = () => {
   const [showOptions, setShowOptions] = useState(false);
   const [btnCount, setbtnCount] = useState(1);
@@ -39,68 +43,69 @@ const Navbar = () => {
   }, [showOptions]);
   return (
     <>
-      <nav className="fullnavbar bg-green-300 p-4">
-        <div className="container h-1 mx-auto flex items-center justify-between">
-          <Link to="/" className="text-white text-sm font-semibold">
-            <img src={Logo} alt="logo " className="familyLogo rounded-full" />
+      <nav className="navbar">
+        <Link to="/">
+          <img src={Logo} className="appicon" alt="logo " />
+        </Link>{" "}
+        <input className="search" placeholder="search family"></input>
+        <div className="navicons">
+          <Link to="/" className="relative left-[50px]">
+            <ImHome3 />
           </Link>
-
-          <div className=" flex space-x-[15vw] ">
-            <Link to="/" className="text-white text-sm hover:text-gray-300">
-              <ImHome3 />
-            </Link>
-            <Link
-              to="/notifications"
-              className="text-white text-sm hover:text-gray-300"
-            >
-              <IoNotificationsSharp />{" "}
-            </Link>
-            <Link
-              to="/requests"
-              className="text-white text-sm hover:text-gray-300"
-            >
-              <MdPeopleAlt />
-            </Link>
-            <Link
-              to="/messages"
-              className="text-white text-sm hover:text-gray-300"
-            >
-              <RiMessage2Fill />
-            </Link>
-            <button className="options text-white" onClick={buttonClick}>
-              <IoReorderThreeSharp />
-            </button>
+          <Link to="/notifications"></Link>
+          <Link to="/requests">
+            <MdPeopleAlt />
+          </Link>
+          <Link to="/messages">
+            <RiMessage2Fill />
+          </Link>
+          <button onClick={buttonClick}>
+            <IoReorderThreeSharp />
+          </button>
+        </div>
+        <div className="navleft">
+          {" "}
+          <div>
+            {" "}
+            <CgMenuGridR
+              className="m-4
+            relative
+            bottom-[9px] right-[9px]"
+            />
           </div>
+          <div>
+            <FaFacebookMessenger
+              className="m-4
+            relative
+            bottom-[9px] right-[9px]"
+            />
+          </div>
+          <div>
+            <IoNotifications
+              className="m-4
+            relative
+            bottom-[9px] right-[9px]"
+            />
+          </div>
+          <div></div>
         </div>
       </nav>
 
       {showOptions && (
-        <div ref={optionsRef} className="option-container">
-          <button className="hover:bg-blue-700 text-white  rounded">
-            Your Profile
-          </button>
-          <button className="hover:bg-blue-700 text-white  rounded">
-            Friends
-          </button>
-          <button className="hover:bg-blue-700 text-white rounded">
-            Settings
-          </button>
+        <div ref={optionsRef}>
+          <button>Your Profile</button>
+          <button>Friends</button>
+          <button>Settings</button>
           <Link to="/login">
             {" "}
-            <button className="hover:bg-blue-700 text-white  rounded">
-              Login
-            </button>
+            <BsMenuButton>Login</BsMenuButton>
           </Link>
           <Link to="/register">
             {" "}
-            <button className="hover:bg-blue-700 text-white  rounded">
-              Signup
-            </button>
+            <button>Signup</button>
           </Link>
 
-          <button className="hover:bg-blue-700 text-white rounded">
-            Logout
-          </button>
+          <button>Logout</button>
         </div>
       )}
     </>

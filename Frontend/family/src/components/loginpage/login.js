@@ -16,7 +16,6 @@ const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [seePassword, setSeePassword] = useState(false);
   const [userId, setId] = useState(null);
-  const [userData, setData] = useState({});
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -25,10 +24,7 @@ const LoginForm = () => {
     try {
       if (!email) {
         console.log("no email provided");
-      } else {
-        console.log(email);
       }
-      console.log(Password);
 
       const response = await axios.post(
         "http://localhost:3001/api/users/login",
@@ -37,6 +33,7 @@ const LoginForm = () => {
           Password,
         }
       );
+
       const { token, userId } = response.data;
       dispatch(setUserId(userId));
       console.log(token);
@@ -63,8 +60,6 @@ const LoginForm = () => {
         const response = await axios.get(
           `http://localhost:3001/api/users/${userId}`
         );
-        setData(response.data);
-        console.log(response.data._id);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }

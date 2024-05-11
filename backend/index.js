@@ -10,6 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 require("dotenv").config();
 const uploadRoutes = require("./routes/uploadRoutes");
+const friendRequestsRoutes = require("./routes/friendRequestRoutes");
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -30,7 +31,7 @@ app.use(cors({ origin: "*" })); // Allow all origins
 app.use("/api/users", userRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/posts", uploadRoutes);
-
+app.use("/api", friendRequestsRoutes);
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

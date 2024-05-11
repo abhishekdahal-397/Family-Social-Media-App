@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./post.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
-
+import { Link } from "react-router-dom";
+// import Navbar from "./Navbar";
 const Post = () => {
   const [likeColor, setLikeColor] = useState("white");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -62,11 +63,6 @@ const Post = () => {
         const response = await axios.get(
           `http://localhost:3001/api/users/getUser/${userId}`
         );
-        console.log(response.data.user.username);
-
-        setUsername(response.data.username);
-        console.log(response.data.username);
-        setUserData(response.data.user);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -78,14 +74,15 @@ const Post = () => {
   }, [userId]);
   useEffect(() => {
     setUsername(User.username);
-
-    console.log(User.email + " is my email");
-    console.log(User.username + " is my name.");
   }, [User]);
 
   return (
     <div className=" post relative left-[20vw]">
-      <input type="file" onChange={handleFileChange} />
+      <input
+        type="file"
+        onChange={handleFileChange}
+        style={{ display: "none" }}
+      />
       <button
         onClick={handleUpload}
         className="rounded  bg-green-300 h-[40px] w-[60px]"
@@ -95,7 +92,9 @@ const Post = () => {
       <div>
         <div>
           <div className="flex h-3 items-center  p-4 bg-white rounded-lg">
-            <div className="usericon h-7 w-7 bg-gray-300 rounded-full"></div>
+            <Link to="/UserProfile">
+              <div className="usericon h-7 w-7 bg-gray-300 rounded-full"></div>
+            </Link>
             {User ? (
               <p className="text-lg   z-1 font-semibold relative top-1">
                 {User.username}
