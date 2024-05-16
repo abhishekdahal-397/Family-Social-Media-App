@@ -6,9 +6,9 @@ import React, { useState } from "react";
 // import { Link } from "react-router-dom";
 import Stories from "./stories";
 const HomePage = () => {
-  return (
-    <div className="fullpost max-w-2xl mx-auto mt-8">
-      {/* <Post />
+	return (
+		<div className="fullpost max-w-2xl mx-auto mt-8">
+			{/* <Post />
       <div></div>
       <Link to="/login">
         {" "}
@@ -23,11 +23,11 @@ const HomePage = () => {
         </button>
       </Link> */}
 
-      <Stories />
+			<Stories />
 
-      <Post />
-    </div>
-  );
+			<Post />
+		</div>
+	);
 };
 
 export default HomePage;

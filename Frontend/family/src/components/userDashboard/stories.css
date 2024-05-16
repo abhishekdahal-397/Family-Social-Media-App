@@ -1,0 +1,23 @@
+.cards{
+   max-height: 120px;
+   border:1px solid #ddd;
+
+    white-space: nowrap;
+    overflow-x:auto;
+overflow-y: hidden;
+
+}
+
+.card{
+    width:10vw;
+    height: 20vw;
+    background-color: skyblue;
+    margin-right:4px;
+    display: inline-block;
+    border-radius:4px;
+}
+.text{
+    font-size: 40px;
+    margin:30px 40px;
+    font-weight: 400;
+}
