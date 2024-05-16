@@ -1,0 +1,66 @@
+.container{
+    height:100vh;
+    width:100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.commentBox{
+    height:35vw;
+width: 30vw;
+background-color: #d4c4c4ec;
+overflow: hidden; 
+   position: relative;
+}
+.image{
+    height:36px;
+    width: 36px;
+margin:4vh;
+
+    border-radius:50%;
+
+}
+
+.name{
+    position: relative;
+    left:67px;
+    bottom: 49px;
+
+}
+.comment{
+    position:relative;
+    left:73px;
+    bottom:37px;
+width:fit-content;
+
+background-color:#868c7745 ;
+}
+.inputcomment{
+   height:8vh;
+   width:22vw;
+    border-radius:5px;
+    border:2px solid black;
+    position: absolute;
+    bottom: 2vh;
+    left:5vh;
+}
+.send{
+    height: 8vh;
+    width: 70px;
+
+    padding:0px 5px;
+
+
+
+    border-radius: 4px;
+    border:2px solid black;
+
+    position: absolute;
+    right:1vh;
+    bottom:2vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+background-color: #f7e656;
+}
