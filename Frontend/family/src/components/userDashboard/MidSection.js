@@ -1,13 +1,15 @@
-// HomePage.jsclassclass
-import "./homepage.css";
+// MidSection.jsclassclass
+import "./MidSection.css";
 import Post from "./post";
 import Navbar from "./Navbar";
 import React, { useState } from "react";
 // import { Link } from "react-router-dom";
 import Stories from "./stories";
-const HomePage = () => {
+import "./MidSection.css";
+
+const MidSection = () => {
 	return (
-		<div className="fullpost max-w-2xl mx-auto mt-8">
+		<div className="MidSection max-w-2xl  ">
 			{/* <Post />
       <div></div>
       <Link to="/login">
@@ -30,4 +32,4 @@ const HomePage = () => {
 	);
 };
 
-export default HomePage;
+export default MidSection;
