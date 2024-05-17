@@ -10,8 +10,10 @@
     height:35vw;
 width: 30vw;
 background-color: #d4c4c4ec;
-overflow: hidden; 
+overflow-x: hidden; 
+overflow-y :scroll;
    position: relative;
+
 }
 .image{
     height:36px;
@@ -21,7 +23,14 @@ margin:4vh;
     border-radius:50%;
 
 }
-
+.tohide {
+    height: 12vh;
+    width: 29vw;
+    background-color: inherit;
+    position: fixed;
+    left: 73vh;
+    bottom: 4.8vw;
+  }
 .name{
     position: relative;
     left:67px;
@@ -41,9 +50,10 @@ background-color:#868c7745 ;
    width:22vw;
     border-radius:5px;
     border:2px solid black;
-    position: absolute;
-    bottom: 2vh;
-    left:5vh;
+    position: fixed;
+    bottom: 12vh;
+    left:33vw;
+    z-index: 1;
 }
 .send{
     height: 8vh;
@@ -56,9 +66,9 @@ background-color:#868c7745 ;
     border-radius: 4px;
     border:2px solid black;
 
-    position: absolute;
-    right:1vh;
-    bottom:2vh;
+    position: fixed;
+    right:39vw;
+    bottom:12vh;
     display: flex;
     align-items: center;
     justify-content: center;

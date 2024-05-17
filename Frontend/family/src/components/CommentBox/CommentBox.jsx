@@ -11,8 +11,30 @@ const CommentBox = () => {
             <img className='image' src={profile}/>
             <p className='name'>Abhishek Dahal</p>
 <p className='comment'>This is my comment.</p>     
-   </div>
+   </div>   <div>
+
+<img className='image' src={profile}/>
+<p className='name'>Abhishek Dahal</p>
+<p className='comment'>This is my comment.</p>     
+</div>   <div>
+
+<img className='image' src={profile}/>
+<p className='name'>Abhishek Dahal</p>
+<p className='comment'>This is my comment.</p>     
+</div>   <div>
+
+<img className='image' src={profile}/>
+<p className='name'>Abhishek Dahal</p>
+<p className='comment'>This is my comment.</p>     
+</div>   <div>
+
+<img className='image' src={profile}/>
+<p className='name'>Abhishek Dahal</p>
+<p className='comment'>This is my comment.</p>     
+</div>
+<div style={{height:'10vh'}}></div>
         <input className='inputcomment' type='text' />
+        <div className='tohide'></div>
         <div className='send'><IoSend style={{color:'green',height:'40px',width:'40px'}}/></div>
         </div>   
     </div>
