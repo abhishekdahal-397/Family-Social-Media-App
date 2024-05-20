@@ -12,17 +12,17 @@ require("dotenv").config();
 const uploadRoutes = require("./routes/uploadRoutes");
 const friendRequestsRoutes = require("./routes/friendRequestRoutes");
 mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("MongoDB connected successfully");
-  })
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
-    process.exit(1);
-  });
+	.connect(process.env.MONGODB_URI, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
+	.then(() => {
+		console.log("MongoDB connected successfully");
+	})
+	.catch((err) => {
+		console.error("MongoDB connection error:", err);
+		process.exit(1);
+	});
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({ origin: "*" })); // Allow all origins
@@ -34,5 +34,5 @@ app.use("/api/posts", uploadRoutes);
 app.use("/api", friendRequestsRoutes);
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+	console.log(`Server is running on http://localhost:${PORT}`);
 });
