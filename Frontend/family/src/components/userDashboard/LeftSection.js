@@ -9,6 +9,7 @@ import { useState } from "react";
 const LeftSection = () => {
 	const { userId } = useSelector((state) => state.user);
 	const [username, setUsername] = useState("");
+	const [profilePic, setProfilePic] = useState("");
 
 	axios
 		.get(` http://localhost:3001/api/users/getUser/${userId}`)
@@ -16,6 +17,8 @@ const LeftSection = () => {
 			// Handle successful response
 			console.log("Data received from backend:", response.data);
 			setUsername(response.data.user.username);
+			setProfilePic(response.data.user.ProfileUrl);
+			console.log(profilePic);
 		})
 		.catch(
 			(error) => {
@@ -30,7 +33,7 @@ const LeftSection = () => {
 			<div className="ProfileBox">
 				{" "}
 				<Link to="../UserProfile/id">
-					<img className="smallImg" src={abhishek} />
+					<img className="smallImg" src={profilePic} />
 				</Link>
 				<p className="MyName">{username}</p>
 			</div>
