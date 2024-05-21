@@ -2,7 +2,7 @@
 const cloudinary = require("../config/cloudinaryConfig");
 const multer = require("multer");
 const Post = require("../models/postModel"); // Import your PostModel
-
+const User = require("../models/userModel");
 const storage = multer.memoryStorage();
 const singleUpload = multer({ storage }).single("file");
 
@@ -69,7 +69,54 @@ async function getAllPosts(req, res) {
 	}
 }
 
+const uploadProfilePicture = async (req, res) => {
+	try {
+		singleUpload(req, res, async (err) => {
+			if (err) {
+				return res
+					.status(400)
+					.json({ message: "Upload failed", error: err.message });
+			}
+
+			const image = req.file.buffer.toString("base64");
+			cloudinary.uploader.upload(
+				`data:image/png;base64,${image}`,
+				async (error, result) => {
+					if (error) {
+						return res.status(500).json({
+							message: "Cloudinary upload failed",
+							error: error.message,
+						});
+					}
+
+					// Extract user ID from the request (modify based on your authentication setup)
+					const userId = req.params.id;
+
+					// Update the user's profile picture URL
+					const user = await User.findById(userId);
+					if (!user) {
+						return res.status(404).json({ message: "User not found" });
+					}
+
+					user.profileUrl = result.secure_url;
+					await user.save();
+
+					// Handle the result or send a response to the client
+					res.json({
+						message: "Profile picture uploaded successfully!",
+						cloudinaryDetails: result,
+					});
+				}
+			);
+		});
+	} catch (error) {
+		console.error("Error during file upload:", error);
+		res.status(500).json({ message: "Internal Server Error" });
+	}
+};
+
 module.exports = {
 	uploadController,
 	getAllPosts,
+	uploadProfilePicture,
 };
