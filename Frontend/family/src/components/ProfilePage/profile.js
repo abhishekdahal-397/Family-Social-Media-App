@@ -11,7 +11,7 @@ const UserProfile = () => {
 			<body className="w-[100vw] h-[100vh] flex flex-col justify-center items-center">
 				<img
 					id="profile"
-					className="h-[20vh] rounded-full w-auto "
+					className="h-[20vh] rounded-full  w-auto "
 					src={profilePic}
 				/>
 				<p className="text-center font-bold ">

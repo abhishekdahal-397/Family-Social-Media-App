@@ -1,14 +1,15 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MidSection from "./components/userDashboard/MidSection";
-import RegisterForm from "./components/registerpage/register";
-import LoginForm from "./components/loginpage/login";
-import Navbar from "./components/userDashboard/Navbar";
 import axios from "axios";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import LoginForm from "./components/loginpage/login";
+
+import Navbar from "./components/userDashboard/HomePage/Navbar";
+import RegisterForm from "./components/registerpage/register";
 import ManageFriends from "./components/manageFriends/ManageFriends";
-import CommentBox from "./components/CommentBox/CommentBox";
 import UserProfile from "./components/ProfilePage/profile";
-import HomePage from "./components/userDashboard/HomePage";
+import HomePage from "./components/userDashboard/HomePage/HomePage";
+
 function App() {
 	// async function getUserData(userId) {
 	// 	try {

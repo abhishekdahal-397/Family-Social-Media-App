@@ -145,7 +145,7 @@ const getUserProfilePic = async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
-
+const getUserPosts = async (req, res) => {};
 module.exports = {
 	createUser,
 	getUsers,

@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
 	email: { type: String, required: true, unique: true },
 	password: { type: String, required: true },
 	profileUrl: { type: String, default: "" },
+	posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
 });
 
 // Hash the password before saving to the database

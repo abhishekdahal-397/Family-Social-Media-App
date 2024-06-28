@@ -1,7 +1,5 @@
-import abhishek from "./abhishek.jpg";
-import "./LeftSection.css";
+import "../css/LeftSection.css";
 import { Link } from "react-router-dom";
-import UserProfile from "../ProfilePage/profile";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useState } from "react";
@@ -17,7 +15,7 @@ const LeftSection = () => {
 	console.log(userDetails);
 
 	return (
-		<div className="LeftSection">
+		<div className="LeftSection  ">
 			<div className="ProfileBox">
 				{" "}
 				<Link to="../UserProfile/id">

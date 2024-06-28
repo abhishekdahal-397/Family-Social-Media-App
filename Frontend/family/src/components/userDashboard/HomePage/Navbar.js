@@ -1,9 +1,9 @@
 // Navbar.js
 import React, { useState } from "react";
 import { Link } from "react-router-dom"; // If you're using React Router
-import "./Navbar.css";
+import "../css/Navbar.css";
 import { useEffect } from "react";
-import Logo from "./familyLogo.png";
+import Logo from "../images/familyLogo.png";
 import { ImHome3 } from "react-icons/im";
 import { IoNotificationsSharp } from "react-icons/io5";
 import { RiMessage2Fill } from "react-icons/ri";
@@ -44,12 +44,12 @@ const Navbar = () => {
 	return (
 		<>
 			<nav className="navbar">
-				<Link to="/">
+				<Link to="/dashboard">
 					<img src={Logo} className="appicon" alt="logo " />
 				</Link>{" "}
 				<input className="search" placeholder="search family"></input>
 				<div className="navicons">
-					<Link to="/" className="relative left-[50px]">
+					<Link to="/dashboard" className="relative left-[50px]">
 						<ImHome3 />
 					</Link>
 					<Link to="/notifications"></Link>

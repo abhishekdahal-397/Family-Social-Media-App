@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import "./post.css";
+import "../css/post.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import pascal from "./pascal.jpg";
-import unsplash2 from "./unsplash2.jpg";
+import pascal from "../images/pascal.jpg";
+import unsplash2 from "../images/unsplash2.jpg";
 
 // import Navbar from "./Navbar";
 const Post = () => {

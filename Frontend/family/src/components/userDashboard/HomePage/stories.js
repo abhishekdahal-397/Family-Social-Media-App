@@ -1,5 +1,5 @@
 import React from "react";
-import "./stories.css";
+import "../css/stories.css";
 
 const Stories = () => {
 	const cards = [
@@ -17,7 +17,7 @@ const Stories = () => {
 			<div className="text">Stories</div>
 			<div className="cards">
 				{cards.map((card, index) => (
-					<div key={index} className="card  ">
+					<div key={index} className="card ">
 						<h2 className="text-xl font-semibold">{card.title}</h2>
 						<p className="mt-2 text-gray-700">{card.content}</p>
 					</div>
