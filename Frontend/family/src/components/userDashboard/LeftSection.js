@@ -8,25 +8,13 @@ import { useState } from "react";
 
 const LeftSection = () => {
 	const { userId } = useSelector((state) => state.user);
-	const [username, setUsername] = useState("");
-	const [profilePic, setProfilePic] = useState("");
+	console.log(" userid is ", userId);
+	const username = useSelector((state) => state.user.username);
+	console.log(username);
 
-	axios
-		.get(` http://localhost:3001/api/users/getUser/${userId}`)
-		.then((response) => {
-			// Handle successful response
-			console.log("Data received from backend:", response.data);
-			setUsername(response.data.user.username);
-			setProfilePic(response.data.user.ProfileUrl);
-			console.log(profilePic);
-		})
-		.catch(
-			(error) => {
-				// Handle error
-				console.error("Error fetching data from backend:", error);
-			},
-			[userId]
-		);
+	const profilePic = useSelector((state) => state.user.userProfileUrl);
+	const userDetails = useSelector((state) => state);
+	console.log(userDetails);
 
 	return (
 		<div className="LeftSection">
@@ -35,7 +23,7 @@ const LeftSection = () => {
 				<Link to="../UserProfile/id">
 					<img className="smallImg" src={profilePic} />
 				</Link>
-				<p className="MyName">{username}</p>
+				<p className="MyName">{username ? username : "undefined"}</p>
 			</div>
 		</div>
 	);

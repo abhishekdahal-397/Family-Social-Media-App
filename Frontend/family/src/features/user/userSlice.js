@@ -9,12 +9,13 @@ export const loginUser = createAsyncThunk(
 	async ({ email, password }) => {
 		try {
 			const response = await axios.post(
-				"http://localhost:3001/api/users/login",
+				"http://localhost:3002/api/users/login",
 				{
 					email,
 					password,
 				}
 			);
+			console.log("hi this is response.data", response.data);
 			return response.data;
 		} catch (error) {
 			throw error;
@@ -29,6 +30,7 @@ const userSlice = createSlice({
 		userInfo: null,
 		status: "idle",
 		error: null,
+		userProfileUrl: "",
 	},
 	reducers: {
 		// Add other reducer functions if needed
@@ -41,7 +43,9 @@ const userSlice = createSlice({
 			.addCase(loginUser.fulfilled, (state, action) => {
 				state.status = "succeeded";
 				state.userId = action.payload.userId;
-				state.userInfo = action.payload.userInfo;
+				state.userProfileUrl = action.payload.userProfileUrl;
+				state.username = action.payload.username;
+
 				state.error = null;
 			})
 			.addCase(loginUser.rejected, (state, action) => {

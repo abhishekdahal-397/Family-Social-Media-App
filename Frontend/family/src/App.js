@@ -34,9 +34,9 @@ function App() {
 			<div className="App">
 				<Navbar />
 				<Routes>
-					<Route path="/" element={<HomePage />} />
+					<Route path="/dashboard" element={<HomePage />} />
 					<Route path="/register" element={<RegisterForm />} />
-					<Route path="/login" element={<LoginForm />} />
+					<Route path="/" element={<LoginForm />} />
 
 					<Route path="/requests" element={<ManageFriends />}></Route>
 					<Route path="/userProfile/:id" element={<UserProfile />}></Route>

@@ -27,12 +27,13 @@ const LoginForm = () => {
 				return;
 			}
 
-			const userData = await dispatch(loginUser({ email, password }));
+			const userData = dispatch(loginUser({ email, password }));
+			console.log("this is userdata:", userData);
 
 			if (userData.error) {
 				setErrorMessage(userData.error);
 			} else {
-				navigate("/");
+				navigate("/dashboard");
 			}
 		} catch (error) {
 			console.error("Login failed:", error.message);

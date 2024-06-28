@@ -98,8 +98,18 @@ async function loginUser(req, res) {
 			}
 		);
 		const userId = existingUser._id;
+		const username = existingUser.username;
+		const userProfileUrl = existingUser.profileUrl;
 		// Respond with success message and token
-		res.status(200).json({ message: "Login successful", token, userId });
+		console.log(`${username} logged in`);
+
+		res.status(200).json({
+			message: "Login successful",
+			token,
+			userId,
+			username,
+			userProfileUrl,
+		});
 	} catch (error) {
 		console.error("Error logging in user:", error);
 		res.status(500).json({ error: "Internal server error" });
