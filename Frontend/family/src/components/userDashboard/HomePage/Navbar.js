@@ -1,30 +1,35 @@
-// Navbar.js
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom"; // If you're using React Router
 import "../css/Navbar.css";
-import { useEffect } from "react";
 import Logo from "../images/familyLogo.png";
 import { ImHome3 } from "react-icons/im";
 import { IoNotificationsSharp } from "react-icons/io5";
 import { RiMessage2Fill } from "react-icons/ri";
+import gsap from "gsap";
+
 import { IoReorderThreeSharp } from "react-icons/io5";
-import { useRef } from "react";
 import { MdPeopleAlt } from "react-icons/md";
 import { IoNotifications } from "react-icons/io5";
-import { BsMenuButton } from "react-icons/bs";
 import { CgMenuGridR } from "react-icons/cg";
 import { FaFacebookMessenger } from "react-icons/fa6";
+
 const Navbar = () => {
 	const [showOptions, setShowOptions] = useState(false);
-	const [btnCount, setbtnCount] = useState(1);
 	const optionsRef = useRef(null);
+
 	const buttonClick = () => {
-		btnCount % 2 === 0 ? setShowOptions(true) : setShowOptions(false);
-		setbtnCount(btnCount + 1);
-		if (setShowOptions) {
-			console.log(window);
-		}
+		setShowOptions((prevShowOptions) => !prevShowOptions);
 	};
+
+	useEffect(() => {
+		if (showOptions) {
+			gsap.from(optionsRef.current, {
+				duration: 1,
+				y: -50,
+				opacity: 0,
+			});
+		}
+	}, [showOptions]);
 
 	useEffect(() => {
 		const handleClickOutside = (event) => {
@@ -41,12 +46,13 @@ const Navbar = () => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, [showOptions]);
+
 	return (
 		<>
 			<nav className="navbar">
 				<Link to="/dashboard">
 					<img src={Logo} className="appicon" alt="logo " />
-				</Link>{" "}
+				</Link>
 				<input className="search" placeholder="search family"></input>
 				<div className="navicons">
 					<Link to="/dashboard" className="relative left-[50px]">
@@ -64,47 +70,37 @@ const Navbar = () => {
 					</button>
 				</div>
 				<div className="navleft">
-					{" "}
-					<div>
-						{" "}
-						<CgMenuGridR
-							className="m-4
-            relative
-            bottom-[9px] right-[9px]"
-						/>
-					</div>
-					<div>
-						<FaFacebookMessenger
-							className="m-4
-            relative
-            bottom-[9px] right-[9px]"
-						/>
-					</div>
-					<div>
-						<IoNotifications
-							className="m-4
-            relative
-            bottom-[9px] right-[9px]"
-						/>
-					</div>
+					<CgMenuGridR className="m-4 relative bottom-[9px] right-[9px]" />
+					<FaFacebookMessenger className="m-4 relative bottom-[9px] right-[9px]" />
+					<IoNotifications className="m-4 relative bottom-[9px] right-[9px]" />
 				</div>
 			</nav>
 
 			{showOptions && (
-				<div ref={optionsRef}>
-					<button>Your Profile</button>
-					<button>Friends</button>
-					<button>Settings</button>
-					<Link to="/login">
-						{" "}
-						<BsMenuButton>Login</BsMenuButton>
-					</Link>
-					<Link to="/register">
-						{" "}
-						<button>Signup</button>
+				<div
+					className="bg-blue-200 rounded h-[auto] w-[30vh] fixed right-[33vw] flex flex-col z-50"
+					ref={optionsRef}
+				>
+					<button className="bg-red-300 h-9 w-auto mx-2 my-4 px-3 py-2 rounded">
+						Profile
+					</button>
+					<button className="bg-red-300 h-9 w-auto mx-2 my-4 px-3 py-2 rounded">
+						Friends
+					</button>
+					<button className="bg-red-300 h-9 w-auto mx-2 my-4 px-3 py-2 rounded">
+						Settings
+					</button>
+
+					<Link
+						className="bg-red-300 h-9  mx-2 w-[27vh] px-[3.9vw] my-4  py-2 rounded  "
+						to="/register"
+					>
+						SignUp
 					</Link>
 
-					<button>Logout</button>
+					<button className="bg-red-300 h-9 w-auto mx-2 my-4 px-3 py-2 rounded ">
+						Logout
+					</button>
 				</div>
 			)}
 		</>
