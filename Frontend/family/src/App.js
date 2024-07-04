@@ -1,6 +1,11 @@
 import React from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route,
+	Navigate,
+} from "react-router-dom";
 
 import LoginForm from "./components/loginpage/login";
 
@@ -35,9 +40,10 @@ function App() {
 			<div className="App">
 				<Navbar />
 				<Routes>
-					<Route path="/dashboard" element={<HomePage />} />
+					<Route path="/" element={<Navigate to="/login" />} />
+					<Route path="/home" element={<HomePage />} />
 					<Route path="/register" element={<RegisterForm />} />
-					<Route path="/" element={<LoginForm />} />
+					<Route path="/login" element={<LoginForm />}></Route>
 
 					<Route path="/requests" element={<ManageFriends />}></Route>
 					<Route path="/userProfile/:id" element={<UserProfile />}></Route>

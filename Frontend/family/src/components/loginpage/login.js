@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../features/user/userSlice";
 import "./login.css";
 import { MdVisibility } from "react-icons/md";
@@ -15,7 +15,7 @@ const LoginForm = () => {
 	const [loading, setLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const [seePassword, setSeePassword] = useState(false);
-
+	const id = useSelector((state) => state.user.userId);
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		setLoading(true);
@@ -28,12 +28,20 @@ const LoginForm = () => {
 			}
 
 			const userData = dispatch(loginUser({ email, password }));
-			console.log("this is userdata:", userData);
+
+			if (!id) {
+				navigate("/login");
+			}
+
+			if (!userData) {
+				navigate("/login");
+			}
 
 			if (userData.error) {
 				setErrorMessage(userData.error);
+				navigate("/login");
 			} else {
-				navigate("/dashboard");
+				navigate("/home");
 			}
 		} catch (error) {
 			console.error("Login failed:", error.message);

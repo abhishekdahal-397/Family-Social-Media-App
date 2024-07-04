@@ -1,3 +1,6 @@
+//1:08:50
+//Indian Coders
+//MERN Stack: Advanced user Authentication and Authorisation | Mern Authentication & Authorization| Mern Authentication | MERN Stack Project
 // server/controllers/userController.js
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel"); // Import your User model
@@ -106,9 +109,8 @@ async function loginUser(req, res) {
 		res.status(200).json({
 			message: "Login successful",
 			token,
-			userId,
-			username,
-			userProfileUrl,
+
+			user: existingUser,
 		});
 	} catch (error) {
 		console.error("Error logging in user:", error);
@@ -116,21 +118,6 @@ async function loginUser(req, res) {
 	}
 }
 
-async function getUser(req, res) {
-	try {
-		const userId = req.params.id;
-		const user = await User.findOne({ _id: userId });
-
-		if (!user) {
-			return res.status(404).json({ error: "User not found" });
-		}
-
-		res.status(200).json({ user });
-	} catch (error) {
-		console.error("Error fetching user:", error);
-		res.status(500).json({ error: "Internal server error" });
-	}
-}
 const getUserProfilePic = async (req, res) => {
 	try {
 		const userId = req.params.id;
@@ -145,6 +132,38 @@ const getUserProfilePic = async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
+const verifyToken = (req, res, next) => {
+	const headers = req.headers[`authorization`];
+	const token = headers.split(" ")[1];
+	if (!token) {
+		res.status(404).json({ message: "No token found" });
+	}
+	jwt.verify(String(token), process.env.JWT_SECRET, (err, userId) => {
+		if (err) {
+			res.status(400).json({ message: "Invalid token", error: err });
+		}
+		console.log("user id is :", userId.userId);
+		req.id = userId.userId;
+	});
+	next();
+};
+async function getUser(req, res, next) {
+	const userId = req.id;
+	console.log(userId);
+
+	console.log("getUser userId: ", userId);
+
+	let user;
+	try {
+		user = await User.findById(userId);
+	} catch (err) {
+		return new Error(err);
+	}
+	if (!user) {
+		return res.status(404).json({ message: "user not found" });
+	}
+	return res.status(200).json({ user });
+}
 
 module.exports = {
 	createUser,
@@ -152,4 +171,5 @@ module.exports = {
 	loginUser,
 	getUser,
 	getUserProfilePic,
+	verifyToken,
 };

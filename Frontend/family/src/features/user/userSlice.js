@@ -15,7 +15,17 @@ export const loginUser = createAsyncThunk(
 					password,
 				}
 			);
-			console.log("hi this is response.data", response.data);
+			console.log("response from backend", response.data);
+			console.log("id is  ", response.data.user._id);
+			// console.log("logged in user id in state ", response.data.user.user._id);
+			// Example of storing a token in localStorage
+
+			localStorage.setItem("token", response.data.token);
+
+			console.log(
+				"this is token from localstorage",
+				localStorage.getItem("token")
+			);
 			return response.data;
 		} catch (error) {
 			throw error;
@@ -31,6 +41,7 @@ const userSlice = createSlice({
 		status: "idle",
 		error: null,
 		userProfileUrl: "",
+		token: "",
 	},
 	reducers: {
 		// Add other reducer functions if needed
@@ -42,10 +53,10 @@ const userSlice = createSlice({
 			})
 			.addCase(loginUser.fulfilled, (state, action) => {
 				state.status = "succeeded";
-				state.userId = action.payload.userId;
-				state.userProfileUrl = action.payload.userProfileUrl;
-				state.username = action.payload.username;
-
+				state.userId = action.payload.user._id;
+				state.userProfileUrl = action.payload.user.profileUrl;
+				state.username = action.payload.user.username;
+				state.token = action.payload.token;
 				state.error = null;
 			})
 			.addCase(loginUser.rejected, (state, action) => {
