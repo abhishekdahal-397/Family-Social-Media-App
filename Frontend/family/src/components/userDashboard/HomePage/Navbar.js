@@ -12,7 +12,6 @@ import { MdPeopleAlt } from "react-icons/md";
 import { IoNotifications } from "react-icons/io5";
 import { CgMenuGridR } from "react-icons/cg";
 import { FaFacebookMessenger } from "react-icons/fa6";
-
 const Navbar = () => {
 	const [showOptions, setShowOptions] = useState(false);
 	const optionsRef = useRef(null);
@@ -50,7 +49,7 @@ const Navbar = () => {
 	return (
 		<>
 			<nav className="navbar">
-				<Link to="/dashboard">
+				<Link to="/home">
 					<img src={Logo} className="appicon" alt="logo " />
 				</Link>
 				<input className="search" placeholder="search family"></input>
