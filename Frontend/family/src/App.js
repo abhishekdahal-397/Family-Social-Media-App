@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import {
 	BrowserRouter as Router,
@@ -6,6 +6,7 @@ import {
 	Route,
 	Navigate,
 } from "react-router-dom";
+import { automaticLogin } from "./features/user/userSlice";
 
 import LoginForm from "./components/loginpage/login";
 
@@ -14,26 +15,14 @@ import RegisterForm from "./components/registerpage/register";
 import ManageFriends from "./components/manageFriends/ManageFriends";
 import UserProfile from "./components/ProfilePage/profile";
 import HomePage from "./components/userDashboard/HomePage/HomePage";
+import { useDispatch } from "react-redux";
 
 function App() {
-	// async function getUserData(userId) {
-	// 	try {
-	// 		const response = await axios.get(`/api/users/${userId}`);
-	// 		return response.data;
-	// 	} catch (error) {
-	// 		console.error("Error fetching user data:", error);
-	// 		throw error;
-	// 	}
-	// }
-	// // Function to handle successful login and fetch user data
-	// const handleLogin = async (userId) => {
-	// 	try {
-	// 		const userData = await getUserData(userId); // Fetch user data from backend
-	// 		setUserData(userData); // Update state with user data
-	// 	} catch (error) {
-	// 		console.error("Error fetching user data:", error);
-	// 	}
-	// };
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(automaticLogin());
+	}, [dispatch]);
 
 	return (
 		<Router>

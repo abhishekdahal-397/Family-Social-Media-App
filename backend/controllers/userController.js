@@ -5,7 +5,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel"); // Import your User model
 const jwt = require("jsonwebtoken");
-
+const verifyToken = require("../middlewares/authMiddleware");
 async function createUser(req, res) {
 	try {
 		// Extract user data from the request body
@@ -63,36 +63,27 @@ async function getUsers(req, res) {
 }
 async function loginUser(req, res) {
 	try {
-		const { email, password } = req.body; // Changed Password to password
-		console.log(`${email} is trying to log in`);
-		console.log(password); // Changed Password to password
+		const { email, password } = req.body;
 
-		// Check if any required field is missing
 		if (!email || !password) {
 			return res.status(400).json({ error: "Email and password are required" });
 		}
 
-		// Check if the user exists in the database
 		const existingUser = await User.findOne({ email });
-
-		console.log(existingUser);
 
 		if (!existingUser) {
 			return res.status(401).json({ error: "Invalid email " });
 		}
 
-		// Compare the provided password with the hashed password in the database
 		const isPasswordValid = await bcrypt.compare(
-			password, // Changed Password to password
+			password,
 			existingUser.password
 		);
-		console.log(isPasswordValid);
 
 		if (!isPasswordValid) {
-			return res.status(401).json({ error: "Invalid password" }); // Changed Invalid  password to Invalid password
+			return res.status(401).json({ error: "Invalid password" });
 		}
-		console.log("Is Password Valid?", isPasswordValid);
-		// If the credentials are valid, generate a JWT token
+
 		const token = jwt.sign(
 			{ userId: existingUser._id },
 			process.env.JWT_SECRET,
@@ -100,17 +91,15 @@ async function loginUser(req, res) {
 				expiresIn: "1h",
 			}
 		);
-		const userId = existingUser._id;
-		const username = existingUser.username;
-		const userProfileUrl = existingUser.profileUrl;
-		// Respond with success message and token
-		console.log(`${username} logged in`);
 
 		res.status(200).json({
 			message: "Login successful",
 			token,
-
-			user: existingUser,
+			user: {
+				_id: existingUser._id,
+				username: existingUser.username,
+				profileUrl: existingUser.profileUrl,
+			},
 		});
 	} catch (error) {
 		console.error("Error logging in user:", error);
@@ -132,21 +121,7 @@ const getUserProfilePic = async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 };
-const verifyToken = (req, res, next) => {
-	const headers = req.headers[`authorization`];
-	const token = headers.split(" ")[1];
-	if (!token) {
-		res.status(404).json({ message: "No token found" });
-	}
-	jwt.verify(String(token), process.env.JWT_SECRET, (err, userId) => {
-		if (err) {
-			res.status(400).json({ message: "Invalid token", error: err });
-		}
-		console.log("user id is :", userId.userId);
-		req.id = userId.userId;
-	});
-	next();
-};
+
 async function getUser(req, res, next) {
 	const userId = req.id;
 	console.log(userId);

@@ -3,6 +3,30 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+export const automaticLogin = createAsyncThunk(
+	"user/automaticLogin",
+	async () => {
+		try {
+			const token = localStorage.getItem("token");
+			if (token) {
+				const response = await axios.get(
+					"http://localhost:3002/api/users/getUser",
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					}
+				);
+				console.log("automaticLogin response:", response.data);
+				return response.data;
+			} else {
+				return null;
+			}
+		} catch (error) {
+			throw error;
+		}
+	}
+);
 // Async thunk for login
 export const loginUser = createAsyncThunk(
 	"user/loginUser",
@@ -15,17 +39,8 @@ export const loginUser = createAsyncThunk(
 					password,
 				}
 			);
-			console.log("response from backend", response.data);
-			console.log("id is  ", response.data.user._id);
-			// console.log("logged in user id in state ", response.data.user.user._id);
-			// Example of storing a token in localStorage
-
 			localStorage.setItem("token", response.data.token);
-
-			console.log(
-				"this is token from localstorage",
-				localStorage.getItem("token")
-			);
+			console.log("loginUser response:", response.data);
 			return response.data;
 		} catch (error) {
 			throw error;
@@ -60,6 +75,18 @@ const userSlice = createSlice({
 				state.error = null;
 			})
 			.addCase(loginUser.rejected, (state, action) => {
+				state.status = "failed";
+				state.error = action.error.message;
+			})
+			.addCase(automaticLogin.fulfilled, (state, action) => {
+				state.status = "succeeded";
+				state.userId = action.payload.user._id;
+				state.userProfileUrl = action.payload.user.profileUrl;
+				state.username = action.payload.user.username;
+				state.token = action.payload.token;
+				state.error = null;
+			})
+			.addCase(automaticLogin.rejected, (state, action) => {
 				state.status = "failed";
 				state.error = action.error.message;
 			});
