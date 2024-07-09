@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const automaticLogin = createAsyncThunk(
 	"user/automaticLogin",
-	async () => {
+	async (thunkAPI) => {
 		try {
 			const token = localStorage.getItem("token");
 			if (token) {
@@ -17,13 +17,12 @@ export const automaticLogin = createAsyncThunk(
 						},
 					}
 				);
-				console.log("automaticLogin response:", response.data);
 				return response.data;
 			} else {
-				return null;
+				return thunkAPI.rejectWithValue("No token found");
 			}
 		} catch (error) {
-			throw error;
+			return thunkAPI.rejectWithValue(error.message);
 		}
 	}
 );
@@ -60,6 +59,13 @@ const userSlice = createSlice({
 	},
 	reducers: {
 		// Add other reducer functions if needed
+		logout: (state) => {
+			state.userId = null;
+			state.userInfo = null;
+
+			state.userProfileUrl = "";
+			state.token = "null";
+		},
 	},
 	extraReducers: (builder) => {
 		builder
@@ -80,10 +86,10 @@ const userSlice = createSlice({
 			})
 			.addCase(automaticLogin.fulfilled, (state, action) => {
 				state.status = "succeeded";
-				state.userId = action.payload.user._id;
-				state.userProfileUrl = action.payload.user.profileUrl;
-				state.username = action.payload.user.username;
-				state.token = action.payload.token;
+				state.userId = action.payload.user?._id || null;
+				state.userProfileUrl = action.payload.user?.profileUrl || "";
+				state.username = action.payload.user?.username || "";
+				state.token = action.payload.token || "";
 				state.error = null;
 			})
 			.addCase(automaticLogin.rejected, (state, action) => {
@@ -94,4 +100,4 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const {} = userSlice.actions; // If you have other actions, define them here
+export const { logout } = userSlice.actions; // If you have other actions, define them here

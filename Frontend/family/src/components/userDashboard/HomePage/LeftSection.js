@@ -12,7 +12,6 @@ const LeftSection = () => {
 
 	const profilePic = useSelector((state) => state.user.userProfileUrl);
 	const userDetails = useSelector((state) => state);
-	console.log(userDetails);
 
 	return (
 		<div className="LeftSection  ">

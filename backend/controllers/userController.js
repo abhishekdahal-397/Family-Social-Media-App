@@ -139,6 +139,9 @@ async function getUser(req, res, next) {
 	}
 	return res.status(200).json({ user });
 }
+async function logoutUser() {
+	return res.json("successful logout");
+}
 
 module.exports = {
 	createUser,
@@ -147,4 +150,5 @@ module.exports = {
 	getUser,
 	getUserProfilePic,
 	verifyToken,
+	logoutUser,
 };

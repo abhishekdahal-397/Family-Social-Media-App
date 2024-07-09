@@ -54,7 +54,7 @@ const Navbar = () => {
 				</Link>
 				<input className="search" placeholder="search family"></input>
 				<div className="navicons">
-					<Link to="/dashboard" className="relative left-[50px]">
+					<Link to="/home" className="relative left-[50px]">
 						<ImHome3 />
 					</Link>
 					<Link to="/notifications"></Link>
@@ -96,10 +96,11 @@ const Navbar = () => {
 					>
 						SignUp
 					</Link>
-
-					<button className="bg-red-300 h-9 w-auto mx-2 my-4 px-3 py-2 rounded ">
-						Logout
-					</button>
+					<Link to="/logout">
+						<button className="bg-red-300 h-9 w-auto mx-2 my-4 px-3 py-2 rounded ">
+							Logout
+						</button>
+					</Link>
 				</div>
 			)}
 		</>
