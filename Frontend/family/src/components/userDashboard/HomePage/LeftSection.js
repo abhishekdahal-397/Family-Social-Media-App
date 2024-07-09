@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useState } from "react";
+import defaultProfile from "../images/default.png";
 
 const LeftSection = () => {
 	const { userId } = useSelector((state) => state.user);
@@ -18,7 +19,10 @@ const LeftSection = () => {
 			<div className="ProfileBox">
 				{" "}
 				<Link to="../UserProfile/id">
-					<img className="smallImg" src={profilePic} />
+					<img
+						className="smallImg"
+						src={profilePic ? profilePic : defaultProfile}
+					/>
 				</Link>
 				<p className="MyName">{username ? username : "undefined"}</p>
 			</div>
