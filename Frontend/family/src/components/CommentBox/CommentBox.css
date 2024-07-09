@@ -1,76 +1,70 @@
-.container{
-    height:100vh;
-    width:100vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+.container {
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
-.commentBox{
-    height:35vw;
-width: 30vw;
-background-color: #d4c4c4ec;
-overflow-x: hidden; 
-overflow-y :scroll;
-   position: relative;
-
+.commentBox {
+	height: 35vw;
+	width: 30vw;
+	background-color: #d4c4c4ec;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	position: relative;
 }
-.image{
-    height:36px;
-    width: 36px;
-margin:4vh;
+.image {
+	height: 36px;
+	width: 36px;
+	margin: 4vh;
 
-    border-radius:50%;
-
+	border-radius: 50%;
 }
 .tohide {
-    height: 12vh;
-    width: 29vw;
-    background-color: inherit;
-    position: fixed;
-    left: 73vh;
-    bottom: 4.8vw;
-  }
-.name{
-    position: relative;
-    left:67px;
-    bottom: 49px;
-
+	height: 12vh;
+	width: 29vw;
+	background-color: inherit;
+	position: fixed;
+	left: 73vh;
+	bottom: 4.8vw;
 }
-.comment{
-    position:relative;
-    left:73px;
-    bottom:37px;
-width:fit-content;
-
-background-color:#868c7745 ;
+.name {
+	position: relative;
+	left: 67px;
+	bottom: 49px;
 }
-.inputcomment{
-   height:8vh;
-   width:22vw;
-    border-radius:5px;
-    border:2px solid black;
-    position: fixed;
-    bottom: 12vh;
-    left:33vw;
-    z-index: 1;
+.comment {
+	position: relative;
+	left: 73px;
+	bottom: 37px;
+	width: fit-content;
+
+	background-color: #868c7745;
 }
-.send{
-    height: 8vh;
-    width: 70px;
+.inputcomment {
+	height: 8vh;
+	width: 22vw;
+	border-radius: 5px;
+	border: 2px solid black;
+	position: fixed;
+	bottom: 12vh;
+	left: 33vw;
+	z-index: 1;
+}
+.send {
+	height: 8vh;
+	width: 70px;
 
-    padding:0px 5px;
+	padding: 0px 5px;
 
+	border-radius: 4px;
+	border: 2px solid black;
 
-
-    border-radius: 4px;
-    border:2px solid black;
-
-    position: fixed;
-    right:39vw;
-    bottom:12vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-background-color: #f7e656;
+	position: fixed;
+	right: 39vw;
+	bottom: 12vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #f7e656;
 }

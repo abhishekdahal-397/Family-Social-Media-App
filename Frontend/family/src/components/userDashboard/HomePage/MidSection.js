@@ -1,6 +1,6 @@
 // MidSection.jsclassclass
 import "../css/MidSection.css";
-import Post from "./post";
+import Post from "../../post/post";
 import React from "react";
 // import { Link } from "react-router-dom";
 import Stories from "./stories";

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import "../css/post.css";
+import "./post.css";
+
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import pascal from "../images/pascal.jpg";
-import unsplash2 from "../images/unsplash2.jpg";
+import pascal from "../images/rose.jpg";
 
+import unsplash2 from "../images/rose.jpg";
+import { MdPhotoAlbum } from "react-icons/md";
 // import Navbar from "./Navbar";
 const Post = () => {
 	const [likeColor, setLikeColor] = useState("white");
@@ -80,8 +82,8 @@ const Post = () => {
 	}, [User]);
 
 	return (
-		<div className=" post">
-			<input className="input" type="file" onChange={handleFileChange} />
+		<div className=" post ">
+			<input className="input " type="file" onChange={handleFileChange} />
 			<button
 				onClick={handleUpload}
 				className="rounded uploadbtn h-[40px] w-[60px]"
