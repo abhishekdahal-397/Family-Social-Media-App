@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import pascal from "../images/rose.jpg";
 
 import unsplash2 from "../images/rose.jpg";
-import { MdPhotoAlbum } from "react-icons/md";
+import { MdCommentBank, MdPhotoAlbum } from "react-icons/md";
+import CommentBox from "../CommentBox/CommentBox";
 // import Navbar from "./Navbar";
 const Post = () => {
 	const [likeColor, setLikeColor] = useState("white");
@@ -16,6 +17,8 @@ const Post = () => {
 	const [username, setUsername] = useState(null);
 	const userId = useSelector((state) => state.user.userId);
 	const [User, setUserData] = useState({});
+	const [commentBox, setShowCommentBox] = useState(false);
+
 	const handleLikeColor = () => {
 		if (likeColor === "white") {
 			setLikeColor("#3b82f6");
@@ -45,6 +48,10 @@ const Post = () => {
 			console.error("Error uploading image", error);
 			// Handle error (e.g., show error message to the user)
 		}
+	};
+
+	const showCommentBox = () => {
+		setShowCommentBox(true);
 	};
 
 	useEffect(() => {
@@ -116,7 +123,10 @@ const Post = () => {
 					>
 						like
 					</div>
-					<div className="button-like">Comment</div>
+					<div onClick={showCommentBox} className="button-like">
+						Comment
+					</div>
+					{showCommentBox && <CommentBox />}
 					<div className="button-like">Share</div>
 				</div>
 				<div className="mt-4 w-full border-t pt-4">
