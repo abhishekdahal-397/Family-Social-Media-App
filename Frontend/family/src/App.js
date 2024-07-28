@@ -15,6 +15,7 @@ import UserProfile from "./components/ProfilePage/profile";
 import HomePage from "./components/userDashboard/HomePage/HomePage";
 import { useDispatch } from "react-redux";
 import Logout from "./components/authentication/logout/Logout";
+import CommentBox from "./components/CommentBox/CommentBox";
 function App() {
 	const dispatch = useDispatch();
 	useEffect(() => {
@@ -36,6 +37,9 @@ function App() {
 				</Routes>
 			</div>
 		</Router>
+		// <>
+		// 	<CommentBox />
+		// </>
 	);
 }
 export default App;

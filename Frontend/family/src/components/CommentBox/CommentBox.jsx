@@ -6,9 +6,8 @@ const CommentBox = () => {
   return (
     <div className='container'>
      <div className='commentBox'>
-        <div>
-
-            <img className='image' src={profile}/>
+<div>
+<img className='image' src={profile}/>
             <p className='name'>Abhishek Dahal</p>
 <p className='comment'>This is my comment.</p>     
    </div>   <div>
@@ -30,13 +29,14 @@ const CommentBox = () => {
 
 <img className='image' src={profile}/>
 <p className='name'>Abhishek Dahal</p>
-<p className='comment'>This is my comment.</p>     
-</div>
-<div style={{height:'10vh'}}></div>
-        <input className='inputcomment' type='text' />
+<p className='comment'>This is my comment.</p>  <div style={{height:'10vh'}}></div></div>
+<footer className='flex '> <input className='inputcomment ml-3 mb-3' type='text' />
         <div className='tohide'></div>
-        <div className='send'><IoSend style={{color:'green',height:'40px',width:'40px'}}/></div>
-        </div>   
+        <div className='send ml-3 mb-3'><IoSend style={{color:'aqua',height:'40px',width:'40px'}}/></div></footer>
+       
+        </div>  
+
+ 
     </div>
   )
 }

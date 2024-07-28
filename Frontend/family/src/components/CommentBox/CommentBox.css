@@ -1,23 +1,37 @@
 .container {
-	height: 100vh;
-	width: 100vw;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	right: -38%;
+	background-color: white;
+	opacity: 0.5;
+	height: 100vh;
+	width: 100vw;
+	z-index: 1000;
 }
+/* .comment-box-modal {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: white;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	z-index: 1000;
+  } */
+
 .commentBox {
 	height: 35vw;
 	width: 30vw;
 	background-color: #d4c4c4ec;
 	overflow-x: hidden;
 	overflow-y: scroll;
-	position: relative;
 }
 .image {
 	height: 36px;
 	width: 36px;
 	margin: 4vh;
-
 	border-radius: 50%;
 }
 .tohide {
@@ -38,7 +52,6 @@
 	left: 73px;
 	bottom: 37px;
 	width: fit-content;
-
 	background-color: #868c7745;
 }
 .inputcomment {
@@ -46,7 +59,6 @@
 	width: 22vw;
 	border-radius: 5px;
 	border: 2px solid black;
-	position: fixed;
 	bottom: 12vh;
 	left: 33vw;
 	z-index: 1;
@@ -54,17 +66,18 @@
 .send {
 	height: 8vh;
 	width: 70px;
-
 	padding: 0px 5px;
-
 	border-radius: 4px;
 	border: 2px solid black;
+	/* position: relative;
 
-	position: fixed;
 	right: 39vw;
-	bottom: 12vh;
+	bottom: 12vh; */
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: #f7e656;
+	background-color: #aaa78d;
+}
+.content {
+	position: fixed;
 }
