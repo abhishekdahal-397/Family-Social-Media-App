@@ -37,16 +37,14 @@ const Post = () => {
 			? console.log("cmtbox shown")
 			: console.log("cmtbox hidden");
 	};
-	// useEffect(() => {
-	// 	toggleCommentBox();
-	// }, [commentBox]);
+
 	const handleUpload = async () => {
 		try {
 			const formData = new FormData();
 			formData.append("file", selectedFile);
 
 			const response = await axios.post(
-				"http://localhost:3001/api/posts/upload",
+				"http://localhost:3002/api/posts/upload",
 				formData
 			);
 
@@ -58,12 +56,29 @@ const Post = () => {
 			// Handle error (e.g., show error message to the user)
 		}
 	};
+	const handleUploadProfilePicture = async () => {
+		try {
+			const formData = new FormData();
+			formData.append("profilePic", selectedFile);
 
+			const response = await axios.post(
+				`http://localhost:3002/api/posts/uploadProfilePicture/${userId}`,
+				formData
+			);
+
+			console.log("uploaded");
+
+			// Handle the response (e.g., update UI)
+		} catch (error) {
+			console.error("Error uploading image", error);
+			// Handle error (e.g., show error message to the user)
+		}
+	};
 	useEffect(() => {
 		const fetchPosts = async () => {
 			try {
 				const response = await axios.get(
-					"http://localhost:3001/api/posts/getposts"
+					"http://localhost:3002/api/posts/getposts"
 				);
 
 				setPosts(response.data);
@@ -78,7 +93,7 @@ const Post = () => {
 		const fetchUserData = async () => {
 			try {
 				const response = await axios.get(
-					`http://localhost:3001/api/users/getUser/${userId}`
+					`http://localhost:3002/api/users/getUser/${userId}`
 				);
 			} catch (error) {
 				console.error("Error fetching user data:", error);

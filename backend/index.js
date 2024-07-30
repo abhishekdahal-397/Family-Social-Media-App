@@ -7,7 +7,7 @@ const cors = require("cors"); // Added this line to import the cors middleware
 const userRoutes = require("./routes/userRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const app = express();
-const PORT = process.env.PORT || 3002;
+const PORT = 3002;
 require("dotenv").config();
 const uploadRoutes = require("./routes/uploadRoutes");
 const friendRequestsRoutes = require("./routes/friendRequestRoutes");
