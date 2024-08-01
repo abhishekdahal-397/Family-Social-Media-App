@@ -2,7 +2,8 @@
 const express = require("express");
 
 const {
-	uploadController,
+	postsUpload,
+
 	getAllPosts,
 	uploadProfilePicture,
 } = require("../controllers/UploadController.js");
@@ -10,7 +11,7 @@ const {
 const router = express.Router();
 
 // Define the route for file upload
-router.post("/upload", uploadController); // localhost:3001/api/posts/upload
+router.post("/upload/:id", postsUpload); // localhost:3001/api/posts/upload
 router.get("/getposts", getAllPosts); // /api/posts/getposts
 router.post("/uploadProfilePicture/:id", uploadProfilePicture); // localhost:3001/api/posts/uploadProfilePicture/:id
 module.exports = router;

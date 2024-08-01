@@ -6,7 +6,7 @@ const User = require("../models/userModel");
 const storage = multer.memoryStorage();
 const singleUpload = multer({ storage }).single("file");
 
-const uploadController = async (req, res) => {
+const postsUpload = async (req, res) => {
 	try {
 		singleUpload(req, res, async (err) => {
 			if (err) {
@@ -14,7 +14,6 @@ const uploadController = async (req, res) => {
 					.status(400)
 					.json({ message: "Upload failed", error: err.message });
 			}
-
 			const image = req.file.buffer.toString("base64");
 			cloudinary.uploader.upload(
 				`data:image/png;base64,${image}`,
@@ -27,16 +26,18 @@ const uploadController = async (req, res) => {
 					}
 
 					// Extract user information from the request (modify based on your authentication setup)
-					// const userId = req.user.id;
-					// const username = req.user.username;
+					const userId = req.user.id;
+					const user = await User.findOne(userId);
+					const { username } = user;
+
 					const uploadDate = new Date();
 
 					// Create a new post with the Cloudinary URL and additional information
 					const newPost = new Post({
 						// caption: req.body.caption,
 						imageUrl: result.secure_url,
-						// userId,
-						// username,
+						userId,
+						username,
 						uploadDate,
 					});
 
@@ -77,27 +78,28 @@ const uploadProfilePicture = async (req, res) => {
 					.status(400)
 					.json({ message: "Upload failed", error: err.message });
 			}
-
 			const image = req.file.buffer.toString("base64");
 			cloudinary.uploader.upload(
 				`data:image/png;base64,${image}`,
+				{
+					folder: "userProfiles", // Specify the folder name
+					resource_type: "image", // Ensure the resource type is 'image'
+				},
 				async (error, result) => {
 					if (error) {
+						console.log("error is ", error);
 						return res.status(500).json({
 							message: "Cloudinary upload failed",
 							error: error.message,
 						});
 					}
-
 					// Extract user ID from the request (modify based on your authentication setup)
 					const userId = req.params.id;
-
 					// Update the user's profile picture URL
 					const user = await User.findById(userId);
 					if (!user) {
 						return res.status(404).json({ message: "User not found" });
 					}
-
 					user.profileUrl = result.secure_url;
 					await user.save();
 
@@ -114,9 +116,27 @@ const uploadProfilePicture = async (req, res) => {
 		res.status(500).json({ message: "Internal Server Error" });
 	}
 };
+const deleteProfilePicture = async (req, res) => {
+	try {
+		const userId = req.params.id;
+		const user = await User.findById(userId);
+		if (!user) {
+			return res.status(404).json({ message: "User not found" });
+		}
+
+		// Remove the profile picture URL
+		user.profileUrl = "";
+		await user.save();
+
+		res.json({ message: "Profile picture deleted successfully" });
+	} catch (error) {
+		console.error("Error deleting profile picture:", error);
+		res.status(500).json({ message: "Internal Server Error" });
+	}
+};
 
 module.exports = {
-	uploadController,
+	postsUpload,
 	getAllPosts,
 	uploadProfilePicture,
 };
