@@ -15,7 +15,7 @@ const LeftSection = () => {
 	const userDetails = useSelector((state) => state);
 
 	return (
-		<div className="LeftSection  ">
+		<div className="LeftSection fixed  ">
 			<div className="ProfileBox">
 				{" "}
 				<Link to="../UserProfile/id">

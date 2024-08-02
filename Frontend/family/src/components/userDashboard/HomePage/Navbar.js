@@ -80,9 +80,12 @@ const Navbar = () => {
 					className="bg-blue-200 rounded h-[auto] w-[30vh] fixed right-[33vw] flex flex-col z-50"
 					ref={optionsRef}
 				>
-					<button className="bg-red-300 h-9 w-auto mx-2 my-4 px-3 py-2 rounded">
+					<Link
+						className="bg-red-300 h-9  mx-2 w-[27vh] px-[3.9vw] my-4  py-2 rounded  "
+						to="/UserProfile/id"
+					>
 						Profile
-					</button>
+					</Link>
 					<button className="bg-red-300 h-9 w-auto mx-2 my-4 px-3 py-2 rounded">
 						Friends
 					</button>
@@ -97,7 +100,7 @@ const Navbar = () => {
 						SignUp
 					</Link>
 					<Link to="/logout">
-						<button className="bg-red-300 h-9 w-auto mx-2 my-4 px-3 py-2 rounded ">
+						<button className="bg-red-300 h-9 w-[27vh] mx-2 my-4 px-3 py-2 rounded ">
 							Logout
 						</button>
 					</Link>
