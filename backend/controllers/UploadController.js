@@ -127,6 +127,11 @@ const deleteProfilePicture = async (req, res) => {
 		if (!user) {
 			return res.status(404).json({ message: "User not found" });
 		}
+		// Optional: Delete the image from Cloudinary if needed
+		if (user.profileUrl) {
+			const publicId = user.profileUrl.split("/").pop().split(".")[0];
+			await cloudinary.uploader.destroy(publicId);
+		}
 
 		// Remove the profile picture URL
 		user.profileUrl = "";
@@ -144,4 +149,5 @@ module.exports = {
 	getAllPosts,
 	uploadProfilePicture,
 	updateProfilePicture,
+	deleteProfilePicture,
 };

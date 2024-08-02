@@ -56,24 +56,7 @@ const Post = () => {
 			// Handle error (e.g., show error message to the user)
 		}
 	};
-	const handleUploadProfilePicture = async () => {
-		try {
-			const formData = new FormData();
-			formData.append("profilePic", selectedFile);
 
-			const response = await axios.post(
-				`http://localhost:3002/api/posts/uploadProfilePicture/${userId}`,
-				formData
-			);
-
-			console.log("uploaded");
-
-			// Handle the response (e.g., update UI)
-		} catch (error) {
-			console.error("Error uploading image", error);
-			// Handle error (e.g., show error message to the user)
-		}
-	};
 	useEffect(() => {
 		const fetchPosts = async () => {
 			try {
