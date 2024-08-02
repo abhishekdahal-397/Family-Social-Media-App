@@ -10,6 +10,7 @@ const UserProfile = () => {
 	const profilePic = useSelector((state) => state.user.userProfileUrl);
 	const [selectedFile, setSelectedFile] = useState(null);
 	const userId = useSelector((state) => state.user.userId);
+	console.log("this is profile url", profilePic);
 
 	const handleFileChange = (event) => {
 		setSelectedFile(event.target.files[0]);

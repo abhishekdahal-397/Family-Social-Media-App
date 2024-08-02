@@ -5,7 +5,11 @@ const userSchema = new mongoose.Schema({
 	username: { type: String, required: true },
 	email: { type: String, required: true, unique: true },
 	password: { type: String, required: true },
-	profileUrl: { type: String, default: "" },
+	profileUrl: {
+		type: String,
+		default:
+			"https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg",
+	},
 	posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
 });
 

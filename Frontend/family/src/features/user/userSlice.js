@@ -54,7 +54,8 @@ const userSlice = createSlice({
 		userInfo: null,
 		status: "idle",
 		error: null,
-		userProfileUrl: "",
+		userProfileUrl:
+			"https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg",
 		token: "",
 	},
 	reducers: {
@@ -87,7 +88,9 @@ const userSlice = createSlice({
 			.addCase(automaticLogin.fulfilled, (state, action) => {
 				state.status = "succeeded";
 				state.userId = action.payload.user?._id || null;
-				state.userProfileUrl = action.payload.user?.profileUrl || "";
+				state.userProfileUrl =
+					action.payload.user?.profileUrl ||
+					"https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg";
 				state.username = action.payload.user?.username || "";
 				state.token = action.payload.token || "";
 				state.error = null;
