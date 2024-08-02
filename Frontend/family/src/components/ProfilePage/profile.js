@@ -45,6 +45,8 @@ const UserProfile = () => {
 
 			// Handle the response (e.g., update UI)
 		} catch (error) {
+			console.log("not uploaded");
+
 			console.error("Error uploading image", error);
 			// Handle error (e.g., show error message to the user)
 		}

@@ -57,6 +57,11 @@ const postsUpload = async (req, res) => {
 		res.status(500).json({ message: "Internal Server Error" });
 	}
 };
+const updateProfilePicture = async (req, res) => {
+	try {
+	} catch (error) {}
+};
+
 async function getAllPosts(req, res) {
 	try {
 		// Fetch all posts from the database
@@ -83,7 +88,6 @@ const uploadProfilePicture = async (req, res) => {
 				`data:image/png;base64,${image}`,
 				{
 					folder: "userProfiles", // Specify the folder name
-					resource_type: "image", // Ensure the resource type is 'image'
 				},
 				async (error, result) => {
 					if (error) {
@@ -139,4 +143,5 @@ module.exports = {
 	postsUpload,
 	getAllPosts,
 	uploadProfilePicture,
+	updateProfilePicture,
 };
