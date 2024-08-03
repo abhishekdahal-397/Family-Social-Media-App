@@ -1,7 +1,5 @@
 .cards {
-	max-height: 120px;
-	border: 1px solid #ddd;
-
+	height: 13vw;
 	white-space: nowrap;
 	overflow-x: auto;
 	overflow-y: hidden;
@@ -9,7 +7,7 @@
 
 .card {
 	width: 10vw;
-	height: 20vw;
+	height: 12vw;
 	background-color: skyblue;
 	margin-right: 4px;
 	display: inline-block;

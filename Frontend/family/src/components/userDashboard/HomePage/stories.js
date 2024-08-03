@@ -13,7 +13,7 @@ const Stories = () => {
 	];
 
 	return (
-		<>
+		<div className="h-[15vw]">
 			<div className="text">Stories</div>
 			<div className="cards">
 				{cards.map((card, index) => (
@@ -23,7 +23,7 @@ const Stories = () => {
 					</div>
 				))}
 			</div>
-		</>
+		</div>
 	);
 };
 

@@ -12,10 +12,10 @@ const LeftSection = () => {
 	console.log(username);
 
 	const profilePic = useSelector((state) => state.user.userProfileUrl);
-	const userDetails = useSelector((state) => state);
+	const userDetails = useSelector((state) => state.user);
 
 	return (
-		<div className="LeftSection fixed  ">
+		<div className="LeftSection fixed overflow-y-scroll ">
 			<div className="ProfileBox">
 				{" "}
 				<Link to="../UserProfile/id">
