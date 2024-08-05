@@ -39,14 +39,17 @@ const Post = () => {
 	};
 
 	const handleUpload = async () => {
+		console.log("upload button clicked");
+
 		try {
 			const formData = new FormData();
 			formData.append("file", selectedFile);
 
 			const response = await axios.post(
-				"http://localhost:3002/api/posts/upload",
+				`http://localhost:3002/api/posts/upload/${userId}`,
 				formData
 			);
+			console.log(response);
 
 			console.log("uploaded");
 

@@ -24,8 +24,6 @@ const RegisterForm = () => {
 
 			// Check if 'response' and 'response.data' exist before accessing 'data.token'
 			if (response && response.data && response.data.token) {
-				console.log("Token:", response.data.token);
-
 				// Save the token and its expiration time in localStorage or sessionStorage
 				localStorage.setItem("token", response.data.token);
 				const expirationTime = new Date().getTime() + 24 * 60 * 60 * 1000; // 1 day

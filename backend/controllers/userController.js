@@ -124,9 +124,6 @@ const getUserProfilePic = async (req, res) => {
 
 async function getUser(req, res, next) {
 	const userId = req.id;
-	console.log(userId);
-
-	console.log("getUser userId: ", userId);
 
 	let user;
 	try {
