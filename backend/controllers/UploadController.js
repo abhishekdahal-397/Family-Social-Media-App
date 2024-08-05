@@ -26,15 +26,15 @@ const postsUpload = async (req, res) => {
 					}
 
 					// Extract user information from the request (modify based on your authentication setup)
-					const userId = req.user.id;
-					const user = await User.findOne(userId);
+					const userId = req.params.id;
+					const user = await User.findOne({ _id: userId });
 					const { username } = user;
 
 					const uploadDate = new Date();
 
 					// Create a new post with the Cloudinary URL and additional information
 					const newPost = new Post({
-						// caption: req.body.caption,
+						caption: req.body.caption,
 						imageUrl: result.secure_url,
 						userId,
 						username,
