@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
 			"https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg",
 	},
 	posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
+	postsUrl: [{ type: String, createdDate: Date.now }],
 });
 
 // Hash the password before saving to the database

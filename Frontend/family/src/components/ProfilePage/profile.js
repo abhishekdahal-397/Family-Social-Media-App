@@ -1,6 +1,6 @@
 import abhishek from "./profileImages/abhishek.jpg";
 import "./profile.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -28,6 +28,20 @@ const UserProfile = () => {
 			console.log(error);
 		}
 	};
+	const userPosts = async () => {
+		try {
+			const response = await axios.get(
+				`http://localhost:3002/api/posts/getUserPosts/${userId}`
+			);
+			console.log("user posts", response.data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	useEffect(() => {
+		userPosts();
+	}, []);
+
 	const handleUploadProfilePicture = async () => {
 		try {
 			const formData = new FormData();
@@ -77,6 +91,7 @@ const UserProfile = () => {
 				>
 					Delete Profile Picture
 				</button>
+				<div></div>
 			</body>
 		</>
 	);

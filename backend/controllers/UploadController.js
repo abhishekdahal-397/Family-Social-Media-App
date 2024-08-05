@@ -43,7 +43,10 @@ const postsUpload = async (req, res) => {
 
 					// Save the post to the database
 					await newPost.save();
-
+					// Update the user's document to include the new post's ObjectId and URL
+					user.posts.push(newPost._id); // Push the ObjectId of the new post
+					user.postsUrl.push(result.secure_url); // Push the URL of the new post
+					await user.save();
 					// Handle the result or send a response to the client
 					res.json({
 						message: "File uploaded successfully!",
@@ -57,6 +60,34 @@ const postsUpload = async (req, res) => {
 		res.status(500).json({ message: "Internal Server Error" });
 	}
 };
+const getUserUploads = async (req, res) => {
+	try {
+		const userId = req.params.id;
+		const user = await User.findOne({ _id: userId });
+
+		// Check if the user exists
+		if (!user) {
+			return res.status(404).json({ message: "User not found" });
+		}
+
+		// Access postUrls directly as an array
+		const posts = user.postsUrl;
+
+		// Check if posts array is empty or doesn't exist
+		if (!posts || posts.length === 0) {
+			return res.status(404).json({ message: "User has no posts" });
+		}
+
+		// Return posts with status 200
+		res.status(200).json(posts);
+	} catch (error) {
+		// Handle errors properly and return status 500
+		res
+			.status(500)
+			.json({ message: "Something went wrong", error: error.message });
+	}
+};
+
 const updateProfilePicture = async (req, res) => {
 	try {
 	} catch (error) {}
@@ -147,6 +178,7 @@ const deleteProfilePicture = async (req, res) => {
 module.exports = {
 	postsUpload,
 	getAllPosts,
+	getUserUploads,
 	uploadProfilePicture,
 	updateProfilePicture,
 	deleteProfilePicture,
