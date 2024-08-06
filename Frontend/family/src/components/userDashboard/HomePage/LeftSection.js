@@ -18,7 +18,7 @@ const LeftSection = () => {
 		<div className="LeftSection fixed overflow-y-scroll ">
 			<div className="ProfileBox">
 				{" "}
-				<Link to="../UserProfile/id">
+				<Link to={`/userProfile/${userId}`}>
 					<img
 						className="smallImg"
 						src={profilePic ? profilePic : defaultProfile}

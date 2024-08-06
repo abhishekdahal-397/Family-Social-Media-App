@@ -1,6 +1,6 @@
 import abhishek from "./profileImages/abhishek.jpg";
 import "./profile.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -10,6 +10,9 @@ const UserProfile = () => {
 	const profilePic = useSelector((state) => state.user.userProfileUrl);
 	const [selectedFile, setSelectedFile] = useState(null);
 	const userId = useSelector((state) => state.user.userId);
+	const [userPosts, setUserPosts] = useState([]);
+	const fileInputRef = useRef(null); // Add a ref for the file input
+
 	console.log("this is profile url", profilePic);
 
 	const handleFileChange = (event) => {
@@ -28,18 +31,21 @@ const UserProfile = () => {
 			console.log(error);
 		}
 	};
-	const userPosts = async () => {
+	const getUserPosts = async () => {
 		try {
 			const response = await axios.get(
 				`http://localhost:3002/api/posts/getUserPosts/${userId}`
 			);
-			console.log("user posts", response.data);
+
+			setUserPosts(response.data);
+
+			console.log("first userpost", userPosts[0]);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 	useEffect(() => {
-		userPosts();
+		getUserPosts();
 	}, []);
 
 	const handleUploadProfilePicture = async () => {
@@ -51,7 +57,9 @@ const UserProfile = () => {
 				`http://localhost:3002/api/posts/uploadProfilePicture/${userId}`,
 				formData
 			);
-
+			if (fileInputRef.current) {
+				fileInputRef.current.value = "";
+			}
 			console.log("uploaded");
 
 			// Handle the response (e.g., update UI)
@@ -78,6 +86,7 @@ const UserProfile = () => {
 					accept="image/*"
 					onChange={handleFileChange}
 					className="mt-2"
+					ref={fileInputRef}
 				/>
 				<button
 					onClick={handleUploadProfilePicture}
@@ -91,7 +100,13 @@ const UserProfile = () => {
 				>
 					Delete Profile Picture
 				</button>
-				<div></div>
+				<div className="h-[20vh] w-[20vw]">
+					{userPosts.map((post, index) => (
+						<div key={index}>
+							<img src={post} />
+						</div>
+					))}
+				</div>
 			</body>
 		</>
 	);
