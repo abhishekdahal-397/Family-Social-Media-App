@@ -18,8 +18,8 @@ const Stories = () => {
 			<div className="cards">
 				{cards.map((card, index) => (
 					<div key={index} className="card ">
-						<h2 className="text-xl font-semibold">{card.title}</h2>
-						<p className="mt-2 text-gray-700">{card.content}</p>
+						<h2 className="text-xl font-semibold"></h2>
+						<p className="mt-2 text-gray-700"></p>
 					</div>
 				))}
 			</div>
