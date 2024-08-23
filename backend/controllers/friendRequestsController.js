@@ -1,32 +1,33 @@
-// controllers/friendRequestController.js
 const FriendRequest = require("../models/FriendRequest");
-
-const User = require("../models/userModel"); // Assuming you have a User model
-
+const User = require("../models/userModel");
 async function sendRequest(req, res) {
 	try {
-		// Extract sender and receiver IDs from request body
 		const { senderId, receiverId } = req.body;
 
-		// Check if senderId and receiverId exist and are active users
 		const sender = await User.findById(senderId);
 		const receiver = await User.findById(receiverId);
-
 		if (!sender || !receiver) {
 			return res
 				.status(400)
 				.json({ success: false, message: "Invalid sender or receiver ID" });
 		}
+		// Check if a request already exists between these users
+		const existingRequest = await FriendRequest.findOne({
+			sender: senderId,
+			receiver: receiverId,
+		});
+		if (existingRequest) {
+			console.log("already request sent ");
 
-		// Create a new friend request
+			return res
+				.status(400)
+				.json({ success: false, message: "Friend request already sent" });
+		}
 		const friendRequest = new FriendRequest({
 			sender: senderId,
 			receiver: receiverId,
 		});
-
-		// Save the friend request to the database
 		await friendRequest.save();
-
 		res
 			.status(201)
 			.json({ success: true, message: "Friend request sent successfully" });
@@ -37,14 +38,27 @@ async function sendRequest(req, res) {
 			.json({ success: false, message: "Failed to send friend request" });
 	}
 }
-
 async function acceptRequest(req, res) {
 	try {
-		// Extract request ID from URL parameters
 		const requestId = req.params.id;
 
+		// Find the friend request
+		const friendRequest = await FriendRequest.findById(requestId);
+		if (!friendRequest) {
+			return res
+				.status(404)
+				.json({ success: false, message: "Request not found" });
+		}
+		// Update users' friends list
+		await User.findByIdAndUpdate(friendRequest.sender, {
+			$addToSet: { friends: friendRequest.receiver },
+		});
+		await User.findByIdAndUpdate(friendRequest.receiver, {
+			$addToSet: { friends: friendRequest.sender },
+		});
 		// Update the status of the friend request to 'accepted'
-		await FriendRequest.findByIdAndUpdate(requestId, { status: "accepted" });
+		friendRequest.status = "accepted";
+		await friendRequest.save();
 
 		res
 			.status(200)
@@ -56,15 +70,16 @@ async function acceptRequest(req, res) {
 			.json({ success: false, message: "Failed to accept friend request" });
 	}
 }
-
 async function rejectRequest(req, res) {
 	try {
-		// Extract request ID from URL parameters
 		const requestId = req.params.id;
-
-		// Update the status of the friend request to 'rejected'
-		await FriendRequest.findByIdAndUpdate(requestId, { status: "rejected" });
-
+		// Find and delete the friend request
+		const friendRequest = await FriendRequest.findByIdAndDelete(requestId);
+		if (!friendRequest) {
+			return res
+				.status(404)
+				.json({ success: false, message: "Request not found" });
+		}
 		res
 			.status(200)
 			.json({ success: true, message: "Friend request rejected successfully" });
@@ -75,11 +90,12 @@ async function rejectRequest(req, res) {
 			.json({ success: false, message: "Failed to reject friend request" });
 	}
 }
-
 async function getAllRequests(req, res) {
 	try {
-		// Fetch all friend requests from the database
-		const friendRequests = await FriendRequest.find();
+		// Fetch all friend requests, populating sender and receiver details
+		const friendRequests = await FriendRequest.find()
+			.populate("sender", "username profilePicture")
+			.populate("receiver", "username profilePicture");
 
 		res.status(200).json({ success: true, friendRequests });
 	} catch (error) {
@@ -92,15 +108,18 @@ async function getAllRequests(req, res) {
 async function reqSenders(req, res) {
 	try {
 		const userId = req.params.id;
-		const friendRequests = await FriendRequest.find({ receiver: userId });
-		const senderIds = friendRequests.map((request) => request.sender);
+		const friendRequests = await FriendRequest.find({
+			receiver: userId,
+		}).populate("sender", "username profilePicture");
 
-		res.status(200).json({ success: true, senderIds });
+		const senders = friendRequests.map((request) => request.sender);
+
+		res.status(200).json({ success: true, senders });
 	} catch (error) {
-		console.error("Error fetching sender IDs:", error);
+		console.error("Error fetching sender details:", error);
 		res
 			.status(500)
-			.json({ success: false, message: "Failed to fetch sender IDs" });
+			.json({ success: false, message: "Failed to fetch sender details" });
 	}
 }
 

@@ -12,6 +12,11 @@ const userSchema = new mongoose.Schema({
 	},
 	posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
 	postsUrl: [{ type: String, createdDate: Date.now }],
+	friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // Array of user IDs who are friends
+	friendRequestsSent: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // Array of user IDs to whom requests were sent
+	friendRequestsReceived: [
+		{ type: mongoose.Schema.Types.ObjectId, ref: "User" },
+	], // Array of user IDs who sent requests
 });
 
 // Hash the password before saving to the database

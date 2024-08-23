@@ -10,7 +10,7 @@ import { automaticLogin, logout } from "./features/user/userSlice";
 import LoginForm from "./components/authentication/loginpage/login";
 import Navbar from "./components/userDashboard/HomePage/Navbar";
 import RegisterForm from "./components/authentication/registerpage/register";
-import ManageFriends from "./components/manageFriends/ManageFriends";
+import People from "./components/manageFriends/People";
 import UserProfile from "./components/ProfilePage/profile";
 import HomePage from "./components/userDashboard/HomePage/HomePage";
 import { useDispatch } from "react-redux";
@@ -31,7 +31,7 @@ function App() {
 					<Route path="/home" element={<HomePage />} />
 					<Route path="/register" element={<RegisterForm />} />
 					<Route path="/login" element={<LoginForm />}></Route>
-					<Route path="/requests" element={<ManageFriends />}></Route>
+					<Route path="/requests" element={<People />}></Route>
 					<Route path="/userProfile/:id" element={<UserProfile />}></Route>
 					<Route path="/logout" element={<Logout />}></Route>
 				</Routes>

@@ -5,7 +5,7 @@ import "./IncomingRequest.css";
 
 const IncomingRequest = () => {
 	const [friendRequest, setFriendRequest] = useState({});
-
+	const [users, setUser] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [senders, setSenders] = useState([]);
 	const userId = useSelector((state) => state.user.userId);
