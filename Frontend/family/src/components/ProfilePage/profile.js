@@ -1,5 +1,5 @@
 import abhishek from "./profileImages/abhishek.jpg";
-import "./profile.css";
+import "./profile";
 import React, { useEffect, useRef, useState } from "react";
 import pascal from "../images/rose.jpg";
 import { useParams } from "react-router-dom";
@@ -74,7 +74,7 @@ const UserProfile = () => {
 	};
 	return (
 		<>
-			<body className="w-[100vw] h-[100vh] flex flex-col justify-center items-center">
+			<body className="w-[100vw]  flex flex-col justify-center items-center">
 				<img
 					id="profile"
 					className="h-[20vh] rounded-full  w-auto "
@@ -98,48 +98,52 @@ const UserProfile = () => {
 				</button>
 				<button
 					onClick={deleteProfilePicture}
-					className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-400 ease-in"
+					className="mt-2 px-4 py-2 text-white rounded hover:bg-blue-400 ease-in"
 				>
 					Delete Profile Picture
 				</button>
-				<div className="h-[20vh] w-[20vw]">
-					{userPosts.map((post, index) => (
-						<div key={index}>
-							<div className="singlepost w-[40vw]">
-								<div className="">
-									<div className="flex  items-center relative top-[2.5vw] right-[5px] p-4  rounded-lg">
-										<Link to="/UserProfile">
-											<div
-												style={{ backgroundImage: `url(${profilePic})` }}
-												className="usericon  h-9 w-9 mb-2 pt-5 bg-gray-300 rounded-full"
-											></div>
-										</Link>
-										<p className="text-lg  h-9 z-1">{username}</p>
+
+				<div className=" w-full flex   mt-[10vh]  ">
+					<div>
+						{userPosts.map((post, index) => (
+							<div className="posts" key={index}>
+								<div className="singlepost mt-4 ml-10 pb-6 w-[40vw]">
+									<div className="">
+										<div className="flex  items-center relative top-[2.5vw] right-[5px] p-4  rounded-lg">
+											<Link>
+												<div
+													style={{ backgroundImage: `url(${profilePic})` }}
+													className="usericon  h-9 w-9 mb-2 pt-5 bg-gray-300 rounded-full"
+												></div>
+											</Link>
+											<p className="text-lg  h-9 z-1">{username}</p>
+										</div>
 									</div>
-								</div>
-								<h1 className="relative left-[60px] top-[5px] ">#caption</h1>
-								<div className="post-photo my-3   h-[80vh] w-[70vh] ml-4">
-									<img src={userPosts[index]} className="post" alt="post" />
-								</div>
-								<div
-									className="relative
+									<h1 className="relative left-[60px] top-[5px] ">#caption</h1>
+									<div className="post-photo my-3   h-[80vh] w-[70vh] ml-4">
+										<img src={userPosts[index]} className="post" alt="post" />
+									</div>
+									<div
+										className="relative
           left-[7vw]
           top-[2px]
         text-sm"
-								>
-									<div
-										className="button-like"
-										style={{ backgroundColor: "red" }}
 									>
-										like
-									</div>
-									<div className="button-like">Comment</div>
+										<div
+											className="button-like"
+											style={{ backgroundColor: "red" }}
+										>
+											like
+										</div>
+										<div className="button-like">Comment</div>
 
-									<div className="button-like">Share</div>
-								</div>{" "}
+										<div className="button-like">Share</div>
+									</div>{" "}
+								</div>
 							</div>
-						</div>
-					))}
+						))}
+					</div>
+					<div className=" friends h-[20vh] w-[40vw] bg-red-400 "> friends</div>
 				</div>
 			</body>
 		</>
