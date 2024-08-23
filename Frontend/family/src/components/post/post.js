@@ -9,6 +9,7 @@ import pascal from "../images/rose.jpg";
 import unsplash2 from "../images/rose.jpg";
 import { MdCommentBank, MdPhotoAlbum } from "react-icons/md";
 import CommentBox from "../CommentBox/CommentBox";
+import Upload from "./uploadSection/upload";
 // import Navbar from "./Navbar";
 const Post = () => {
 	const [likeColor, setLikeColor] = useState("white");
@@ -27,37 +28,11 @@ const Post = () => {
 		}
 	};
 
-	const handleFileChange = (e) => {
-		setSelectedFile(e.target.files[0]);
-	};
-
 	const toggleCommentBox = () => {
 		setShowCommentBox((prev) => !prev);
 		commentBox === true
 			? console.log("cmtbox shown")
 			: console.log("cmtbox hidden");
-	};
-
-	const handleUpload = async () => {
-		console.log("upload button clicked");
-
-		try {
-			const formData = new FormData();
-			formData.append("file", selectedFile);
-
-			const response = await axios.post(
-				`http://localhost:3002/api/posts/upload/${userId}`,
-				formData
-			);
-			console.log(response);
-
-			console.log("uploaded");
-
-			// Handle the response (e.g., update UI)
-		} catch (error) {
-			console.error("Error uploading image", error);
-			// Handle error (e.g., show error message to the user)
-		}
 	};
 
 	useEffect(() => {
@@ -96,13 +71,7 @@ const Post = () => {
 
 	return (
 		<div className=" post ">
-			<input className="input " type="file" onChange={handleFileChange} />
-			<button
-				onClick={handleUpload}
-				className="rounded uploadbtn h-[40px] w-[60px]"
-			>
-				Upload
-			</button>
+			<Upload />
 			<div className="singlepost">
 				<div className="">
 					<div className="flex  items-center relative top-[2.5vw] right-[5px] p-4  rounded-lg">
@@ -135,8 +104,8 @@ const Post = () => {
 
 					<div className="button-like">Share</div>
 				</div>{" "}
-				{commentBox && <CommentBox />}
 			</div>
+			{commentBox && <CommentBox />}
 		</div>
 	);
 };

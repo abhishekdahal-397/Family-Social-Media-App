@@ -100,6 +100,7 @@ const UserProfile = () => {
 				>
 					Delete Profile Picture
 				</button>
+				<h1>Posts</h1>
 				<div className="h-[20vh] w-[20vw]">
 					{userPosts.map((post, index) => (
 						<div key={index}>
