@@ -8,7 +8,10 @@ const IncomingRequest = () => {
 	const [friendReqSenders, setFriendReqSenders] = useState([]);
 
 	useEffect(() => {
+		if (!userId) return;
 		const getReqSenders = async () => {
+			console.log("userid are ", userId);
+
 			const response = await axios.get(
 				`http://localhost:3002/api/friend-requests/requestSenders/${userId}`
 			);
@@ -17,24 +20,23 @@ const IncomingRequest = () => {
 		};
 
 		getReqSenders();
-	}, []);
+	}, [userId]);
 
 	return (
 		<div>
-			{friendReqSenders.map((sender, index) => {
-				return (
+			{Array.isArray(friendReqSenders) &&
+				friendReqSenders.map((sender, index) => (
 					<div className="requestbox w-[20vw] bg-red-400 " key={index}>
 						{sender.username}
 
-						<button className="h-[6vh] w-[10vw] bg-blue-200 border rounded ">
+						<button className="h-[6vh] w-[10vw] bg-blue-200 border rounded">
 							Accept
 						</button>
-						<button className="h-[6vh] w-[10vh] bg-blue-200 border rounded ">
-							delete
+						<button className="h-[6vh] w-[10vh] bg-blue-200 border rounded">
+							Delete
 						</button>
 					</div>
-				);
-			})}
+				))}
 		</div>
 	);
 };

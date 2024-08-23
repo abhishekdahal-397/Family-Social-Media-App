@@ -1,4 +1,6 @@
-const FriendRequest = require("../models/FriendRequest");
+const mongoose = require("mongoose"); // Import Mongoose
+const FriendRequest = require("../models/FriendRequest"); // Import your FriendRequest model
+
 const User = require("../models/userModel");
 async function sendRequest(req, res) {
 	try {
@@ -108,15 +110,29 @@ async function getAllRequests(req, res) {
 async function reqSenders(req, res) {
 	try {
 		const userId = req.params.id;
+		console.log("Fetching friend requests for user:", userId);
+
+		// Check if userId is a valid ObjectId
+		if (!mongoose.Types.ObjectId.isValid(userId)) {
+			console.log("Invalid user ID:", userId);
+			return res
+				.status(400)
+				.json({ success: false, message: "Invalid user ID" });
+		}
+
 		const friendRequests = await FriendRequest.find({
 			receiver: userId,
 		}).populate("sender", "username profilePicture");
+
+		if (!friendRequests) {
+			console.log("No friend requests found for user:", userId);
+		}
 
 		const senders = friendRequests.map((request) => request.sender);
 
 		res.status(200).json({ success: true, senders });
 	} catch (error) {
-		console.error("Error fetching sender details:", error);
+		console.error("Error fetching sender details:", error.message, error.stack);
 		res
 			.status(500)
 			.json({ success: false, message: "Failed to fetch sender details" });
