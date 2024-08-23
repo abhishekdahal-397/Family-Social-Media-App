@@ -1,10 +1,12 @@
 import abhishek from "./profileImages/abhishek.jpg";
 import "./profile.css";
 import React, { useEffect, useRef, useState } from "react";
-
+import pascal from "../images/rose.jpg";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { Link } from "react-router-dom";
+
 const UserProfile = () => {
 	const username = useSelector((state) => state.user.username);
 	const profilePic = useSelector((state) => state.user.userProfileUrl);
@@ -14,7 +16,7 @@ const UserProfile = () => {
 	const fileInputRef = useRef(null); // Add a ref for the file input
 
 	console.log("this is profile url", profilePic);
-
+	console.log("this is userPosts", userPosts);
 	const handleFileChange = (event) => {
 		setSelectedFile(event.target.files[0]);
 	};
@@ -100,11 +102,42 @@ const UserProfile = () => {
 				>
 					Delete Profile Picture
 				</button>
-				<h1>Posts</h1>
 				<div className="h-[20vh] w-[20vw]">
 					{userPosts.map((post, index) => (
 						<div key={index}>
-							<img src={post} />
+							<div className="singlepost w-[40vw]">
+								<div className="">
+									<div className="flex  items-center relative top-[2.5vw] right-[5px] p-4  rounded-lg">
+										<Link to="/UserProfile">
+											<div
+												style={{ backgroundImage: `url(${profilePic})` }}
+												className="usericon  h-9 w-9 mb-2 pt-5 bg-gray-300 rounded-full"
+											></div>
+										</Link>
+										<p className="text-lg  h-9 z-1">{username}</p>
+									</div>
+								</div>
+								<h1 className="relative left-[60px] top-[5px] ">#caption</h1>
+								<div className="post-photo my-3   h-[80vh] w-[70vh] ml-4">
+									<img src={userPosts[index]} className="post" alt="post" />
+								</div>
+								<div
+									className="relative
+          left-[7vw]
+          top-[2px]
+        text-sm"
+								>
+									<div
+										className="button-like"
+										style={{ backgroundColor: "red" }}
+									>
+										like
+									</div>
+									<div className="button-like">Comment</div>
+
+									<div className="button-like">Share</div>
+								</div>{" "}
+							</div>
 						</div>
 					))}
 				</div>
