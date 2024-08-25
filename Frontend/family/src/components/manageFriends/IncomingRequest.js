@@ -25,6 +25,7 @@ const IncomingRequest = () => {
 
 	return (
 		<div className="p-7">
+			<h1 className="text-[5vh]">Friend Requests</h1>
 			{Array.isArray(friendReqSenders) &&
 				friendReqSenders.map((sender, index) => (
 					<div
