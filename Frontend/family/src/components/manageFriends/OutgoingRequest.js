@@ -37,10 +37,12 @@ const OutgoingRequest = () => {
 
 	return (
 		<div className="p-7">
+			<h1 className="text-[5vh]">People you may know</h1>
+
 			{receivers.map((receiver) => {
 				return (
 					<div
-						className="requestbox w-[40vw] m-5 rounded bg-pink-400"
+						className="requestbox w-[40vw] m-5 rounded bg-blue-400"
 						key={receiver._id}
 					>
 						<div className="flex m-4">
