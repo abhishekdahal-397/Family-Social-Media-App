@@ -20,6 +20,7 @@ const UserProfile = () => {
 
 	const [userPosts, setUserPosts] = useState([]);
 	const fileInputRef = useRef(null); // Add a ref for the file input
+	const [Mates, setMates] = useState([]);
 
 	console.log("this is profile url", profilePic);
 	console.log("this is userPosts", userPosts);
@@ -56,21 +57,22 @@ const UserProfile = () => {
 			console.log("error getting user Posts", error);
 		}
 	};
-	// const getFriendDetails = async (userFriends) => {
-	// 	for (const friend of userFriends) {
-	// 		try {
-	// 			const response = await axios.get(
-	// 				`http://localhost:3002/api/users/getUser/${friend}`
-	// 			);
-	// 			console.log(response.data); // Process the response as needed
-	// 		} catch (error) {
-	// 			console.error("Error getting friend details:", error);
-	// 		}
-	// 	}
-	// };
+	const Friends = async () => {
+		try {
+			const response = await axios.get(
+				`http://localhost:3002/api/friend-requests/acceptedUserRequests/${userId}`
+			);
+			console.log("all friends", response.data);
+			setMates(response.data);
+		} catch (error) {
+			console.log("error getting friends", error);
+		}
+	};
 	useEffect(() => {
 		getUserPosts();
-		// getFriendDetails(userFriends);
+	}, []);
+	useEffect(() => {
+		Friends();
 	}, []);
 
 	const handleUploadProfilePicture = async () => {
@@ -166,7 +168,14 @@ const UserProfile = () => {
 							</div>
 						))}
 					</div>
-					<div className=" friends h-[20vh] w-[40vw] bg-red-400 "></div>
+					<div className=" friends h-[20vh] w-[40vw] bg-red-400 ">
+						{Mates.map((mate, index) => (
+							<div key={index}>
+								<img src={mate.sender.profileUrl}></img>
+								{mate.sender.username}
+							</div>
+						))}
+					</div>
 				</div>
 			</body>
 		</>

@@ -187,7 +187,23 @@ async function getRequestWithSenderAndReceiverId(req, res) {
 		return res.status(500).json({ message: "Internal server error" });
 	}
 }
+async function acceptedUserRequests(req, res) {
+	try {
+		const { receiverId } = req.params;
+		const acceptedRequests = await FriendRequest.find({
+			receiver: receiverId,
+			status: "accepted",
+		}).populate("sender", "username profileUrl"); // Populates the sender field with user details
 
+		if (acceptedRequests.length > 0) {
+			res.status(200).json(acceptedRequests);
+		} else {
+			res.status(404).json({ message: "No accepted friend requests found." });
+		}
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+}
 module.exports = {
 	sendRequest,
 	acceptRequest,
@@ -195,4 +211,5 @@ module.exports = {
 	getAllRequests,
 	reqSenders,
 	getRequestWithSenderAndReceiverId,
+	acceptedUserRequests,
 };

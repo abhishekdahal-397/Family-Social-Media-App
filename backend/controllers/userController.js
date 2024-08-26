@@ -122,20 +122,22 @@ const getUserProfilePic = async (req, res) => {
 	}
 };
 
-async function getUser(req, res, next) {
-	const userId = req.id;
+async function getUser(req, res) {
+	const userId = req.params.id;
 
-	let user;
 	try {
-		user = await User.findById(userId);
+		const user = await User.findById(userId);
+		if (!user) {
+			return res.status(404).json({ message: "User not found" });
+		}
+		return res.status(200).json({ user });
 	} catch (err) {
-		return new Error(err);
+		return res
+			.status(500)
+			.json({ error: "Server error", details: err.message });
 	}
-	if (!user) {
-		return res.status(404).json({ message: "user not found" });
-	}
-	return res.status(200).json({ user });
 }
+
 async function logoutUser() {
 	return res.json("successful logout");
 }
