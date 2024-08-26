@@ -30,6 +30,14 @@ async function sendRequest(req, res) {
 			receiver: receiverId,
 		});
 		await friendRequest.save();
+		// Update user's friend request fields
+		await User.findByIdAndUpdate(senderId, {
+			$addToSet: { friendRequestsSent: receiverId },
+		});
+		await User.findByIdAndUpdate(receiverId, {
+			$addToSet: { friendRequestsReceived: senderId },
+		});
+
 		res
 			.status(201)
 			.json({ success: true, message: "Friend request sent successfully" });
@@ -53,24 +61,24 @@ async function acceptRequest(req, res) {
 		}
 
 		// Get the ID of the currently authenticated user
-		const currentUserId = req.user.id;
+		const currentUserId = req.body.userId;
 
 		// Ensure the current user is the receiver of the friend request
 		if (friendRequest.receiver.toString() !== currentUserId) {
-			return res
-				.status(403)
-				.json({
-					success: false,
-					message: "You are not authorized to accept this request",
-				});
+			return res.status(403).json({
+				success: false,
+				message: "You are not authorized to accept this request",
+			});
 		}
 
 		// Update users' friends list
 		await User.findByIdAndUpdate(friendRequest.sender, {
 			$addToSet: { friends: friendRequest.receiver },
+			$pull: { friendRequestsSent: friendRequest.receiver },
 		});
 		await User.findByIdAndUpdate(friendRequest.receiver, {
 			$addToSet: { friends: friendRequest.sender },
+			$pull: { friendRequestsReceived: friendRequest.sender },
 		});
 
 		// Update the status of the friend request to 'accepted'
@@ -152,6 +160,33 @@ async function reqSenders(req, res) {
 			.json({ success: false, message: "Failed to fetch sender details" });
 	}
 }
+async function getRequestWithSenderAndReceiverId(req, res) {
+	try {
+		const { sender, receiver } = req.body;
+
+		if (!sender || !receiver) {
+			return res
+				.status(400)
+				.json({ message: "Sender and receiver IDs are required" });
+		}
+
+		const requests = await FriendRequest.find({
+			sender,
+			receiver,
+		});
+
+		if (requests.length === 0) {
+			return res.status(404).json({ message: "No such request found" });
+		}
+
+		return res
+			.status(200)
+			.json({ message: "Successfully got the request object", requests });
+	} catch (error) {
+		console.error("Error fetching friend request:", error);
+		return res.status(500).json({ message: "Internal server error" });
+	}
+}
 
 module.exports = {
 	sendRequest,
@@ -159,4 +194,5 @@ module.exports = {
 	rejectRequest,
 	getAllRequests,
 	reqSenders,
+	getRequestWithSenderAndReceiverId,
 };

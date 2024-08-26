@@ -17,4 +17,8 @@ router.get(
 	"/friend-requests/requestSenders/:id",
 	friendRequestController.reqSenders
 ); // /api/friend-requests/requestSenders/:id
+router.post(
+	"/friend-requests/getRequestWithSenderAndReceiverId",
+	friendRequestController.getRequestWithSenderAndReceiverId
+);
 module.exports = router;
