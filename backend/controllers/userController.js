@@ -139,6 +139,18 @@ async function getUser(req, res, next) {
 async function logoutUser() {
 	return res.json("successful logout");
 }
+async function getUserFriends(req, res) {
+	const userId = req.params.id;
+	try {
+		const user = await User.findById(userId);
+		if (!user) {
+			return res.status(404).json({ message: "user not found" });
+		}
+		return res.status(200).json(user.friends);
+	} catch (error) {
+		return new Error(error);
+	}
+}
 
 module.exports = {
 	createUser,
@@ -148,4 +160,5 @@ module.exports = {
 	getUserProfilePic,
 	verifyToken,
 	logoutUser,
+	getUserFriends,
 };

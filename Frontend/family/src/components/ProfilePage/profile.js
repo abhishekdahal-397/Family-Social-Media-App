@@ -3,15 +3,21 @@ import "./profile";
 import React, { useEffect, useRef, useState } from "react";
 import pascal from "../images/rose.jpg";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchFriends, clearFriends } from "../../features/Friend/friendsSlice";
 
 const UserProfile = () => {
 	const username = useSelector((state) => state.user.username);
 	const profilePic = useSelector((state) => state.user.userProfileUrl);
 	const [selectedFile, setSelectedFile] = useState(null);
 	const userId = useSelector((state) => state.user.userId);
+	const dispatch = useDispatch();
+
+	const friends = useSelector((state) => state.friends.friends);
+	console.log("my frineds are ", friends);
+
 	const [userPosts, setUserPosts] = useState([]);
 	const fileInputRef = useRef(null); // Add a ref for the file input
 
@@ -20,6 +26,10 @@ const UserProfile = () => {
 	const handleFileChange = (event) => {
 		setSelectedFile(event.target.files[0]);
 	};
+	useEffect(() => {
+		dispatch(fetchFriends(userId));
+	}, [dispatch, userId]);
+
 	const deleteProfilePicture = async () => {
 		try {
 			const response = await axios.delete(
@@ -43,11 +53,24 @@ const UserProfile = () => {
 
 			console.log("first userpost", userPosts[0]);
 		} catch (error) {
-			console.log(error);
+			console.log("error getting user Posts", error);
 		}
 	};
+	// const getFriendDetails = async (userFriends) => {
+	// 	for (const friend of userFriends) {
+	// 		try {
+	// 			const response = await axios.get(
+	// 				`http://localhost:3002/api/users/getUser/${friend}`
+	// 			);
+	// 			console.log(response.data); // Process the response as needed
+	// 		} catch (error) {
+	// 			console.error("Error getting friend details:", error);
+	// 		}
+	// 	}
+	// };
 	useEffect(() => {
 		getUserPosts();
+		// getFriendDetails(userFriends);
 	}, []);
 
 	const handleUploadProfilePicture = async () => {
@@ -98,7 +121,7 @@ const UserProfile = () => {
 				</button>
 				<button
 					onClick={deleteProfilePicture}
-					className="mt-2 px-4 py-2 text-white rounded hover:bg-blue-400 ease-in"
+					className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-400 ease-in"
 				>
 					Delete Profile Picture
 				</button>
@@ -143,7 +166,7 @@ const UserProfile = () => {
 							</div>
 						))}
 					</div>
-					<div className=" friends h-[20vh] w-[40vw] bg-red-400 "> friends</div>
+					<div className=" friends h-[20vh] w-[40vw] bg-red-400 "></div>
 				</div>
 			</body>
 		</>

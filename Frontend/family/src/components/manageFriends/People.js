@@ -4,7 +4,7 @@ import OutgoingRequest from "./OutgoingRequest";
 
 const People = () => {
 	return (
-		<div className="bg-blue-400">
+		<div>
 			<IncomingRequest />
 			<OutgoingRequest />
 		</div>
