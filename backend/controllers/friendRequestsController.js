@@ -51,6 +51,20 @@ async function acceptRequest(req, res) {
 				.status(404)
 				.json({ success: false, message: "Request not found" });
 		}
+
+		// Get the ID of the currently authenticated user
+		const currentUserId = req.user.id;
+
+		// Ensure the current user is the receiver of the friend request
+		if (friendRequest.receiver.toString() !== currentUserId) {
+			return res
+				.status(403)
+				.json({
+					success: false,
+					message: "You are not authorized to accept this request",
+				});
+		}
+
 		// Update users' friends list
 		await User.findByIdAndUpdate(friendRequest.sender, {
 			$addToSet: { friends: friendRequest.receiver },
@@ -58,6 +72,7 @@ async function acceptRequest(req, res) {
 		await User.findByIdAndUpdate(friendRequest.receiver, {
 			$addToSet: { friends: friendRequest.sender },
 		});
+
 		// Update the status of the friend request to 'accepted'
 		friendRequest.status = "accepted";
 		await friendRequest.save();
@@ -72,6 +87,7 @@ async function acceptRequest(req, res) {
 			.json({ success: false, message: "Failed to accept friend request" });
 	}
 }
+
 async function rejectRequest(req, res) {
 	try {
 		const requestId = req.params.id;
@@ -111,7 +127,6 @@ async function reqSenders(req, res) {
 	try {
 		const userId = req.params.id;
 		console.log("Fetching friend requests for user:", userId);
-
 		// Check if userId is a valid ObjectId
 		if (!mongoose.Types.ObjectId.isValid(userId)) {
 			console.log("Invalid user ID:", userId);
@@ -119,7 +134,6 @@ async function reqSenders(req, res) {
 				.status(400)
 				.json({ success: false, message: "Invalid user ID" });
 		}
-
 		const friendRequests = await FriendRequest.find({
 			receiver: userId,
 		}).populate("sender", "username profilePicture");
