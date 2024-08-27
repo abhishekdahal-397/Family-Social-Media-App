@@ -12,10 +12,10 @@ const IncomingRequest = () => {
 		if (!userId) return;
 		const getReqSenders = async () => {
 			const response = await axios.get(
-				`http://localhost:3002/api/friend-requests/requestSenders/${userId}`
+				`http://localhost:3002/api/friend-requests/getPendingRequestsOfUser/${userId}`
 			);
-
-			setFriendReqSenders(response.data.senders);
+			console.log("inoming request response:", response.data);
+			setFriendReqSenders(response.data);
 		};
 
 		getReqSenders();
@@ -72,8 +72,7 @@ const IncomingRequest = () => {
 								alt="profile"
 							></img>
 							<span className="relative top-2 left-2 text-xl">
-								{sender.username.charAt(0).toUpperCase() +
-									sender.username.slice(1).toLowerCase()}
+								{sender.sender.username}
 							</span>{" "}
 						</div>
 

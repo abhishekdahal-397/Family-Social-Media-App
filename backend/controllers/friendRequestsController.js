@@ -59,10 +59,8 @@ async function acceptRequest(req, res) {
 				.status(404)
 				.json({ success: false, message: "Request not found" });
 		}
-
 		// Get the ID of the currently authenticated user
 		const currentUserId = req.body.userId;
-
 		// Ensure the current user is the receiver of the friend request
 		if (friendRequest.receiver.toString() !== currentUserId) {
 			return res.status(403).json({
@@ -70,7 +68,6 @@ async function acceptRequest(req, res) {
 				message: "You are not authorized to accept this request",
 			});
 		}
-
 		// Update users' friends list
 		await User.findByIdAndUpdate(friendRequest.sender, {
 			$addToSet: { friends: friendRequest.receiver },
@@ -204,6 +201,23 @@ async function acceptedUserRequests(req, res) {
 		res.status(500).json({ error: error.message });
 	}
 }
+
+async function getPendingRequestsOfUser(req, res) {
+	try {
+		const userId = req.params.id;
+		const pendingRequests = await FriendRequest.find({
+			status: "pending",
+			receiver: userId,
+			sender: { $ne: userId }, // Ensure sender is not the userId
+		}).populate("sender", "username profileUrl"); // Populate sender field with username and profilePicture
+
+		res.status(200).json(pendingRequests);
+	} catch (err) {
+		console.error("Error fetching pending requests:", err);
+		res.status(500).json({ message: "Error fetching pending requests" });
+	}
+}
+
 module.exports = {
 	sendRequest,
 	acceptRequest,
@@ -212,4 +226,5 @@ module.exports = {
 	reqSenders,
 	getRequestWithSenderAndReceiverId,
 	acceptedUserRequests,
+	getPendingRequestsOfUser,
 };

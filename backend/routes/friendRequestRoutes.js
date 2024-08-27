@@ -25,4 +25,8 @@ router.get(
 	"/friend-requests/acceptedUserRequests/:receiverId",
 	friendRequestController.acceptedUserRequests
 );
+router.get(
+	"/friend-requests/getPendingRequestsOfUser/:id",
+	friendRequestController.getPendingRequestsOfUser
+);
 module.exports = router;
