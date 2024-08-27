@@ -17,7 +17,6 @@ const IncomingRequest = () => {
 			console.log("inoming request response:", response.data);
 			setFriendReqSenders(response.data);
 		};
-
 		getReqSenders();
 	}, [userId]);
 	const handleAcceptButtonClick = async (senderId, userId) => {
