@@ -5,7 +5,7 @@ const friendRequestController = require("../controllers/friendRequestsController
 // Define routes for friend requests
 router.post("/sendFriendRequest", friendRequestController.sendRequest); // /api/friend-requests
 router.put(
-	"/friend-requests/:id/accept",
+	"/friend-requests/accept/:senderId/:receiverId",
 	friendRequestController.acceptRequest
 ); // /api/friend-requests/:id/accept
 router.put(

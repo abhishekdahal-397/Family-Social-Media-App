@@ -50,17 +50,23 @@ async function sendRequest(req, res) {
 }
 async function acceptRequest(req, res) {
 	try {
-		const requestId = req.params.id;
+		const { senderId, receiverId } = req.params;
 
-		// Find the friend request
-		const friendRequest = await FriendRequest.findById(requestId);
+		// Find the friend request using senderId and receiverId
+		const friendRequest = await FriendRequest.findOne({
+			sender: senderId,
+			receiver: receiverId,
+		});
+
 		if (!friendRequest) {
 			return res
 				.status(404)
-				.json({ success: false, message: "Request not found" });
+				.json({ success: false, message: "Friend request not found" });
 		}
-		// Get the ID of the currently authenticated user
-		const currentUserId = req.body.userId;
+
+		// Get the ID of the currently authenticated user (assuming receiver is the one accepting)
+		const currentUserId = receiverId;
+
 		// Ensure the current user is the receiver of the friend request
 		if (friendRequest.receiver.toString() !== currentUserId) {
 			return res.status(403).json({
@@ -68,6 +74,7 @@ async function acceptRequest(req, res) {
 				message: "You are not authorized to accept this request",
 			});
 		}
+
 		// Update users' friends list
 		await User.findByIdAndUpdate(friendRequest.sender, {
 			$addToSet: { friends: friendRequest.receiver },

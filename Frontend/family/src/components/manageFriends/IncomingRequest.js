@@ -19,32 +19,14 @@ const IncomingRequest = () => {
 		};
 		getReqSenders();
 	}, [userId]);
-	const handleAcceptButtonClick = async (senderId, userId) => {
+	const handleAcceptButtonClick = async (senderId, receiverId) => {
 		try {
-			const res1 = await axios.post(
-				"http://localhost:3002/api/friend-requests/getRequestWithSenderAndReceiverId",
-				{
-					sender: senderId,
-					receiver: userId,
-				}
-			);
-
-			console.log("res1 is ", res1.data.requests[0]._id);
-			const requestId = res1.data.requests[0]._id;
 			const response = await axios.put(
-				`http://localhost:3002/api/friend-requests/${requestId}/accept`,
-				{
-					userId: userId,
-				}
+				`http://localhost:3002/api/friend-requests/accept/${senderId}/${receiverId}`
 			);
 
 			if (response.data.success) {
 				alert("Friend request accepted successfully");
-
-				// Optionally, update the local state to remove the accepted request
-				setFriendReqSenders((prev) =>
-					prev.filter((sender) => sender._id !== senderId)
-				);
 			} else {
 				alert("Failed to accept friend request");
 			}
@@ -76,7 +58,7 @@ const IncomingRequest = () => {
 						</div>
 
 						<button
-							onClick={() => handleAcceptButtonClick(sender._id, userId)}
+							onClick={() => handleAcceptButtonClick(sender.sender._id, userId)}
 							className="h-[6vh] w-[10vw] m-3 bg-blue-200 border rounded hover:bg-blue-400"
 						>
 							Accept
