@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFriends, clearFriends } from "../../features/Friend/friendsSlice";
 import { FaUpload } from "react-icons/fa"; // Importing a Font Awesome upload icon
-
+import { CgProfile } from "react-icons/cg";
 const UserProfile = () => {
 	const username = useSelector((state) => state.user.username);
 	const profilePic = useSelector((state) => state.user.userProfileUrl);
@@ -103,18 +103,17 @@ const UserProfile = () => {
 			<body className="w-[100vw]  flex flex-col justify-center items-center">
 				<div
 					style={{ backgroundImage: `url(${pascal})` }}
-					className="color pink bg-sky-400 w-full bg-no-repeat bg-cover h-[50vh]"
+					className="color pink bg-sky-400 w-full bg-no-repeat bg-cover h-[60vh] flex justify-center items-center flex-col"
 				>
 					<img
 						id="profile"
-						className="h-[20vh] rounded-full w-auto "
+						className="h-[20vh] rounded-full w-auto mb-5"
 						src={profilePic}
 						alt="Profile"
 					/>
-					<p className="text-center font-bold">
+					<p className="text-center text-3xl text-white font-bold">
 						{username ? username : "undefined"}
 					</p>
-
 					{/* Hidden file input */}
 					<input
 						type="file"
@@ -124,25 +123,25 @@ const UserProfile = () => {
 						ref={fileInputRef}
 						id="fileInput"
 					/>
-
 					{/* Label styled as a button with an icon */}
 					<label
 						htmlFor="fileInput"
 						className="mt-2 flex items-center justify-center cursor-pointer "
 					>
-						<FaUpload className="w-6 h-6" />
-						<span className="ml-2">Select Profile Picture</span>
+						<div className=" flex mt-2 w-[14vw] whitespace-nowrap px-4 py-2 bg-slate-500 text-white rounded hover:bg-slate-400">
+							<span className="ml-2">Select Profile Picture</span>
+						</div>
 					</label>
 
 					<button
 						onClick={handleUploadProfilePicture}
-						className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-400"
+						className="mt-2 w-[14vw] px-4 py-2 bg-slate-500 text-white rounded hover:bg-slate-400"
 					>
 						Upload
 					</button>
 					<button
 						onClick={deleteProfilePicture}
-						className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-400 ease-in"
+						className="mt-2 px-4 py-2 bg-slate-500 text-white rounded hover:bg-slate-400 ease-in"
 					>
 						Delete Profile Picture
 					</button>
@@ -165,7 +164,7 @@ const UserProfile = () => {
 									</div>
 									<h1 className="relative left-[60px] top-[5px] ">#caption</h1>
 									<div className="post-photo my-3   h-[80vh] w-[70vh] ml-4">
-										<img src={userPosts[index]} className="post" alt="post" />
+										<img src={post} className="post" alt="post" />
 									</div>
 									<div
 										className="relative
