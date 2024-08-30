@@ -7,6 +7,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFriends, clearFriends } from "../../features/Friend/friendsSlice";
+import { FaUpload } from "react-icons/fa"; // Importing a Font Awesome upload icon
 
 const UserProfile = () => {
 	const username = useSelector((state) => state.user.username);
@@ -100,34 +101,52 @@ const UserProfile = () => {
 	return (
 		<>
 			<body className="w-[100vw]  flex flex-col justify-center items-center">
-				<img
-					id="profile"
-					className="h-[20vh] rounded-full  w-auto "
-					src={profilePic}
-				/>
-				<p className="text-center font-bold ">
-					{username ? username : "undefined"}
-				</p>
-				<input
-					type="file"
-					accept="image/*"
-					onChange={handleFileChange}
-					className="mt-2"
-					ref={fileInputRef}
-				/>
-				<button
-					onClick={handleUploadProfilePicture}
-					className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-400"
+				<div
+					style={{ backgroundImage: `url(${pascal})` }}
+					className="color pink bg-sky-400 w-full bg-no-repeat bg-cover h-[50vh]"
 				>
-					Upload Profile Picture
-				</button>
-				<button
-					onClick={deleteProfilePicture}
-					className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-400 ease-in"
-				>
-					Delete Profile Picture
-				</button>
+					<img
+						id="profile"
+						className="h-[20vh] rounded-full w-auto "
+						src={profilePic}
+						alt="Profile"
+					/>
+					<p className="text-center font-bold">
+						{username ? username : "undefined"}
+					</p>
 
+					{/* Hidden file input */}
+					<input
+						type="file"
+						accept="image/*"
+						onChange={handleFileChange}
+						className="hidden"
+						ref={fileInputRef}
+						id="fileInput"
+					/>
+
+					{/* Label styled as a button with an icon */}
+					<label
+						htmlFor="fileInput"
+						className="mt-2 flex items-center justify-center cursor-pointer "
+					>
+						<FaUpload className="w-6 h-6" />
+						<span className="ml-2">Select Profile Picture</span>
+					</label>
+
+					<button
+						onClick={handleUploadProfilePicture}
+						className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-400"
+					>
+						Upload
+					</button>
+					<button
+						onClick={deleteProfilePicture}
+						className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-400 ease-in"
+					>
+						Delete Profile Picture
+					</button>
+				</div>
 				<div className=" w-full flex   mt-[10vh]  ">
 					<div>
 						{userPosts.map((post, index) => (
@@ -168,11 +187,17 @@ const UserProfile = () => {
 							</div>
 						))}
 					</div>
-					<div className=" friends h-[20vh] w-[40vw] bg-red-400 ">
+					<div className="mx-2 friends  w-[50vw] bg-slate-400 overflow-y-scroll p-6 rounded h-[20vw]">
+						<h1 className="text-[2vw] text-black pl-6">My Friends</h1>
 						{Mates.map((mate, index) => (
-							<div key={index}>
-								<img src={mate.sender.profileUrl}></img>
-								{mate.sender.username}
+							<div className="flex mt-2  " key={index}>
+								<img
+									className="h-[10vh]  rounded-full  "
+									src={mate.sender.profileUrl}
+								></img>
+								<span className="self-center ml-[1vw]">
+									{mate.sender.username}
+								</span>
 							</div>
 						))}
 					</div>
