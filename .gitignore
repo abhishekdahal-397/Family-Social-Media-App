@@ -1,4 +1,6 @@
-/backend/.env
-/backend/node_modules
-/Frontend/family/node_modules
-/Frontend/family/public/index.html
+backend/.env
+backend/node_modules
+
+Frontend/family/public/index.html
+
+node_modules
