@@ -5,7 +5,7 @@ const Post = require("../models/postModel"); // Import your PostModel
 const User = require("../models/userModel");
 const storage = multer.memoryStorage();
 const singleUpload = multer({ storage }).single("file");
-
+const mongoose = require("mongoose");
 const postsUpload = async (req, res) => {
 	try {
 		singleUpload(req, res, async (err) => {
@@ -175,6 +175,57 @@ const deleteProfilePicture = async (req, res) => {
 	}
 };
 
+const getRandomFriendPosts = async (req, res) => {
+	const userId = req.params.id;
+
+	try {
+		const isValidObjectId = mongoose.Types.ObjectId.isValid(userId);
+		if (!isValidObjectId) {
+			return res.status(400).json({ message: "Invalid user ID" });
+		}
+		const objectId = new mongoose.Types.ObjectId(userId);
+
+		const posts = await Post.aggregate([
+			{
+				$lookup: {
+					from: "users", // Join with the User collection
+					localField: "userId", // Post's userId
+					foreignField: "_id", // User's _id
+					as: "user", // New field to store user data
+				},
+			},
+			{
+				$unwind: "$user", // Deconstruct the user array
+			},
+			{
+				$match: {
+					"user.friends": objectId, // Match posts from friends of the user
+				},
+			},
+			{
+				$sample: { size: 10 }, // Get 10 random posts
+			},
+			{
+				$project: {
+					_id: 1,
+					caption: 1,
+					imageUrl: 1,
+					uploadDate: 1,
+					"user.username": 1,
+					"user.profileUrl": 1,
+				},
+			},
+		]);
+
+		return res.json(posts); // Send the posts as a JSON response
+	} catch (error) {
+		console.error(error);
+		return res
+			.status(500)
+			.json({ message: "Failed to fetch posts", error: error.message });
+	}
+};
+
 module.exports = {
 	postsUpload,
 	getAllPosts,
@@ -182,4 +233,5 @@ module.exports = {
 	uploadProfilePicture,
 	updateProfilePicture,
 	deleteProfilePicture,
+	getRandomFriendPosts,
 };

@@ -2,5 +2,5 @@ backend/.env
 backend/node_modules
 
 /Frontend/family/public/index.html
-tailwind.config.js
+
 node_modules

@@ -37,9 +37,6 @@ function App() {
 				</Routes>
 			</div>
 		</Router>
-		// <>
-		// 	<CommentBox />
-		// </>
 	);
 }
 export default App;

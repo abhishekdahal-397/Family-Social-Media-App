@@ -8,6 +8,7 @@ const {
 	updateProfilePicture,
 	deleteProfilePicture,
 	getUserUploads,
+	getRandomFriendPosts,
 } = require("../controllers/UploadController"); // Corrected the file name casing
 
 const router = express.Router();
@@ -19,5 +20,5 @@ router.post("/uploadProfilePicture/:id", uploadProfilePicture); // localhost:300
 router.put("/updateProfilePicture/:id", updateProfilePicture);
 router.delete("/deleteProfilePicture/:id", deleteProfilePicture); // localhost:3002/api/posts/deleteProfilePicture/:id
 router.get("/getUserPosts/:id", getUserUploads); // localhost:3002/api/posts/getUserPosts/:id
-
+router.get("/getRandomFriendPosts/:id", getRandomFriendPosts);
 module.exports = router;
