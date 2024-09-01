@@ -26,7 +26,6 @@ mongoose
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({ origin: "*" })); // Allow all origins
-
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/comments", commentRoutes);
