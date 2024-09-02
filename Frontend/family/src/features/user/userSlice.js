@@ -1,30 +1,53 @@
-// src/features/user/userSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { fetchFriends } from "../Friend/friendsSlice"; // Import fetchFriends action
+import { fetchFriends } from "../Friend/friendsSlice"; // Import fetchFriends actionimport jwt_decode from "jwt-decode"; // Import jwt-decode library
+import { jwtDecode } from "jwt-decode";
 
 export const automaticLogin = createAsyncThunk(
 	"user/automaticLogin",
 	async (_, thunkAPI) => {
 		const { dispatch } = thunkAPI;
+		console.log("This came with destructured dispatch in thunkAPI", dispatch);
+
 		try {
 			const token = localStorage.getItem("token");
+			console.log(
+				"Token from localStorage from automatic login function:",
+				token
+			);
+
 			if (token) {
+				// Decode the token to extract the userId
+				const decodedToken = jwtDecode(token);
+				const userId = decodedToken.userId;
+				console.log("user id from decoded is ", userId);
+
+				if (!userId) {
+					return thunkAPI.rejectWithValue("Invalid token, no userId found");
+				}
+
+				console.log("Extracted userId from token:", userId);
+
 				const response = await axios.get(
-					"http://localhost:3002/api/users/getUser",
+					`http://localhost:3002/api/users/getUser/${userId}`,
 					{
 						headers: {
 							Authorization: `Bearer ${token}`,
 						},
 					}
 				);
-				// Dispatch fetchFriends after successful login
+
+				console.log("API response:", response.data);
+
+				// Dispatch the action to fetch friends using the userId
 				dispatch(fetchFriends(response.data.user._id));
+
 				return response.data;
 			} else {
 				return thunkAPI.rejectWithValue("No token found");
 			}
 		} catch (error) {
+			console.error("Login error:", error.message);
 			return thunkAPI.rejectWithValue(error.message);
 		}
 	}
@@ -57,16 +80,19 @@ const userSlice = createSlice({
 		userInfo: null,
 		status: "idle",
 		error: null,
-		userProfileUrl:
+		profilePicture:
 			"https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg",
+		username: "",
 		token: "",
 	},
 	reducers: {
 		logout: (state) => {
 			state.userId = null;
 			state.userInfo = null;
-			state.userProfileUrl = "";
+			state.profilePicture = "";
+			state.username = "";
 			state.token = "";
+			localStorage.removeItem("token");
 		},
 	},
 	extraReducers: (builder) => {
@@ -77,7 +103,7 @@ const userSlice = createSlice({
 			.addCase(loginUser.fulfilled, (state, action) => {
 				state.status = "succeeded";
 				state.userId = action.payload.user._id;
-				state.userProfileUrl = action.payload.user.profileUrl;
+				state.profilePicture = action.payload.user.profileUrl;
 				state.username = action.payload.user.username;
 				state.token = action.payload.token;
 				state.error = null;
@@ -92,7 +118,7 @@ const userSlice = createSlice({
 			.addCase(automaticLogin.fulfilled, (state, action) => {
 				state.status = "succeeded";
 				state.userId = action.payload.user?._id || null;
-				state.userProfileUrl =
+				state.profilePicture =
 					action.payload.user?.profileUrl ||
 					"https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg";
 				state.username = action.payload.user?.username || "";
