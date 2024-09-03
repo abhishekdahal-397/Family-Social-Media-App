@@ -11,7 +11,7 @@ import { FaUpload } from "react-icons/fa"; // Importing a Font Awesome upload ic
 import { CgProfile } from "react-icons/cg";
 const UserProfile = () => {
 	const username = useSelector((state) => state.user.username);
-	const profilePic = useSelector((state) => state.user.userProfileUrl);
+	const profilePic = useSelector((state) => state.user.profilePicture);
 	const [selectedFile, setSelectedFile] = useState(null);
 	const userId = useSelector((state) => state.user.userId);
 	const dispatch = useDispatch();

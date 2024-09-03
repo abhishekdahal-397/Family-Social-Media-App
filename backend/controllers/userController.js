@@ -31,6 +31,8 @@ async function createUser(req, res) {
 			username,
 			email,
 			password,
+			profileUrl:
+				"https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg",
 		});
 
 		await newUser.save();

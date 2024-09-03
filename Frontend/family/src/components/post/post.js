@@ -3,8 +3,8 @@ import "./post.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import pascal from "../images/rose.jpg";
-import unsplash2 from "../images/rose.jpg";
+import ball from "../images/ball.png";
+
 import { MdCommentBank, MdPhotoAlbum } from "react-icons/md";
 import CommentBox from "../CommentBox/CommentBox";
 import Upload from "./uploadSection/upload";
@@ -108,12 +108,7 @@ const Post = () => {
 						<div className="post-photo my-3   h-[80vh] w-[70vh] ml-4">
 							<img src={randPost.imageUrl} className="post" alt="post" />
 						</div>
-						<div
-							className="relative
-	  left-[7vw]
-	  top-[2px]
-	text-sm"
-						>
+						<div className="relative  left-[7vw]  top-[2px] text-sm">
 							<div
 								className="button-like"
 								style={{ backgroundColor: `${likeColor}` }}
