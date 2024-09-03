@@ -21,7 +21,8 @@ import PrivateRoute from "./components/authentication/privateRoutes/PrivateRoute
 
 function App() {
 	const dispatch = useDispatch();
-	const { token } = useSelector((state) => state.user);
+	const token = useSelector((state) => state.user.token);
+	console.log("token from app file", token);
 
 	useEffect(() => {
 		dispatch(automaticLogin());

@@ -42,7 +42,7 @@ export const automaticLogin = createAsyncThunk(
 				// Dispatch the action to fetch friends using the userId
 				dispatch(fetchFriends(response.data.user._id));
 
-				return response.data;
+				return { ...response.data, token };
 			} else {
 				return thunkAPI.rejectWithValue("No token found");
 			}
@@ -105,12 +105,13 @@ const userSlice = createSlice({
 				state.userId = action.payload.user._id;
 				state.profilePicture = action.payload.user.profileUrl;
 				state.username = action.payload.user.username;
-				state.token = action.payload.token;
+				state.token = localStorage.getItem("token");
 				state.error = null;
 			})
 			.addCase(loginUser.rejected, (state, action) => {
 				state.status = "failed";
 				state.error = action.payload || action.error.message; // Handle error message
+				state.token = localStorage.getItem("token");
 			})
 			.addCase(automaticLogin.pending, (state) => {
 				state.status = "loading";

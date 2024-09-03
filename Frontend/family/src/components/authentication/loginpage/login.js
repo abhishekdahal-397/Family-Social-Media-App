@@ -18,18 +18,28 @@ const LoginForm = () => {
 	const [errorMessage, setErrorMessage] = useState("");
 	const [seePassword, setSeePassword] = useState(false);
 	const id = useSelector((state) => state.user.userId);
-
 	useEffect(() => {
 		if (!id) {
 			dispatch(automaticLogin()).then((userData) => {
-				if (userData && userData.payload && userData.payload.token) {
-					navigate("/home");
+				// Logging the entire userData object
+				console.log("Full userData object:", userData);
+
+				// Logging the payload property of userData
+				console.log("userData.payload:", userData.payload);
+
+				// Logging the token within the payload
+				console.log(
+					"userData.payload.token:",
+					userData.payload ? userData.payload.token : "No token in payload"
+				);
+
+				if (userData && userData.payload) {
+					console.log("navigating to home;");
 				}
 			});
 			console.log("automaticLogin dispatched");
 		}
 	}, [id, dispatch, navigate]);
-
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		setLoading(true);
