@@ -4,23 +4,29 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../../features/user/userSlice";
 
 const Logout = () => {
-	console.log("came to logout");
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const token = useSelector((state) => state.token);
-	console.log("token from logout is ", token);
+	const token = useSelector((state) => state.user.token);
 
 	useEffect(() => {
-		console.log("entered useEffect");
+		console.log("Entered useEffect");
 
+		// Dispatch logout action to clear Redux state
 		dispatch(logout());
+
+		// Remove the token from localStorage
 		localStorage.removeItem("token");
 
-		navigate("/login");
-		console.log("after logout token is ", token);
-	}, []);
+		// Remove the cookie (if any)
+		document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-	return <div className="bg-red-300">Logging out</div>;
+		// Navigate to the login page
+		navigate("/login");
+
+		console.log("After logout, token is:", token);
+	}, [dispatch, navigate]);
+
+	return <div className="bg-red-300">Logging out...</div>;
 };
 
 export default Logout;

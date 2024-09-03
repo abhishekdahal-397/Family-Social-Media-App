@@ -1,23 +1,28 @@
+// src/App.js
+
 import React, { useEffect } from "react";
-import axios from "axios";
 import {
 	BrowserRouter as Router,
 	Routes,
 	Route,
 	Navigate,
 } from "react-router-dom";
-import { automaticLogin, logout } from "./features/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { automaticLogin } from "./features/user/userSlice";
 import LoginForm from "./components/authentication/loginpage/login";
 import Navbar from "./components/userDashboard/HomePage/Navbar";
 import RegisterForm from "./components/authentication/registerpage/register";
 import People from "./components/manageFriends/People";
 import UserProfile from "./components/ProfilePage/profile";
 import HomePage from "./components/userDashboard/HomePage/HomePage";
-import { useDispatch } from "react-redux";
 import Logout from "./components/authentication/logout/Logout";
 import CommentBox from "./components/CommentBox/CommentBox";
+import PrivateRoute from "./components/authentication/privateRoutes/PrivateRoute"; // Import the PrivateRoute component
+
 function App() {
 	const dispatch = useDispatch();
+	const { token } = useSelector((state) => state.user);
+
 	useEffect(() => {
 		dispatch(automaticLogin());
 	}, [dispatch]);
@@ -25,18 +30,33 @@ function App() {
 	return (
 		<Router>
 			<div className="App">
-				<Navbar />
+				{token && <Navbar />} {/* Show Navbar only if user is authenticated */}
 				<Routes>
-					<Route path="/" element={<Navigate to="/login" />} />
-					<Route path="/home" element={<HomePage />} />
-					<Route path="/register" element={<RegisterForm />} />
-					<Route path="/login" element={<LoginForm />}></Route>
-					<Route path="/requests" element={<People />}></Route>
-					<Route path="/userProfile/:id" element={<UserProfile />}></Route>
-					<Route path="/logout" element={<Logout />}></Route>
+					<Route
+						path="/"
+						element={<Navigate to={token ? "/home" : "/login"} />}
+					/>
+					<Route
+						path="/login"
+						element={token ? <Navigate to="/home" /> : <LoginForm />}
+					/>
+					<Route
+						path="/register"
+						element={token ? <Navigate to="/home" /> : <RegisterForm />}
+					/>
+
+					{/* Protected routes */}
+					<Route element={<PrivateRoute />}>
+						<Route path="/home" element={<HomePage />} />
+						<Route path="/requests" element={<People />} />
+						<Route path="/userProfile/:id" element={<UserProfile />} />
+						<Route path="/logout" element={<Logout />} />
+						<Route path="/commentbox" element={<CommentBox />} />
+					</Route>
 				</Routes>
 			</div>
 		</Router>
 	);
 }
+
 export default App;
