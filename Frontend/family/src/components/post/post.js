@@ -18,6 +18,7 @@ const Post = () => {
 	const [User, setUserData] = useState({});
 	const [commentBox, setShowCommentBox] = useState(false);
 	const [randomPosts, setRandomPosts] = useState([]);
+	const [canScroll, setCanscroll] = useState(true);
 
 	const handleLikeColor = () => {
 		if (likeColor === "white") {
@@ -27,11 +28,19 @@ const Post = () => {
 		}
 	};
 
-	const toggleCommentBox = () => {
+	useEffect(() => {
+		if (!canScroll) {
+			document.body.classList.add("no-scroll");
+		} else {
+			document.body.classList.remove("no-scroll");
+		}
+	}, [canScroll]);
+	const toggleCommentBox = (index) => {
 		setShowCommentBox((prev) => !prev);
 		commentBox === true
 			? console.log("cmtbox shown")
 			: console.log("cmtbox hidden");
+		setCanscroll(!commentBox);
 	};
 
 	useEffect(() => {
@@ -85,7 +94,7 @@ const Post = () => {
 	}, [User]);
 
 	return (
-		<div className=" post ">
+		<div className=" post  ">
 			<Upload />
 
 			{randomPosts.map((randPost, index) => {
@@ -117,7 +126,10 @@ const Post = () => {
 								like
 							</div>
 							<div onClick={toggleCommentBox} className="button-like">
-								Comment
+								Comment{index}
+							</div>
+							<div className=" h-[100vh] w-[100vw] bg-slate-700">
+								{commentBox ? <CommentBox /> : <></>}
 							</div>
 
 							<div className="button-like">Share</div>
