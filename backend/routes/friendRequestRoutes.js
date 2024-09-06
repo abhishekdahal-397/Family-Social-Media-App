@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const friendRequestController = require("../controllers/friendRequestsController");
+
 // Define routes for friend requests
 router.post("/sendFriendRequest", friendRequestController.sendRequest); // /api/friend-requests
 router.put(
@@ -29,4 +30,8 @@ router.get(
 	"/friend-requests/getPendingRequestsOfUser/:id",
 	friendRequestController.getPendingRequestsOfUser
 );
+router.get(
+	"/friend-requests/peopleYouMayKnow/:id",
+	friendRequestController.peopleYouMayKnow
+); //api/friend-requests/peopleYouMayKnow/:id
 module.exports = router;

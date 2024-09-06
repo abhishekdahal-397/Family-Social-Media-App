@@ -126,12 +126,8 @@ const Post = () => {
 								like
 							</div>
 							<div onClick={toggleCommentBox} className="button-like">
-								Comment{index}
+								Comment
 							</div>
-							<div className=" h-[100vh] w-[100vw] bg-slate-700">
-								{commentBox ? <CommentBox /> : <></>}
-							</div>
-
 							<div className="button-like">Share</div>
 						</div>
 					</div>

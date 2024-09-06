@@ -224,6 +224,31 @@ async function getPendingRequestsOfUser(req, res) {
 		res.status(500).json({ message: "Error fetching pending requests" });
 	}
 }
+async function peopleYouMayKnow(req, res) {
+	try {
+		const userId = req.params.id;
+		console.log("user id is ", userId);
+
+		if (!mongoose.isValidObjectId(userId)) {
+			return res.status(400).json({ message: "Invalid user ID" });
+		}
+
+		const senders = await FriendRequest.find({ receiver: userId });
+		const sendersIds = senders.map((sender) => sender.sender);
+		console.log("senderIds", sendersIds);
+
+		const peopleYouMayKnow = await FriendRequest.find({
+			receiver: { $ne: userId },
+			sender: { $ne: userId },
+		})
+			.populate("sender", "username profileUrl")
+			.populate("receiver", "username profileUrl");
+
+		res.status(200).json(peopleYouMayKnow);
+	} catch (error) {
+		res.status(500).json({ message: "Internal server error" });
+	}
+}
 
 module.exports = {
 	sendRequest,
@@ -234,4 +259,5 @@ module.exports = {
 	getRequestWithSenderAndReceiverId,
 	acceptedUserRequests,
 	getPendingRequestsOfUser,
+	peopleYouMayKnow,
 };
