@@ -185,7 +185,6 @@ const getRandomFriendPosts = async (req, res) => {
 		}
 		const objectId = new mongoose.Types.ObjectId(userId);
 
-		console.log("object id ", objectId);
 		const posts = await Post.aggregate([
 			{
 				$lookup: {
