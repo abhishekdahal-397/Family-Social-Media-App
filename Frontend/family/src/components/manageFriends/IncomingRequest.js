@@ -14,11 +14,12 @@ const IncomingRequest = () => {
 			const response = await axios.get(
 				`http://localhost:3002/api/friend-requests/getPendingRequestsOfUser/${userId}`
 			);
-			console.log("inoming request response:", response.data);
+
 			setFriendReqSenders(response.data);
 		};
 		getReqSenders();
 	}, [userId]);
+
 	const handleAcceptButtonClick = async (senderId, receiverId) => {
 		try {
 			const response = await axios.put(
@@ -26,7 +27,13 @@ const IncomingRequest = () => {
 			);
 
 			if (response.data.success) {
-				alert("Friend request accepted successfully");
+				console.log("Friend request accepted successfully");
+				setFriendReqSenders(() =>
+					friendReqSenders.filter(
+						(req) => req.sender !== senderId && req.receiver !== receiverId
+					)
+				);
+				console.log("friendreqSenders", friendReqSenders);
 			} else {
 				alert("Failed to accept friend request");
 			}
@@ -36,7 +43,9 @@ const IncomingRequest = () => {
 			alert("Error accepting friend request");
 		}
 	};
-
+	useEffect(() => {
+		console.log("Updated friendReqSenders", friendReqSenders);
+	}, [friendReqSenders]);
 	return (
 		<div className="p-7">
 			<h1 className="text-[5vh]">Friend Requests</h1>
