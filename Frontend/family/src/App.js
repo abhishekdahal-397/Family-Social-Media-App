@@ -29,34 +29,37 @@ function App() {
 	}, [dispatch]);
 
 	return (
-		<Router>
-			<div className="App">
-				{token && <Navbar />} {/* Show Navbar only if user is authenticated */}
-				<Routes>
-					<Route
-						path="/"
-						element={<Navigate to={token ? "/home" : "/login"} />}
-					/>
-					<Route
-						path="/login"
-						element={token ? <Navigate to="/home" /> : <LoginForm />}
-					/>
-					<Route
-						path="/register"
-						element={token ? <Navigate to="/home" /> : <RegisterForm />}
-					/>
+		// 	<Router>
+		// 		<div className="App">
+		// 			{token && <Navbar />} {/* Show Navbar only if user is authenticated */}
+		// 			<Routes>
+		// 				<Route
+		// 					path="/"
+		// 					element={<Navigate to={token ? "/home" : "/login"} />}
+		// 				/>
+		// 				<Route
+		// 					path="/login"
+		// 					element={token ? <Navigate to="/home" /> : <LoginForm />}
+		// 				/>
+		// 				<Route
+		// 					path="/register"
+		// 					element={token ? <Navigate to="/home" /> : <RegisterForm />}
+		// 				/>
 
-					{/* Protected routes */}
-					<Route element={<PrivateRoute />}>
-						<Route path="/home" element={<HomePage />} />
-						<Route path="/requests" element={<People />} />
-						<Route path="/userProfile/:id" element={<UserProfile />} />
-						<Route path="/logout" element={<Logout />} />
-						<Route path="/commentbox" element={<CommentBox />} />
-					</Route>
-				</Routes>
-			</div>
-		</Router>
+		// 				{/* Protected routes */}
+		// 				<Route element={<PrivateRoute />}>
+		// 					<Route path="/home" element={<HomePage />} />
+		// 					<Route path="/requests" element={<People />} />
+		// 					<Route path="/userProfile/:id" element={<UserProfile />} />
+		// 					<Route path="/logout" element={<Logout />} />
+		// 					<Route path="/commentbox" element={<CommentBox />} />
+		// 				</Route>
+		// 			</Routes>
+		// 		</div>
+		// 	</Router>
+		<>
+			<CommentBox />
+		</>
 	);
 }
 

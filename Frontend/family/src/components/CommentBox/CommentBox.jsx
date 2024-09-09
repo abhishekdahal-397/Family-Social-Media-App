@@ -1,52 +1,66 @@
 import React from 'react';
-import ball from './ball.png';
-import "./CommentBox.css";
-import { IoSend } from "react-icons/io5";
+
+const comments = [
+  {
+    id: 1,
+    name: 'John Doe',
+    time: '2 hours ago',
+    text: 'This is an example comment. It can be as long or short as needed, and it will be properly formatted.',
+    profilePic: 'https://via.placeholder.com/50'
+  },
+  {
+    id: 2,
+    name: 'Jane Smith',
+    time: '1 hour ago',
+    text: 'Another example of a comment with different content and a different time. Comments will scroll if there are many.',
+    profilePic: 'https://via.placeholder.com/50'
+  },
+  {
+    id: 3,
+    name: 'Jane Smith',
+    time: '1 hour ago',
+    text: 'Another example of a comment with different content and a different time. Comments will scroll if there are many.',
+    profilePic: 'https://via.placeholder.com/50'
+  },{
+    id: 4,
+    name: 'Jane Smith',
+    time: '1 hour ago',
+    text: 'Another example of a comment with different content and a different time. Comments will scroll if there are many.',
+    profilePic: 'https://via.placeholder.com/50'
+  },
+  // Add more comments as needed
+];
 
 const CommentBox = () => {
-  return (                  
-   <div className='h-[100vh] w-[100vw] bg-black flex justify-center items-center  relative'>
-    <div className="centerContainer">                                        
-      <div className='commentBox'>
-         <div className='comments'>
-        <div className=''>
-          <img className='image' src={ball} alt="user" />
-          <p className='name'>Abhishek Dahal</p>
-          <p className='comment'>This is my comment.</p>
+  return (
+    <div className='h-[100vh] w-[100vw] flex items-center justify-center bg-gray-100'>
+      <div className='max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden'>
+        {/* Header */}
+        <div className='bg-blue-400 p-4'>
+          <h1 className='text-white text-xl font-semibold'>Comments</h1>
         </div>
-        <div>
-          <img className='image' src={ball} alt="user" />
-          <p className='name'>Abhishek Dahal</p>
-          <p className='comment'>This is my comment.</p>
+
+        {/* Comment Section */}
+        <div className='p-4 max-h-[60vh] overflow-y-scroll'>
+          {comments.map(comment => (
+            <div key={comment.id} className='flex items-start space-x-4 mb-4'>
+              <img
+                src={comment.profilePic}
+                alt='Profile'
+                className='w-12 h-12 rounded-full border-2 border-blue-400'
+              />
+              <div className='flex-1'>
+                <div className='flex items-center justify-between mb-1'>
+                  <span className='text-lg font-semibold'>{comment.name}</span>
+                  <span className='text-sm text-gray-500'>{comment.time}</span>
+                </div>
+                <p className='text-gray-700'>{comment.text}</p>
+              </div>
+            </div>
+          ))}
         </div>
-        <div>
-          <img className='image' src={ball} alt="user" />
-          <p className='name'>Abhishek Dahal</p>
-          <p className='comment'>This is my comment.</p>
-        </div>
-        <div>
-          <img className='image' src={ball} alt="user" />
-          <p className='name'>Abhishek Dahal</p>
-          <p className='comment'>This is my comment.</p>
-        </div>
-        <div>
-          <img className='image' src={ball} alt="user" />
-          <p className='name'>Abhishek Dahal</p>
-          <p className='comment'>This is my comment.</p>
-          <div style={{ height: '10vh' }}></div>
-        </div></div>
-        <footer className='flex'>
-          <input
-            className='inputcomment ml-3 mb-3 h-[10vw] w-[5vw] bg-red-500'
-            type='text'
-          />
-          <div className='tohide'></div>
-          <div className='send ml-3 mb-3'>
-            <IoSend style={{ color: 'aqua', height: '40px', width: '40px' }} />
-          </div>
-        </footer>
       </div>
-    </div></div>
+    </div>
   );
 };
 

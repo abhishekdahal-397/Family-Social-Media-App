@@ -40,7 +40,7 @@ const Post = () => {
 		commentBox === true
 			? console.log("cmtbox shown")
 			: console.log("cmtbox hidden");
-		setCanscroll(!commentBox);
+		// setCanscroll(!commentBox);
 	};
 
 	useEffect(() => {
@@ -128,6 +128,10 @@ const Post = () => {
 							<div onClick={toggleCommentBox} className="button-like">
 								Comment
 							</div>
+							<div className="h-[100vh] w-[100vw] bg-blue-200 ">
+								{commentBox && <CommentBox />}
+							</div>
+
 							<div className="button-like">Share</div>
 						</div>
 					</div>

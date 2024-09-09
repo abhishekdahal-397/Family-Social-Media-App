@@ -1,4 +1,4 @@
-.centerContainer {
+/* .centerContainer {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -9,15 +9,14 @@
 
 .commentBox {
 	height: 80vh;
-	background-color: red; /* Background color just for visibility, adjust as needed */
-	padding: 1rem; /* Optional: Add some padding */
-	border-radius: 8px; /* Optional: Add rounded corners */
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow */
+	background-color: red;
+	padding: 1rem;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	width: 90vh;
 	overflow-y: scroll;
 }
 
-/* Your existing CSS */
 .image {
 	height: 36px;
 	width: 36px;
@@ -74,4 +73,4 @@ footer {
 	bottom: 5vh;
 
 	left: 5vh;
-}
+} */

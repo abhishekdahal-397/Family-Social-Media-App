@@ -8,7 +8,7 @@ import "../css/MidSection.css";
 
 const MidSection = () => {
 	return (
-		<div className="MidSection max-w-2xl  overflow-y-scroll">
+		<div className="MidSection w-[40vw] ">
 			<Stories />
 
 			<Post />
