@@ -227,29 +227,37 @@ async function getPendingRequestsOfUser(req, res) {
 async function peopleYouMayKnow(req, res) {
 	try {
 		const userId = req.params.id;
-		console.log("user id is ", userId);
 
 		if (!mongoose.isValidObjectId(userId)) {
 			return res.status(400).json({ message: "Invalid user ID" });
 		}
 
-		const senders = await FriendRequest.find({ receiver: userId });
-		const sendersIds = senders.map((sender) => sender.sender);
-		console.log("senderIds", sendersIds);
+		const userObjectId = new mongoose.Types.ObjectId(userId);
 
-		const peopleYouMayKnow = await FriendRequest.find({
-			receiver: { $ne: userId },
-			sender: { $ne: userId },
-		})
-			.populate("sender", "username profileUrl")
-			.populate("receiver", "username profileUrl");
+		const peopleYouMayKnow = await FriendRequest.aggregate([
+			{
+				$match: {
+					sender: userObjectId,
+				},
+			},
+			{
+				$group: {
+					_id: "$sender",
+					distinctReceivers: { $addToSet: "$receiver" },
+					count: { $sum: 1 },
+				},
+			},
+		]);
+		const receivers = peopleYouMayKnow[0].distinctReceivers;
 
-		res.status(200).json(peopleYouMayKnow);
+		const PeopleYouDontKnow = await User.find({ _id: { $nin: receivers } });
+
+		res.status(200).json(PeopleYouDontKnow);
 	} catch (error) {
+		console.error("Error in peopleYouMayKnow:", error);
 		res.status(500).json({ message: "Internal server error" });
 	}
 }
-
 module.exports = {
 	sendRequest,
 	acceptRequest,

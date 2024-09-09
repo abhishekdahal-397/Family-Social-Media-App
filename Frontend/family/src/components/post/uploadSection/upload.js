@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { useState, useRef } from "react";
 import { useSelector } from "react-redux";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Upload = () => {
 	const [selectedFile, setSelectedFile] = useState(null);
 	const userId = useSelector((state) => state.user.userId);
@@ -10,6 +11,8 @@ const Upload = () => {
 	const handleUpload = async () => {
 		if (!selectedFile) {
 			console.error("No file selected for upload");
+			toast.error("no file selected ");
+
 			return;
 		}
 
@@ -22,6 +25,7 @@ const Upload = () => {
 				formData
 			);
 			console.log("Uploaded", response);
+			toast.success("Image  uploaded successfully");
 
 			if (response.status === 200) {
 				setSelectedFile(null);
@@ -53,6 +57,8 @@ const Upload = () => {
 			>
 				Upload
 			</button>
+
+			<ToastContainer />
 		</div>
 	);
 };

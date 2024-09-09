@@ -4,6 +4,9 @@ import { useSelector } from "react-redux";
 import "./IncomingRequest.css";
 import rose from "./rose.jpg";
 import friendsSlice from "../../features/Friend/friendsSlice";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const IncomingRequest = () => {
 	const userId = useSelector((state) => state.user.userId);
 	const [friendReqSenders, setFriendReqSenders] = useState([]);
@@ -28,6 +31,7 @@ const IncomingRequest = () => {
 
 			if (response.data.success) {
 				console.log("Friend request accepted successfully");
+				toast("Friend Request accepted");
 				setFriendReqSenders(() =>
 					friendReqSenders.filter(
 						(req) => req.sender !== senderId && req.receiver !== receiverId
@@ -77,6 +81,7 @@ const IncomingRequest = () => {
 						</button>
 					</div>
 				))}
+			<ToastContainer />
 		</div>
 	);
 };
