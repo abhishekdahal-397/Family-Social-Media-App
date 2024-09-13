@@ -45,7 +45,7 @@ const Upload = () => {
 	return (
 		<div className="h-auto w-full">
 			<input
-				className="input"
+				className="input relative top-[8vh]"
 				type="file"
 				onChange={handleFileChange}
 				ref={fileInputRef}

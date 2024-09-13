@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchFriends, clearFriends } from "../../features/Friend/friendsSlice";
 import { FaUpload } from "react-icons/fa"; // Importing a Font Awesome upload icon
 import { CgProfile } from "react-icons/cg";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 const UserProfile = () => {
 	const username = useSelector((state) => state.user.username);
 	const profilePic = useSelector((state) => state.user.profilePicture);
@@ -89,7 +91,7 @@ const UserProfile = () => {
 				fileInputRef.current.value = "";
 			}
 			console.log("uploaded");
-
+			toast.success("profile  uploaded successfully");
 			// Handle the response (e.g., update UI)
 		} catch (error) {
 			console.log("not uploaded");
@@ -200,7 +202,8 @@ const UserProfile = () => {
 							</div>
 						))}
 					</div>
-				</div>
+				</div>{" "}
+				<ToastContainer />
 			</body>
 		</>
 	);

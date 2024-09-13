@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import ball from "../images/ball.png";
 
 import { MdCommentBank, MdPhotoAlbum } from "react-icons/md";
-import CommentBox from "../CommentBox/CommentBox";
+
 import Upload from "./uploadSection/upload";
 // import Navbar from "./Navbar";
 const Post = () => {
@@ -36,10 +36,10 @@ const Post = () => {
 		}
 	}, [canScroll]);
 	const toggleCommentBox = (index) => {
-		setShowCommentBox((prev) => !prev);
-		commentBox === true
-			? console.log("cmtbox shown")
-			: console.log("cmtbox hidden");
+		// setShowCommentBox((prev) => !prev);
+		// commentBox === true
+		// 	? console.log("cmtbox shown")
+		// 	: console.log("cmtbox hidden");
 		// setCanscroll(!commentBox);
 	};
 
@@ -127,9 +127,6 @@ const Post = () => {
 							</div>
 							<div onClick={toggleCommentBox} className="button-like">
 								Comment
-							</div>
-							<div className="h-[100vh] w-[100vw] bg-blue-200 ">
-								{commentBox && <CommentBox />}
 							</div>
 
 							<div className="button-like">Share</div>

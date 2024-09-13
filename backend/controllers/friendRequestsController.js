@@ -226,38 +226,53 @@ async function getPendingRequestsOfUser(req, res) {
 }
 async function peopleYouMayKnow(req, res) {
 	try {
-		const userId = req.params.id;
+		const { id } = req.params;
+		let userId;
 
-		if (!mongoose.isValidObjectId(userId)) {
-			return res.status(400).json({ message: "Invalid user ID" });
-		}
-
-		const userObjectId = new mongoose.Types.ObjectId(userId);
-
-		const peopleYouMayKnow = await FriendRequest.aggregate([
+		userId = new mongoose.Types.ObjectId(id);
+		const users = await User.aggregate([
+			{ $match: { _id: userId } },
 			{
-				$match: {
-					sender: userObjectId,
-				},
-			},
-			{
-				$group: {
-					_id: "$sender",
-					distinctReceivers: { $addToSet: "$receiver" },
-					count: { $sum: 1 },
+				$addFields: {
+					combinedArray: {
+						$setUnion: [
+							"$friendRequestsReceived",
+							"$friendRequestsSent",
+							"$friends",
+						],
+					},
 				},
 			},
 		]);
-		const receivers = peopleYouMayKnow[0].distinctReceivers;
+		const excludedUserIds = users[0].combinedArray;
 
-		const PeopleYouDontKnow = await User.find({ _id: { $nin: receivers } });
+		const peopleYouDontKnow = await User.aggregate([
+			{
+				$match: {
+					_id: { $nin: excludedUserIds },
+				},
+			},
+			{ $match: { _id: { $ne: userId } } },
+			{
+				$project: {
+					_id: 1,
+					username: 1,
+					profileUrl: 1,
+				},
+			},
+		]);
 
-		res.status(200).json(PeopleYouDontKnow);
+		console.log("as", peopleYouDontKnow);
+		res.status(200).json({
+			message: "got the users ",
+			data: peopleYouDontKnow,
+		});
 	} catch (error) {
 		console.error("Error in peopleYouMayKnow:", error);
 		res.status(500).json({ message: "Internal server error" });
 	}
 }
+
 module.exports = {
 	sendRequest,
 	acceptRequest,

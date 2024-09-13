@@ -1,6 +1,8 @@
 import React from "react";
 import "../css/stories.css";
 import abhishek from "../images/abhishek.jpg";
+import def from "../images/default.png";
+
 const Stories = () => {
 	const cards = [
 		{ title: "Card 1", content: "Content of Card 1" },
@@ -18,7 +20,7 @@ const Stories = () => {
 			<div className="cards">
 				{cards.map((card, index) => (
 					<div key={index} className="card ">
-						<img src={abhishek}></img>
+						<img src={def}></img>
 						<h2 className="text-xl font-semibold"></h2>
 						<p className="mt-2 text-gray-700"></p>
 					</div>
