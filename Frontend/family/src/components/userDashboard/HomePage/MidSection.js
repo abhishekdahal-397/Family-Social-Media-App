@@ -10,7 +10,6 @@ const MidSection = () => {
 	return (
 		<div className="MidSection w-[40vw] ">
 			<Stories />
-
 			<Post />
 		</div>
 	);
