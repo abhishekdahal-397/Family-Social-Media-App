@@ -10,7 +10,6 @@ const HomePage = () => {
 		<div className="absolute" style={{ display: "flex" }}>
 			<LeftSection />
 			<MidSection />
-
 			<RightSection />
 		</div>
 	);

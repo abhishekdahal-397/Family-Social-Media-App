@@ -20,11 +20,16 @@ const Post = () => {
 	const [randomPosts, setRandomPosts] = useState([]);
 	const [canScroll, setCanscroll] = useState(true);
 
-	const handleLikeColor = () => {
-		if (likeColor === "white") {
-			setLikeColor("#3b82f6");
-		} else {
-			setLikeColor("white");
+	const handleLike = async (index, postId) => {
+		try {
+			const response = await axios.patch(
+				`http://localhost:3002/api/posts/likepost`,
+				{ postId, userId }
+			);
+
+			console.log(response.data);
+		} catch (error) {
+			console.log(error);
 		}
 	};
 
@@ -79,7 +84,7 @@ const Post = () => {
 				const response = await axios.get(
 					`http://localhost:3002/api/posts/getRandomFriendPosts/${userId}`
 				);
-				console.log("random posts", response.data);
+
 				setRandomPosts(response.data);
 			} catch (err) {
 				console.error(err);
@@ -121,7 +126,7 @@ const Post = () => {
 							<div
 								className="button-like"
 								style={{ backgroundColor: `${likeColor}` }}
-								onClick={handleLikeColor}
+								onClick={handleLike(index, randPost._id)}
 							>
 								like
 							</div>

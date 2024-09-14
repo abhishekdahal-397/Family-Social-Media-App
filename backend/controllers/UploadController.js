@@ -225,6 +225,34 @@ const getRandomFriendPosts = async (req, res) => {
 			.json({ message: "Failed to fetch posts", error: error.message });
 	}
 };
+// Example function to add a like to a post
+const addLike = async (req, res) => {
+	const { postId, userId } = req.body;
+
+	try {
+		await Post.findByIdAndUpdate(
+			postId,
+			{ $addToSet: { likes: userId } }, // Add userId to likes array if it's not already present
+			{ new: true } // Return the updated post
+		);
+		console.log("Post liked successfully!");
+	} catch (error) {
+		console.error("Error liking post:", error);
+	}
+};
+// Example function to remove a like from a post
+const removeLike = async (postId, userId) => {
+	try {
+		await Post.findByIdAndUpdate(
+			postId,
+			{ $pull: { likes: userId } }, // Remove userId from likes array
+			{ new: true } // Return the updated post
+		);
+		console.log("Like removed successfully!");
+	} catch (error) {
+		console.error("Error removing like:", error);
+	}
+};
 
 module.exports = {
 	postsUpload,
@@ -234,4 +262,6 @@ module.exports = {
 	updateProfilePicture,
 	deleteProfilePicture,
 	getRandomFriendPosts,
+	addLike,
+	removeLike,
 };
