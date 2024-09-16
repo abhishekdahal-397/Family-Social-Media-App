@@ -1,30 +1,88 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import "./register.css";
+import { z } from "zod";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+
+const registrationSchema = z
+	.object({
+		username: z
+			.string()
+			.min(1, "Username is required")
+			.refine((value) => value.trim().split(" ").length === 2, {
+				message: "Username must contain both firstname and lastname",
+			}),
+		email: z.string().email("Invalid email address"),
+		password: z.string().min(8, "Password must be at least 8 characters long"),
+		confirmPassword: z.string().min(1, "Confirm password is required"),
+	})
+	.refine((data) => data.password === data.confirmPassword, {
+		message: "Passwords must match",
+		path: ["confirmPassword"],
+	});
+
+const capitalizeUsername = (username) => {
+	return username
+		.split(" ")
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+		.join(" ");
+};
 
 const RegisterForm = () => {
+	const navigate = useNavigate();
+
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
+	const [errors, setErrors] = useState({});
+
 	const handleRegister = async (e) => {
 		e.preventDefault();
+
+		// Capitalize the username before validation
+		const formattedUsername = capitalizeUsername(username);
+
+		// Validate form data using Zod
+		const result = registrationSchema.safeParse({
+			username: formattedUsername,
+			email,
+			password,
+			confirmPassword,
+		});
+
+		if (!result.success) {
+			// Format errors to be displayed in the form
+			const formattedErrors = result.error.format();
+			setErrors(formattedErrors);
+
+			// Display toasts for each error
+			Object.values(formattedErrors)
+				.flat()
+				.forEach((error) => {
+					if (error._errors) {
+						error._errors.forEach((errMsg) => toast.error(errMsg));
+					}
+				});
+
+			return;
+		}
 
 		try {
 			const response = await axios.post(
 				"http://localhost:3002/api/users/register",
 				{
-					username,
+					username: formattedUsername,
 					email,
 					password,
 				},
 				{ timeout: 5000 }
 			);
 
-			// Check if 'response' and 'response.data' exist before accessing 'data.token'
 			if (response && response.data && response.data.token) {
-				// Save the token and its expiration time in localStorage or sessionStorage
 				localStorage.setItem("token", response.data.token);
 				const expirationTime = new Date().getTime() + 24 * 60 * 60 * 1000; // 1 day
 				localStorage.setItem("tokenExpiration", expirationTime);
@@ -33,20 +91,18 @@ const RegisterForm = () => {
 				setPassword("");
 				setUsername("");
 				setConfirmPassword("");
+				toast.success("Registration successful");
 
 				// Redirect or perform other actions as needed
+				navigate("/login");
 			} else {
 				console.error("Unexpected response format", response);
-				// Handle unexpected response format
 			}
 		} catch (error) {
-			// Check if 'error.response' and 'error.response.data' exist before accessing 'data.error'
 			if (error.response && error.response.data && error.response.data.error) {
-				console.error("Registration failed:", error.response.data.error);
-				// Handle registration error (e.g., display error message to the user)
+				toast.error(`Registration failed: ${error.response.data.error}`);
 			} else {
-				console.error("Unexpected error format", error);
-				// Handle unexpected error format
+				toast.error("Unexpected error occurred");
 			}
 		}
 	};
@@ -57,12 +113,12 @@ const RegisterForm = () => {
 				<div className="regusername">
 					<label htmlFor="username">Username :</label>
 					<input
-						placeholder="username"
+						placeholder="First and Last Name"
 						className="inpregusername"
 						id="username"
 						type="text"
 						value={username}
-						onChange={(e) => setUsername(e.target.value)}
+						onChange={(e) => setUsername(capitalizeUsername(e.target.value))}
 					/>
 				</div>
 				<div className="regemail">
@@ -108,6 +164,7 @@ const RegisterForm = () => {
 					</Link>
 				</div>
 			</div>
+			<ToastContainer />
 		</form>
 	);
 };
