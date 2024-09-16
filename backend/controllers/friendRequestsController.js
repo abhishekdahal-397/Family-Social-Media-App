@@ -262,7 +262,6 @@ async function peopleYouMayKnow(req, res) {
 			},
 		]);
 
-		console.log("as", peopleYouDontKnow);
 		res.status(200).json({
 			message: "got the users ",
 			data: peopleYouDontKnow,

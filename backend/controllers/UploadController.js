@@ -217,7 +217,7 @@ const getRandomFriendPosts = async (req, res) => {
 			},
 		]);
 
-		return res.json(posts); // Send the posts as a JSON response
+		return res.status(200).json(posts); // Send the posts as a JSON response
 	} catch (error) {
 		console.error(error);
 		return res
@@ -235,7 +235,6 @@ const addLike = async (req, res) => {
 			{ $addToSet: { likes: userId } }, // Add userId to likes array if it's not already present
 			{ new: true } // Return the updated post
 		);
-		console.log("Post liked successfully!");
 	} catch (error) {
 		console.error("Error liking post:", error);
 	}
@@ -248,7 +247,6 @@ const removeLike = async (postId, userId) => {
 			{ $pull: { likes: userId } }, // Remove userId from likes array
 			{ new: true } // Return the updated post
 		);
-		console.log("Like removed successfully!");
 	} catch (error) {
 		console.error("Error removing like:", error);
 	}

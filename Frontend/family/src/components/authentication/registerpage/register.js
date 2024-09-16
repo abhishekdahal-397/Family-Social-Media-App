@@ -67,7 +67,7 @@ const RegisterForm = () => {
 						error._errors.forEach((errMsg) => toast.error(errMsg));
 					}
 				});
-
+			console.log("returned");
 			return;
 		}
 
@@ -78,9 +78,11 @@ const RegisterForm = () => {
 					username: formattedUsername,
 					email,
 					password,
+					confirmPassword,
 				},
 				{ timeout: 5000 }
 			);
+			console.log("respnse", response);
 
 			if (response && response.data && response.data.token) {
 				localStorage.setItem("token", response.data.token);
@@ -102,6 +104,7 @@ const RegisterForm = () => {
 			if (error.response && error.response.data && error.response.data.error) {
 				toast.error(`Registration failed: ${error.response.data.error}`);
 			} else {
+				console.log("error", error);
 				toast.error("Unexpected error occurred");
 			}
 		}

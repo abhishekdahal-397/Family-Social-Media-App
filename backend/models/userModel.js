@@ -24,8 +24,6 @@ userSchema.pre("save", async function (next) {
 	try {
 		// Only hash the password if it has been modified (or is new)
 		if (this.isModified("password")) {
-			console.log("actual password is ", this.password);
-
 			const hashedPassword = await bcrypt.hash(this.password, 10);
 			this.password = hashedPassword;
 		}

@@ -6,9 +6,12 @@ const bcrypt = require("bcrypt");
 const User = require("../models/userModel"); // Import your User model
 const jwt = require("jsonwebtoken");
 const verifyToken = require("../middlewares/authMiddleware");
+const { z } = require("zod");
+const { registrationSchema } = require("../validation/userValidation");
 async function createUser(req, res) {
 	try {
 		// Extract user data from the request body
+		const result = registrationSchema.parse(req.body);
 		const { username, email, password } = req.body;
 
 		// Check if any required field is missing
@@ -36,6 +39,7 @@ async function createUser(req, res) {
 		});
 
 		await newUser.save();
+		console.log("user created");
 
 		// Generate JWT token
 		const token = newUser.generateAuthToken();
@@ -45,8 +49,13 @@ async function createUser(req, res) {
 		res.status(201).json({ message: "User created successfully", token });
 		console.log(username + " " + "logged in to family");
 	} catch (error) {
-		console.error("Error creating user:", error);
-		res.status(500).json({ error: "Internal server error" });
+		if (error instanceof z.ZodError) {
+			console.log("something zod error");
+			res.status(400).json({ errors: error.errors });
+		} else {
+			console.error("Error creating user:", error);
+			res.status(500).json(error);
+		}
 	}
 }
 
