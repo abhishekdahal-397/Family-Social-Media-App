@@ -75,6 +75,7 @@ async function getUsers(req, res) {
 async function loginUser(req, res) {
 	try {
 		const { email, password } = req.body;
+		console.log(`${email} is trying to log in `);
 
 		if (!email || !password) {
 			return res.status(400).json({ error: "Email and password are required" });
@@ -90,6 +91,7 @@ async function loginUser(req, res) {
 			password,
 			existingUser.password
 		);
+		console.log("passwords does not match ");
 
 		if (!isPasswordValid) {
 			return res.status(401).json({ error: "Invalid password" });
