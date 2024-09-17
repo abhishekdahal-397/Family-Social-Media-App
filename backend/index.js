@@ -11,18 +11,8 @@ const PORT = 3002;
 require("dotenv").config();
 const uploadRoutes = require("./routes/uploadRoutes");
 const friendRequestsRoutes = require("./routes/friendRequestRoutes");
-mongoose
-	.connect(process.env.MONGODB_URI, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	})
-	.then(() => {
-		console.log("MongoDB connected successfully");
-	})
-	.catch((err) => {
-		console.error("MongoDB connection error:", err);
-		process.exit(1);
-	});
+const connectDB = require("./config/db");
+connectDB();
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({ origin: "*" })); // Allow all origins
