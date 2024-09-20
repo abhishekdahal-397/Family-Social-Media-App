@@ -57,17 +57,26 @@ export const loginUser = createAsyncThunk(
 	"user/loginUser",
 	async ({ email, password }, thunkAPI) => {
 		const { dispatch } = thunkAPI; // Add thunkAPI here
+		console.log("loginUserr dispatched");
+
+		const response = await axios.post("http://localhost:3002/api/users/login", {
+			email,
+			password,
+		});
 		try {
-			const response = await axios.post(
-				"http://localhost:3002/api/users/login",
-				{ email, password }
-			);
+			console.log("token to set ", response.data.token);
 			localStorage.setItem("token", response.data.token);
+			console.log("response from userSlice loginUser", response);
 
 			// Dispatch fetchFriends after successful login
-			dispatch(fetchFriends(response.data.user._id));
+			// dispatch(fetchFriends(response.data.user._id));
+			console.log("successfully fetched friends");
+			console.log("response.data.user._id ", response.data.user._id);
+			console.log("thing that is returned", response.data);
 			return response.data;
 		} catch (error) {
+			console.log("error from userSlice", error);
+
 			return thunkAPI.rejectWithValue(error.message); // Use rejectWithValue to return error message
 		}
 	}
@@ -80,6 +89,7 @@ const userSlice = createSlice({
 		userInfo: null,
 		status: "idle",
 		error: null,
+
 		profilePicture:
 			"https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg",
 		username: "",
@@ -93,6 +103,7 @@ const userSlice = createSlice({
 			state.username = "";
 			state.token = "";
 			localStorage.removeItem("token");
+			state.status = "idle";
 		},
 	},
 	extraReducers: (builder) => {
@@ -105,7 +116,7 @@ const userSlice = createSlice({
 				state.userId = action.payload.user._id;
 				state.profilePicture = action.payload.user.profileUrl;
 				state.username = action.payload.user.username;
-				state.token = localStorage.getItem("token");
+				state.token = action.payload.user.token;
 				state.error = null;
 			})
 			.addCase(loginUser.rejected, (state, action) => {

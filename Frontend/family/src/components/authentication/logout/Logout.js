@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../features/user/userSlice";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Logout = () => {
 	const navigate = useNavigate();
@@ -9,8 +11,6 @@ const Logout = () => {
 	const token = useSelector((state) => state.user.token);
 
 	useEffect(() => {
-		console.log("Entered useEffect");
-
 		// Dispatch logout action to clear Redux state
 		dispatch(logout());
 
@@ -22,11 +22,16 @@ const Logout = () => {
 
 		// Navigate to the login page
 		navigate("/login");
-
-		console.log("After logout, token is:", token);
+		toast.success("Successfully logged out");
+		console.log("successful logout ");
 	}, [dispatch, navigate]);
 
-	return <div className="bg-red-300">Logging out...</div>;
+	return (
+		<div className="bg-red-300">
+			Logging out...
+			<ToastContainer />
+		</div>
+	);
 };
 
 export default Logout;

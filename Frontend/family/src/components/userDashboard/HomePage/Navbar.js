@@ -12,9 +12,13 @@ import { MdPeopleAlt } from "react-icons/md";
 import { IoNotifications } from "react-icons/io5";
 import { CgMenuGridR } from "react-icons/cg";
 import { FaFacebookMessenger } from "react-icons/fa6";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../features/user/userSlice";
+
 const Navbar = () => {
 	const [showOptions, setShowOptions] = useState(false);
 	const optionsRef = useRef(null);
+	const dispatch = useDispatch();
 
 	const buttonClick = () => {
 		setShowOptions((prevShowOptions) => !prevShowOptions);
@@ -45,7 +49,9 @@ const Navbar = () => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, [showOptions]);
-
+	const handleLogOut = async () => {
+		dispatch(logout);
+	};
 	return (
 		<>
 			<nav className="navbar">
@@ -100,7 +106,10 @@ const Navbar = () => {
 						SignUp
 					</Link>
 					<Link to="/logout">
-						<button className="bg-red-300 h-9 w-[27vh] mx-2 my-4 px-3 py-2 rounded ">
+						<button
+							onClick={handleLogOut}
+							className="bg-red-300 h-9 w-[27vh] mx-2 my-4 px-3 py-2 rounded "
+						>
 							Logout
 						</button>
 					</Link>

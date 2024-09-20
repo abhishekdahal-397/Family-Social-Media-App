@@ -21,52 +21,63 @@ const LoginForm = () => {
 	useEffect(() => {
 		if (!id) {
 			dispatch(automaticLogin()).then((userData) => {
-				// Logging the entire userData object
-				console.log("Full userData object:", userData);
-
-				// Logging the payload property of userData
-				console.log("userData.payload:", userData.payload);
-
-				// Logging the token within the payload
-				console.log(
-					"userData.payload.token:",
-					userData.payload ? userData.payload.token : "No token in payload"
-				);
-
 				if (userData && userData.payload) {
 					console.log("navigating to home;");
+					console.log(userData.payload + " and  " + userData.type);
 				}
 			});
 			console.log("automaticLogin dispatched");
 		}
 	}, [id, dispatch, navigate]);
+
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		setLoading(true);
+		console.log("login button clicked ");
 
 		try {
 			if (!email || !password) {
 				setLoading(false);
+				console.log("not got email and password");
 				setErrorMessage("Please provide both email and password.");
 				return;
 			}
+			console.log("gone to dispatch ");
+			dispatch(loginUser({ email: "red@gmail.com", password: "red" }))
+				.then((userData) => {
+					console.log("userDAta is ", userData);
+					console.log("userData.value", userData.payload);
+					console.log("userData.payload.token is, ", userData.payload.token);
 
-			const userData = await dispatch(loginUser({ email, password }));
+					console.log("userData.payload", userData.payload);
+					// Access the payload here
+					console.log("Token:", userData.payload.token);
+					console.log("Message:", userData.payload.message);
+					if (userData && userData.payload.token) {
+						console.log("went to if block");
+						// Store the token in cookies
+						Cookies.set("token", userData.payload.token, { expires: 7 }); // Expires in 7 days
 
-			if (userData && userData.payload && userData.payload.token) {
-				// Store the token in cookies
-				Cookies.set("token", userData.payload.token, { expires: 7 }); // Expires in 7 days
+						// Navigate to home page
+						navigate("/home");
+					} else {
+						setErrorMessage("Invalid credentials. Please try again.");
+						navigate("/login");
+					}
+				})
+				.catch((error) => {
+					console.log("error", error);
 
-				// Navigate to home page
-				navigate("/home");
-			} else {
-				setErrorMessage("Invalid credentials. Please try again.");
-				navigate("/login");
-			}
+					console.error("Login failed:", error);
+				});
+
+			// console.log("userData.payload.token", userData.payload.token);
 		} catch (error) {
+			console.log("error from login ", error.message);
 			console.error("Login failed:", error.message);
 			setErrorMessage("An error occurred. Please try again.");
 		} finally {
+			console.log("setloading false");
 			setLoading(false);
 		}
 	};
@@ -103,21 +114,27 @@ const LoginForm = () => {
 					>
 						Password:
 					</label>
-					<input
-						type={seePassword ? "text" : "password"}
-						className="appearance-none  border rounded w-[80%] py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-						id="password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-					/>
-					<div className="visibility" onClick={handleTogglePassword}>
-						{seePassword ? <MdVisibility /> : <MdVisibilityOff />}
+					<div className="relative mb-4 ">
+						<input
+							type={seePassword ? "text" : "password"}
+							className="appearance-none  border rounded w-[80%] pr-8 py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+							id="password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+						/>
+						<div
+							className="visibility absolute right-[3vw] top-[2vh] cursor-pointer"
+							onClick={handleTogglePassword}
+						>
+							{seePassword ? <MdVisibility /> : <MdVisibilityOff />}
+						</div>
 					</div>
 				</div>
 
 				<button
 					className="loginbuttom bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
 					type="submit"
+					onClick={handleLogin}
 					disabled={loading}
 				>
 					{loading ? "Logging in..." : "Login"}

@@ -76,14 +76,18 @@ async function loginUser(req, res) {
 	try {
 		const { email, password } = req.body;
 		console.log(`${email} is trying to log in `);
+		console.log("email and password ", email, password);
 
 		if (!email || !password) {
+			console.log("returned with invalid email or password ");
 			return res.status(400).json({ error: "Email and password are required" });
 		}
 
 		const existingUser = await User.findOne({ email });
 
 		if (!existingUser) {
+			console.log("no existing user ");
+
 			return res.status(401).json({ error: "Invalid email " });
 		}
 
@@ -91,8 +95,8 @@ async function loginUser(req, res) {
 			password,
 			existingUser.password
 		);
-		console.log("passwords does not match ");
 
+		isPasswordValid && console.log("password is valid ");
 		if (!isPasswordValid) {
 			return res.status(401).json({ error: "Invalid password" });
 		}
@@ -104,7 +108,7 @@ async function loginUser(req, res) {
 				expiresIn: "1h",
 			}
 		);
-
+		token && console.log("token signed again ");
 		res.status(200).json({
 			message: "Login successful",
 			token,
