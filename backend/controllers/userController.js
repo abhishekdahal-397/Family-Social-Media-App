@@ -154,10 +154,26 @@ async function getUser(req, res) {
 			.json({ error: "Server error", details: err.message });
 	}
 }
+async function logoutUser(req, res) {
+	try {
+		// If using sessions, destroy the session
+		req.session.destroy((err) => {
+			if (err) {
+				return res.status(500).send({ message: "Logout failed" });
+			}
+		});
 
-async function logoutUser() {
-	return res.json("successful logout");
+		// Clear JWT cookie if you are using JWT stored in cookies
+		res.clearCookie("authToken");
+
+		// Send success response
+		return res.status(200).json({ message: "Logout successful" });
+	} catch (error) {
+		console.error("Error logging out:", error);
+		return res.status(500).json({ error: "Internal server error" });
+	}
 }
+
 async function getUserFriends(req, res) {
 	const userId = req.params.id;
 	try {
