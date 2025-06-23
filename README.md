@@ -46,30 +46,30 @@ Frontend (React + Redux Toolkit)
 
 /Frontend
 ├── components
-│ ├── authentication
-│ │ ├── loginpage
-│ │ │ └── login.js
-│ │ ├── registerpage
-│ │ │ └── register.js
-│ │ ├── logout
-│ │ │ └── Logout.js
-│ │ └── privateRoutes
-│ │ └── PrivateRoute.js
-│ ├── userDashboard
-│ │ └── HomePage
-│ │ ├── HomePage.js
-│ │ └── Navbar.js
-│ ├── manageFriends
-│ │ └── People.js
-│ ├── ProfilePage
-│ │ └── profile.js
-│ └── CommentBox
-│ └── CommentBox.js
+│   ├── authentication
+│   │   ├── loginpage
+│   │   │   └── login.js
+│   │   ├── registerpage
+│   │   │   └── register.js
+│   │   ├── logout
+│   │   │   └── Logout.js
+│   │   └── privateRoutes
+│   │       └── PrivateRoute.js
+│   ├── userDashboard
+│   │   └── HomePage
+│   │       ├── HomePage.js
+│   │       └── Navbar.js
+│   ├── manageFriends
+│   │   └── People.js
+│   ├── ProfilePage
+│   │   └── profile.js
+│   └── CommentBox
+│       └── CommentBox.js
 ├── features
-│ ├── user
-│ │ └── userSlice.js
-│ └── Friend
-│ └── friendsSlice.js
+│   ├── user
+│   │   └── userSlice.js
+│   └── Friend
+│       └── friendsSlice.js
 ├── App.js
 └── index.js
 
@@ -77,15 +77,15 @@ Backend (Node.js + Express + MongoDB)
 
 /server
 ├── models
-│ └── userModel.js
+│   └── userModel.js
 ├── controllers
-│ └── userController.js
+│   └── userController.js
 ├── middlewares
-│ └── authMiddleware.js
+│   └── authMiddleware.js
 ├── routes
-│ └── userRoutes.js
+│   └── userRoutes.js
 ├── validation
-│ └── userValidation.js
+│   └── userValidation.js
 └── index.js
 
 ⚙️ Technologies Used
@@ -132,7 +132,6 @@ Backend:
     Logout clears Redux state and localStorage, redirects to /login.
 
 🛠️ Setup Instructions
-
 1. Clone the repository
 
 git clone https://github.com/yourusername/family-social-media-app.git
@@ -162,15 +161,15 @@ npm start
 
 📌 Routes Summary
 Frontend
-Route Component Description
-/ Redirect Redirect to /home or /login
-/login LoginForm Login page
-/register RegisterForm Register page
-/home HomePage Protected route after login
-/requests People See all other users
-/logout Logout Logout and clear session
-/userProfile/:id UserProfile View user profile
-/commentbox CommentBox Comment system
+Route	Component	Description
+/	Redirect	Redirect to /home or /login
+/login	LoginForm	Login page
+/register	RegisterForm	Register page
+/home	HomePage	Protected route after login
+/requests	People	See all other users
+/logout	Logout	Logout and clear session
+/userProfile/:id	UserProfile	View user profile
+/commentbox	CommentBox	Comment system
 ✅ To Do (Future Enhancements)
 
     Real-time notifications (Socket.IO)
