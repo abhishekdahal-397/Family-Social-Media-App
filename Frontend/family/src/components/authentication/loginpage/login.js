@@ -18,17 +18,6 @@ const LoginForm = () => {
 	const [errorMessage, setErrorMessage] = useState("");
 	const [seePassword, setSeePassword] = useState(false);
 	const id = useSelector((state) => state.user.userId);
-	useEffect(() => {
-		if (!id) {
-			dispatch(automaticLogin()).then((userData) => {
-				if (userData && userData.payload) {
-					console.log("navigating to home;");
-					console.log(userData.payload + " and  " + userData.type);
-				}
-			});
-			console.log("automaticLogin dispatched");
-		}
-	}, [id, dispatch, navigate]);
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -43,7 +32,7 @@ const LoginForm = () => {
 				return;
 			}
 			console.log("gone to dispatch ");
-			dispatch(loginUser({ email: "red@gmail.com", password: "red" }))
+			dispatch(loginUser({ email, password }))
 				.then((userData) => {
 					console.log("userDAta is ", userData);
 					console.log("userData.value", userData.payload);
@@ -62,7 +51,6 @@ const LoginForm = () => {
 						navigate("/home");
 					} else {
 						setErrorMessage("Invalid credentials. Please try again.");
-						navigate("/login");
 					}
 				})
 				.catch((error) => {
@@ -134,7 +122,6 @@ const LoginForm = () => {
 				<button
 					className="loginbuttom bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
 					type="submit"
-					onClick={handleLogin}
 					disabled={loading}
 				>
 					{loading ? "Logging in..." : "Login"}
