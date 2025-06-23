@@ -99,8 +99,9 @@ const userSlice = createSlice({
 			state.profilePicture = "";
 			state.username = "";
 			state.token = "";
-			localStorage.removeItem("token");
 			state.status = "idle";
+			state.error = null;
+			localStorage.removeItem("token");
 		},
 	},
 	extraReducers: (builder) => {
@@ -119,8 +120,9 @@ const userSlice = createSlice({
 			.addCase(loginUser.rejected, (state, action) => {
 				state.status = "failed";
 				state.error = action.payload || action.error.message;
-				state.token = localStorage.getItem("token");
+				state.token = "";
 			})
+
 			.addCase(automaticLogin.pending, (state) => {
 				state.status = "loading";
 			})

@@ -21,52 +21,29 @@ const LoginForm = () => {
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
-		setLoading(true);
-		console.log("login button clicked ");
+		setLoading(true); // ✅ start loading
+		setErrorMessage(""); // ✅ clear old error
+
+		if (!email || !password) {
+			setErrorMessage("Please provide both email and password.");
+			setLoading(false); // ✅ stop loading if validation fails
+			return;
+		}
 
 		try {
-			if (!email || !password) {
-				setLoading(false);
-				console.log("not got email and password");
-				setErrorMessage("Please provide both email and password.");
-				return;
+			const result = await dispatch(loginUser({ email, password })); // ✅ wait for login to complete
+
+			if (result.payload && result.payload.token) {
+				Cookies.set("token", result.payload.token, { expires: 7 });
+				navigate("/home"); // ✅ success
+			} else {
+				setErrorMessage("Invalid credentials. Please try again."); // ✅ failure
 			}
-			console.log("gone to dispatch ");
-			dispatch(loginUser({ email, password }))
-				.then((userData) => {
-					console.log("userDAta is ", userData);
-					console.log("userData.value", userData.payload);
-					console.log("userData.payload.token is, ", userData.payload.token);
-
-					console.log("userData.payload", userData.payload);
-					// Access the payload here
-					console.log("Token:", userData.payload.token);
-					console.log("Message:", userData.payload.message);
-					if (userData && userData.payload.token) {
-						console.log("went to if block");
-						// Store the token in cookies
-						Cookies.set("token", userData.payload.token, { expires: 7 }); // Expires in 7 days
-
-						// Navigate to home page
-						navigate("/home");
-					} else {
-						setErrorMessage("Invalid credentials. Please try again.");
-					}
-				})
-				.catch((error) => {
-					console.log("error", error);
-
-					console.error("Login failed:", error);
-				});
-
-			// console.log("userData.payload.token", userData.payload.token);
 		} catch (error) {
-			console.log("error from login ", error.message);
-			console.error("Login failed:", error.message);
-			setErrorMessage("An error occurred. Please try again.");
+			console.error("Login failed:", error);
+			setErrorMessage("An error occurred. Please try again."); // ✅ catch unexpected errors
 		} finally {
-			console.log("setloading false");
-			setLoading(false);
+			setLoading(false); // ✅ ALWAYS stop loading after try/catch
 		}
 	};
 
