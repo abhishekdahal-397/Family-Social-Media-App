@@ -19,6 +19,7 @@ const Post = () => {
 	const [commentBox, setShowCommentBox] = useState(false);
 	const [randomPosts, setRandomPosts] = useState([]);
 	const [canScroll, setCanscroll] = useState(true);
+	const [likedPosts, setLikedPosts] = useState([]);
 
 	const handleLike = async (index, postId) => {
 		try {
@@ -28,6 +29,14 @@ const Post = () => {
 			);
 
 			console.log(response.data);
+
+			// If like successful, add postId to likedPosts (toggle logic if needed)
+			setLikedPosts(
+				(prev) =>
+					prev.includes(postId)
+						? prev.filter((id) => id !== postId) // if already liked, unlike
+						: [...prev, postId] // if not liked, like it
+			);
 		} catch (error) {
 			console.log(error);
 		}
@@ -125,11 +134,16 @@ const Post = () => {
 						<div className="relative  left-[7vw]  top-[2px] text-sm">
 							<div
 								className="button-like"
-								style={{ backgroundColor: `${likeColor}` }}
-								onClick={handleLike(index, randPost._id)}
+								style={{
+									backgroundColor: likedPosts.includes(randPost._id)
+										? "blue"
+										: "gray",
+								}}
+								onClick={() => handleLike(index, randPost._id)}
 							>
 								like
 							</div>
+
 							<div onClick={toggleCommentBox} className="button-like">
 								Comment
 							</div>

@@ -235,6 +235,8 @@ const addLike = async (req, res) => {
 			{ $addToSet: { likes: userId } }, // Add userId to likes array if it's not already present
 			{ new: true } // Return the updated post
 		);
+
+		console.log("post liked");
 	} catch (error) {
 		console.error("Error liking post:", error);
 	}
