@@ -226,32 +226,38 @@ const getRandomFriendPosts = async (req, res) => {
 	}
 };
 // Example function to add a like to a post
-const addLike = async (req, res) => {
-	const { postId, userId } = req.body;
 
+const toggleLike = async (req, res) => {
 	try {
-		await Post.findByIdAndUpdate(
-			postId,
-			{ $addToSet: { likes: userId } }, // Add userId to likes array if it's not already present
-			{ new: true } // Return the updated post
-		);
+		const { postId } = req.params;
+		const { userId } = req.params;
+
+		const post = await Post.findById(postId);
+
+		if (!post) {
+			return res.status(404).json({ message: "Post not found" });
+		}
+
+		const alreadyLiked = post.likes.includes(userId);
+
+		if (alreadyLiked) {
+			post.likes = post.likes.filter((id) => id.toString() !== userId);
+		} else {
+			post.likes.push(userId);
+		}
+
+		await post.save();
+
+		res.status(200).json({
+			message: alreadyLiked ? "Post unliked" : "Post liked",
+			likeCount: post.likes.length,
+			likedByUser: !alreadyLiked,
+		});
 	} catch (error) {
-		console.error("Error liking post:", error);
+		console.error("Error toggling like:", error);
+		res.status(500).json({ message: "Server error" });
 	}
 };
-// Example function to remove a like from a post
-const removeLike = async (postId, userId) => {
-	try {
-		await Post.findByIdAndUpdate(
-			postId,
-			{ $pull: { likes: userId } }, // Remove userId from likes array
-			{ new: true } // Return the updated post
-		);
-	} catch (error) {
-		console.error("Error removing like:", error);
-	}
-};
-
 module.exports = {
 	postsUpload,
 	getAllPosts,
@@ -260,6 +266,5 @@ module.exports = {
 	updateProfilePicture,
 	deleteProfilePicture,
 	getRandomFriendPosts,
-	addLike,
-	removeLike,
+	toggleLike,
 };

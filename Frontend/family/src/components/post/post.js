@@ -19,14 +19,23 @@ const Post = () => {
 	const [commentBox, setShowCommentBox] = useState(false);
 	const [randomPosts, setRandomPosts] = useState([]);
 	const [canScroll, setCanscroll] = useState(true);
+	const [likedPosts, setLikedPosts] = useState([]);
 
 	const handleLike = async (index, postId) => {
 		try {
-			const response = await axios.patch(
-				`http://localhost:3002/api/posts/likepost`,
-				{ postId, userId }
+			// If like successful, add postId to likedPosts (toggle logic if needed)
+			setLikedPosts(
+				(prev) =>
+					prev.includes(postId)
+						? // if already liked, unlike
+						  prev.filter((id) => id !== postId)
+						: [...prev, postId] // if not liked, like it
 			);
-
+			console.log("likedPosts", likedPosts);
+			const response = await axios.patch(
+				`http://localhost:3002/api/posts/toggleLike/${postId}/${userId}`
+			);
+			console.log("toggle request sent");
 			console.log(response.data);
 		} catch (error) {
 			console.log(error);
@@ -125,11 +134,16 @@ const Post = () => {
 						<div className="relative  left-[7vw]  top-[2px] text-sm">
 							<div
 								className="button-like"
-								style={{ backgroundColor: `${likeColor}` }}
-								onClick={handleLike(index, randPost._id)}
+								style={{
+									backgroundColor: !likedPosts.includes(randPost._id)
+										? "blue"
+										: "white",
+								}}
+								onClick={() => handleLike(index, randPost._id)}
 							>
 								like
 							</div>
+
 							<div onClick={toggleCommentBox} className="button-like">
 								Comment
 							</div>

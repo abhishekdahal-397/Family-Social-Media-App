@@ -5,6 +5,7 @@ const postSchema = new mongoose.Schema({
 	caption: { type: String },
 	imageUrl: { type: String, required: true },
 	userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+	postBy: { type: String }, // Username of the user who posted
 	uploadDate: { type: Date, default: Date.now },
 	likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }], // Array of user IDs who liked the post
 });
