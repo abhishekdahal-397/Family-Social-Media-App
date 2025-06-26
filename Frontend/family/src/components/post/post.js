@@ -23,20 +23,20 @@ const Post = () => {
 
 	const handleLike = async (index, postId) => {
 		try {
-			const response = await axios.patch(
-				`http://localhost:3002/api/posts/likepost`,
-				{ postId, userId }
-			);
-
-			console.log(response.data);
-
 			// If like successful, add postId to likedPosts (toggle logic if needed)
 			setLikedPosts(
 				(prev) =>
 					prev.includes(postId)
-						? prev.filter((id) => id !== postId) // if already liked, unlike
+						? // if already liked, unlike
+						  prev.filter((id) => id !== postId)
 						: [...prev, postId] // if not liked, like it
 			);
+			console.log("likedPosts", likedPosts);
+			const response = await axios.patch(
+				`http://localhost:3002/api/posts/toggleLike/${postId}/${userId}`
+			);
+			console.log("toggle request sent");
+			console.log(response.data);
 		} catch (error) {
 			console.log(error);
 		}
@@ -135,9 +135,9 @@ const Post = () => {
 							<div
 								className="button-like"
 								style={{
-									backgroundColor: likedPosts.includes(randPost._id)
+									backgroundColor: !likedPosts.includes(randPost._id)
 										? "blue"
-										: "gray",
+										: "white",
 								}}
 								onClick={() => handleLike(index, randPost._id)}
 							>
