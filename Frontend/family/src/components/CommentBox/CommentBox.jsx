@@ -45,7 +45,7 @@ const CommentBox = () => {
           {comments.map(comment => (
             <div key={comment.id} className='flex items-start space-x-2 mb-4'>
               <img
-                src={comment.profilePic}
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9F-Hn0o53UPowrEx5oh3Sqs0lLnkoS_j1Kw&s"
                 alt='Profile'
                 className='w-8 h-8 rounded-full whitespace-nowrap border-2 border-blue-400'
               />
