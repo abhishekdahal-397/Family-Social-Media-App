@@ -33,26 +33,26 @@ const comments = [
 
 const CommentBox = () => {
   return (
-    <div className='h-[100vh] w-[100vw] flex items-center justify-center bg-gray-100'>
+    <div className='bg-red-200 h-[15vh] w-[17vw] ml-3 mt-2 '>
       <div className='max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden'>
         {/* Header */}
-        <div className='bg-blue-400 p-4'>
+        {/* <div className='bg-blue-400 p-4'>
           <h1 className='text-white text-xl font-semibold'>Comments</h1>
-        </div>
+        </div> */}
 
         {/* Comment Section */}
-        <div className='p-4 max-h-[60vh] overflow-y-scroll'>
+        <div className='p-4 max-h-[15vh] overflow-y-scroll'>
           {comments.map(comment => (
-            <div key={comment.id} className='flex items-start space-x-4 mb-4'>
+            <div key={comment.id} className='flex items-start space-x-2 mb-4'>
               <img
                 src={comment.profilePic}
                 alt='Profile'
-                className='w-12 h-12 rounded-full border-2 border-blue-400'
+                className='w-8 h-8 rounded-full whitespace-nowrap border-2 border-blue-400'
               />
               <div className='flex-1'>
                 <div className='flex items-center justify-between mb-1'>
-                  <span className='text-lg font-semibold'>{comment.name}</span>
-                  <span className='text-sm text-gray-500'>{comment.time}</span>
+                  <span className='text-sm whitespace-nowrap font-semibold'>{comment.name}</span>
+                  <span className='text-[sm] text-gray-500'>{comment.time}</span>
                 </div>
                 <p className='text-gray-700'>{comment.text}</p>
               </div>

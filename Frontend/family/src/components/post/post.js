@@ -8,6 +8,7 @@ import ball from "../images/ball.png";
 import { MdCommentBank, MdPhotoAlbum } from "react-icons/md";
 
 import Upload from "./uploadSection/upload";
+import CommentBox from "../CommentBox/CommentBox";
 // import Navbar from "./Navbar";
 const Post = () => {
 	const [likeColor, setLikeColor] = useState("white");
@@ -149,6 +150,8 @@ const Post = () => {
 							</div>
 
 							<div className="button-like">Share</div>
+							<CommentBox />
+							{/* <div className="bg-red-200 h-[20vh] w-[15vw] ml-3 mt-2 "></div> */}
 						</div>
 					</div>
 				);
