@@ -1,64 +1,94 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
-const comments = [
-  {
-    id: 1,
-    name: 'John Doe',
-    time: '2 hours ago',
-    text: 'This is an example comment. It can be as long or short as needed, and it will be properly formatted.',
-    profilePic: 'https://via.placeholder.com/50'
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    time: '1 hour ago',
-    text: 'Another example of a comment with different content and a different time. Comments will scroll if there are many.',
-    profilePic: 'https://via.placeholder.com/50'
-  },
-  {
-    id: 3,
-    name: 'Jane Smith',
-    time: '1 hour ago',
-    text: 'Another example of a comment with different content and a different time. Comments will scroll if there are many.',
-    profilePic: 'https://via.placeholder.com/50'
-  },{
-    id: 4,
-    name: 'Jane Smith',
-    time: '1 hour ago',
-    text: 'Another example of a comment with different content and a different time. Comments will scroll if there are many.',
-    profilePic: 'https://via.placeholder.com/50'
-  },
-  // Add more comments as needed
-];
+const CommentBox = ({ postId }) => {
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const { userId, username, profileUrl } = useSelector((state) => state.user);
 
-const CommentBox = () => {
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const res = await axios.get(`http://localhost:3002/api/comments/getcomments/${postId}`);
+        setComments(res.data);
+      } catch (error) {
+        console.error("Failed to fetch comments:", error);
+      }
+    };
+
+    if (postId) {
+      fetchComments();
+    }
+  }, [postId]);
+
+  const handleSubmit = async () => {
+    if (!newComment.trim()) return;
+
+    try {
+      const res = await axios.post(`http://localhost:3002/api/comments/postcomments`, {
+        content: newComment,
+        postId,
+        userId
+      });
+
+      setComments((prev) => [
+        ...prev,
+        {
+          ...res.data,
+          content: newComment, // Add manually
+          userId: {
+            username: username,
+            profileUrl: profileUrl || "https://www.shutterstock.com/image-vector/avatar-gender-neutral-silhouette-vector-600nw-2470054311.jpg"
+          }
+        }
+      ]);
+
+      setNewComment(""); // Clear input
+    } catch (error) {
+      console.error("Error posting comment:", error);
+    }
+  };
+
   return (
-    <div className='bg-red-200 h-[15vh] w-[17vw] ml-3 mt-2 '>
+    <div className='h-[15vh] w-[17vw] ml-3 mt-2'>
       <div className='max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden'>
-        {/* Header */}
-        {/* <div className='bg-blue-400 p-4'>
-          <h1 className='text-white text-xl font-semibold'>Comments</h1>
-        </div> */}
-
-        {/* Comment Section */}
-        <div className='p-4 max-h-[15vh] overflow-y-scroll'>
-          {comments.map(comment => (
-            <div key={comment.id} className='flex items-start space-x-2 mb-4'>
+        <div className='p-4 max-h-[8vh] overflow-y-scroll'>
+          {comments.map((comment) => (
+            <div key={comment._id} className='flex items-start space-x-2 mb-4'>
               <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9F-Hn0o53UPowrEx5oh3Sqs0lLnkoS_j1Kw&s"
+                src={comment.userId?.profileUrl || "https://www.shutterstock.com/image-vector/avatar-gender-neutral-silhouette-vector-600nw-2470054311.jpg"}
                 alt='Profile'
-                className='w-8 h-8 rounded-full whitespace-nowrap border-2 border-blue-400'
+                className='w-8 h-8 rounded-full border-2 border-blue-400'
               />
               <div className='flex-1'>
                 <div className='flex items-center justify-between mb-1'>
-                  <span className='text-sm whitespace-nowrap font-semibold'>{comment.name}</span>
-                  <span className='text-[sm] text-gray-500'>{comment.time}</span>
+                  <span className='text-sm font-semibold'>{comment.userId?.username}</span>
+                  <span className='text-xs text-gray-500'>Just now</span>
                 </div>
-                <p className='text-gray-700'>{comment.text}</p>
+                <p className='text-gray-700'>{comment.content}</p>
               </div>
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Input and Submit */}
+      <div className="flex space-x-2 mt-2">
+        <input
+          type="text"
+          placeholder="Type your comment..."
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+
+        <button
+          onClick={handleSubmit}
+          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-semibold transition duration-200"
+        >
+          Submit
+        </button>
       </div>
     </div>
   );

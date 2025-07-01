@@ -7,7 +7,7 @@ import defaultProfile from "../images/default.png";
 
 const LeftSection = () => {
 	const { userId } = useSelector((state) => state.user);
-	console.log(" userid is ", userId);
+	console.log(" userid from leftSection is ", userId);
 	const username = useSelector((state) => state.user.username);
 	console.log(username);
 
