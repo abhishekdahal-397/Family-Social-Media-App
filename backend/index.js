@@ -20,6 +20,7 @@ app.use(cors({ origin: "*" })); // Allow all origins
 app.use("/api/users", userRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/posts", uploadRoutes);
+
 app.use("/api", friendRequestsRoutes);
 // Start the server
 app.listen(PORT, () => {

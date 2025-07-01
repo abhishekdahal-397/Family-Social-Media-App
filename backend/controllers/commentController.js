@@ -42,11 +42,34 @@ async function getAllComments(req, res) {
 		res.status(500).json({ error: "Internal server error" });
 	}
 }
+async function getCommentsByPostId(req, res) {
+	try {
+		const { postId } = req.params;
+		if (!postId) {
+			return res.status(400).json({ error: "Post ID is required" });
+		}
+		// Fetch comments for a specific post
+		const comments = await Comment.find({ postId }).populate(
+			"userId",
+			"username profileUrl"
+		);
+		if (!comments || comments.length === 0) {
+			return res
+				.status(404)
+				.json({ message: "No comments found for this post" });
+		}
+		res.status(200).json(comments);
+	} catch (error) {
+		console.error("Error fetching comments by post ID:", error);
+		res.status(500).json({ error: "Internal server error" });
+	}
+}
 
 // Add other controller methods as needed
 
 module.exports = {
 	createComment,
 	getAllComments,
+	getCommentsByPostId,
 	// Add other exported controller methods here
 };
