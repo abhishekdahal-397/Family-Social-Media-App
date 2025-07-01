@@ -1,11 +1,22 @@
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { useSelector } from 'react-redux';
+import React, { useEffect, useState, useRef } from 'react';
+
+dayjs.extend(relativeTime);
 
 const CommentBox = ({ postId }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const { userId, username, profileUrl } = useSelector((state) => state.user);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -36,7 +47,8 @@ const CommentBox = ({ postId }) => {
         ...prev,
         {
           ...res.data,
-          content: newComment, // Add manually
+          content: newComment,
+          createdAt: new Date().toISOString(), // ✅ fix for timestamp
           userId: {
             username: username,
             profileUrl: profileUrl || "https://www.shutterstock.com/image-vector/avatar-gender-neutral-silhouette-vector-600nw-2470054311.jpg"
@@ -45,6 +57,7 @@ const CommentBox = ({ postId }) => {
       ]);
 
       setNewComment(""); // Clear input
+      inputRef.current?.focus(); // Refocus input
     } catch (error) {
       console.error("Error posting comment:", error);
     }
@@ -64,7 +77,9 @@ const CommentBox = ({ postId }) => {
               <div className='flex-1'>
                 <div className='flex items-center justify-between mb-1'>
                   <span className='text-sm font-semibold'>{comment.userId?.username}</span>
-                  <span className='text-xs text-gray-500'>Just now</span>
+                  <span className='text-xs text-gray-500'>
+                    {comment.createdAt ? dayjs(comment.createdAt).fromNow() : "just now"}
+                  </span>
                 </div>
                 <p className='text-gray-700'>{comment.content}</p>
               </div>
@@ -79,6 +94,10 @@ const CommentBox = ({ postId }) => {
           type="text"
           placeholder="Type your comment..."
           value={newComment}
+          ref={inputRef}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSubmit();
+          }}
           onChange={(e) => setNewComment(e.target.value)}
           className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
