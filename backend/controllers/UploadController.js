@@ -226,7 +226,7 @@ const getRandomFriendPosts = async (req, res) => {
 	}
 };
 // Example function to add a like to a post
-
+//this is wnat i need
 const toggleLike = async (req, res) => {
 	try {
 		const { postId } = req.params;

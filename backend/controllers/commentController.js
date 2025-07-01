@@ -42,6 +42,7 @@ async function getAllComments(req, res) {
 		res.status(500).json({ error: "Internal server error" });
 	}
 }
+//this is what i need
 async function getCommentsByPostId(req, res) {
 	try {
 		const { postId } = req.params;

@@ -9,6 +9,7 @@ import Upload from "./uploadSection/upload";
 import CommentBox from "../CommentBox/CommentBox";
 
 const Post = () => {
+	//this is what i need
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [posts, setPosts] = useState([]);
 	const [username, setUsername] = useState(null);
