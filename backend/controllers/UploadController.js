@@ -213,6 +213,7 @@ const getRandomFriendPosts = async (req, res) => {
 					uploadDate: 1,
 					"user.username": 1,
 					"user.profileUrl": 1,
+					"user._id": 1, // Include user ID for reference
 				},
 			},
 		]);

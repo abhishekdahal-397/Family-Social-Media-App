@@ -2,210 +2,190 @@ import abhishek from "./profileImages/abhishek.jpg";
 import "./profile";
 import React, { useEffect, useRef, useState } from "react";
 import pascal from "../images/rose.jpg";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFriends, clearFriends } from "../../features/Friend/friendsSlice";
-import { FaUpload } from "react-icons/fa"; // Importing a Font Awesome upload icon
-import { CgProfile } from "react-icons/cg";
-import "react-toastify/dist/ReactToastify.css";
+import { fetchFriends } from "../../features/Friend/friendsSlice";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const UserProfile = () => {
 	const username = useSelector((state) => state.user.username);
 	const profilePic = useSelector((state) => state.user.profilePicture);
-	const [selectedFile, setSelectedFile] = useState(null);
 	const userId = useSelector((state) => state.user.userId);
 	const dispatch = useDispatch();
 
 	const friends = useSelector((state) => state.friends.friends);
-	console.log("my frineds are ", friends);
-
 	const [userPosts, setUserPosts] = useState([]);
-	const fileInputRef = useRef(null); // Add a ref for the file input
+	const fileInputRef = useRef(null);
+	const [selectedFile, setSelectedFile] = useState(null);
 	const [Mates, setMates] = useState([]);
 
-	console.log("this is profile url", profilePic);
-	console.log("this is userPosts", userPosts);
-	const handleFileChange = (event) => {
-		setSelectedFile(event.target.files[0]);
-	};
 	useEffect(() => {
 		dispatch(fetchFriends(userId));
 	}, [dispatch, userId]);
 
-	const deleteProfilePicture = async () => {
-		try {
-			const response = await axios.delete(
-				`http://localhost:3002/api/posts/deleteProfilePicture/${userId}`
-			);
-			if (response.okay) {
-				console.log("profile picture deleted");
-			}
-		} catch (error) {
-			console.log("ProfilePicture cannot be deleted ");
-			console.log(error);
-		}
-	};
+	useEffect(() => {
+		getUserPosts();
+		fetchFriendsList();
+	}, []);
+
 	const getUserPosts = async () => {
 		try {
 			const response = await axios.get(
 				`http://localhost:3002/api/posts/getUserPosts/${userId}`
 			);
-
 			setUserPosts(response.data);
-
-			console.log("first userpost", userPosts[0]);
 		} catch (error) {
-			console.log("error getting user Posts", error);
+			console.error("Error fetching user posts:", error);
 		}
 	};
-	const Friends = async () => {
+
+	const fetchFriendsList = async () => {
 		try {
 			const response = await axios.get(
 				`http://localhost:3002/api/friend-requests/acceptedUserRequests/${userId}`
 			);
-			console.log("all friends", response.data);
 			setMates(response.data);
 		} catch (error) {
-			console.log("error getting friends", error);
+			console.error("Error fetching friends:", error);
 		}
 	};
-	useEffect(() => {
-		getUserPosts();
-	}, []);
-	useEffect(() => {
-		Friends();
-	}, []);
+
+	const handleFileChange = (event) => {
+		setSelectedFile(event.target.files[0]);
+	};
 
 	const handleUploadProfilePicture = async () => {
 		try {
 			const formData = new FormData();
 			formData.append("file", selectedFile);
 
-			const response = await axios.post(
+			await axios.post(
 				`http://localhost:3002/api/posts/uploadProfilePicture/${userId}`,
 				formData
 			);
-			if (fileInputRef.current) {
-				fileInputRef.current.value = "";
-			}
-			console.log("uploaded");
-			toast.success("profile  uploaded successfully");
-			// Handle the response (e.g., update UI)
+			if (fileInputRef.current) fileInputRef.current.value = "";
+			toast.success("Profile picture uploaded successfully");
 		} catch (error) {
-			console.log("not uploaded");
-
-			console.error("Error uploading image", error);
-			// Handle error (e.g., show error message to the user)
+			toast.error("Error uploading profile picture");
 		}
 	};
+	const deleteProfilePicture = async () => {
+		const confirmDelete = window.confirm(
+			"Are you sure you want to delete the profile picture?"
+		);
+		if (!confirmDelete) return;
+
+		try {
+			await axios.delete(
+				`http://localhost:3002/api/posts/deleteProfilePicture/${userId}`
+			);
+			toast.success("Profile picture deleted");
+		} catch (error) {
+			toast.error("Error deleting profile picture");
+		}
+	};
+
 	return (
-		<>
-			<body className="w-[100vw]  flex flex-col justify-center items-center">
-				<div
-					style={{ backgroundImage: `url(${pascal})` }}
-					className="color pink bg-sky-400 w-full bg-no-repeat bg-cover h-[60vh] flex justify-center items-center flex-col"
-				>
-					<img
-						id="profile"
-						className="h-[20vh] rounded-full w-auto mb-5"
-						src={profilePic}
-						alt="Profile"
-					/>
-					<p className="text-center text-3xl text-white font-bold">
-						{username ? username : "undefined"}
-					</p>
-					{/* Hidden file input */}
-					<input
-						type="file"
-						accept="image/*"
-						onChange={handleFileChange}
-						className="hidden"
-						ref={fileInputRef}
-						id="fileInput"
-					/>
-					{/* Label styled as a button with an icon */}
+		<div className="min-h-screen w-full bg-gray-100 flex flex-col items-center">
+			{/* Header Section */}
+			<div
+				className="w-full h-[60vh] bg-cover bg-center flex flex-col justify-center items-center text-white"
+				style={{ backgroundImage: `url(${pascal})` }}
+			>
+				<img
+					src={profilePic}
+					alt="Profile"
+					className="h-[20vh] w-[20vh] object-cover rounded-full shadow-lg border-4 border-white mb-4"
+				/>
+				<h1 className="text-3xl font-bold mb-2">{username || "Undefined"}</h1>
+
+				<input
+					type="file"
+					accept="image/*"
+					onChange={handleFileChange}
+					className="hidden"
+					ref={fileInputRef}
+					id="fileInput"
+				/>
+
+				<div className="flex gap-3">
 					<label
 						htmlFor="fileInput"
-						className="mt-2 flex items-center justify-center cursor-pointer "
+						className="cursor-pointer px-4 py-2 bg-white text-black rounded shadow"
 					>
-						<div className=" flex mt-2 w-[14vw] whitespace-nowrap px-4 py-2 bg-slate-500 text-white rounded hover:bg-slate-400">
-							<span className="ml-2">Select Profile Picture</span>
-						</div>
+						Select Picture
 					</label>
-
 					<button
 						onClick={handleUploadProfilePicture}
-						className="mt-2 w-[14vw] px-4 py-2 bg-slate-500 text-white rounded hover:bg-slate-400"
+						className="px-4 py-2 bg-green-600 text-white rounded shadow"
 					>
 						Upload
 					</button>
 					<button
 						onClick={deleteProfilePicture}
-						className="mt-2 px-4 py-2 bg-slate-500 text-white rounded hover:bg-slate-400 ease-in"
+						className="px-4 py-2 bg-red-500 text-white rounded shadow"
 					>
-						Delete Profile Picture
+						Delete
 					</button>
 				</div>
-				<div className=" w-full flex   mt-[10vh]  ">
-					<div>
-						{userPosts.map((post, index) => (
-							<div className="posts" key={index}>
-								<div className="singlepost mt-4 ml-10 pb-6 w-[40vw]">
-									<div className="">
-										<div className="flex  items-center relative top-[2.5vw] right-[5px] p-4  rounded-lg">
-											<Link>
-												<div
-													style={{ backgroundImage: `url(${profilePic})` }}
-													className="usericon  h-9 w-9 mb-2 pt-5 bg-gray-300 rounded-full"
-												></div>
-											</Link>
-											<p className="text-lg  h-9 z-1">{username}</p>
-										</div>
-									</div>
-									<h1 className="relative left-[60px] top-[5px] ">#caption</h1>
-									<div className="post-photo my-3   h-[80vh] w-[70vh] ml-4">
-										<img src={post} className="post" alt="post" />
-									</div>
-									<div
-										className="relative
-          left-[7vw]
-          top-[2px]
-        text-sm"
-									>
-										<div
-											className="button-like"
-											style={{ backgroundColor: "red" }}
-										>
-											like
-										</div>
-										<div className="button-like">Comment</div>
+			</div>
 
-										<div className="button-like">Share</div>
-									</div>{" "}
-								</div>
-							</div>
-						))}
-					</div>
-					<div className="mx-2 friends  w-[50vw] bg-slate-400 overflow-y-scroll p-6 rounded h-[20vw]">
-						<h1 className="text-[2vw] text-black pl-6">My Friends</h1>
-						{Mates.map((mate, index) => (
-							<div className="flex mt-2  " key={index}>
+			{/* Posts and Friends Section */}
+			<div className="w-full flex flex-col lg:flex-row justify-between p-8 gap-8">
+				{/* User Posts */}
+				<div className="w-full lg:w-2/3">
+					<h2 className="text-2xl font-semibold mb-4">My Posts</h2>
+					{userPosts.map((post, index) => (
+						<div key={index} className="bg-white rounded-lg shadow mb-6 p-4">
+							<div className="flex items-center mb-2">
 								<img
-									className="h-[10vh]  rounded-full  "
-									src={mate.sender.profileUrl}
-								></img>
-								<span className="self-center ml-[1vw]">
-									{mate.sender.username}
-								</span>
+									src={profilePic}
+									alt="User"
+									className="h-10 w-10 rounded-full mr-3 object-cover"
+								/>
+								<span className="font-medium text-lg">{username}</span>
 							</div>
-						))}
-					</div>
-				</div>{" "}
-				<ToastContainer />
-			</body>
-		</>
+							<h3 className="text-md text-gray-500 mb-2">#caption</h3>
+							<img
+								src={post}
+								alt="Post"
+								className="w-[100%] h-[100%] rounded-lg object-cover"
+							/>
+							<div className="flex gap-4 mt-4">
+								<button className="text-sm px-3 py-1 bg-red-500 text-white rounded">
+									Like
+								</button>
+								<button className="text-sm px-3 py-1 bg-blue-500 text-white rounded">
+									Comment
+								</button>
+								<button className="text-sm px-3 py-1 bg-gray-600 text-white rounded">
+									Share
+								</button>
+							</div>
+						</div>
+					))}
+				</div>
+
+				{/* Friends List */}
+				<div className="w-full lg:w-1/3 bg-white p-6 rounded-lg shadow h-fit">
+					<h2 className="text-2xl font-semibold mb-4">My Friends</h2>
+					{Mates.map((mate, index) => (
+						<div key={index} className="flex items-center mb-4">
+							<img
+								src={mate.sender.profileUrl}
+								alt="Friend"
+								className="h-10 w-10 rounded-full object-cover"
+							/>
+							<span className="ml-3 font-medium">{mate.sender.username}</span>
+						</div>
+					))}
+				</div>
+			</div>
+
+			<ToastContainer />
+		</div>
 	);
 };
 

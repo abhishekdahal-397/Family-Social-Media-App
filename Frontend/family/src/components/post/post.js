@@ -89,6 +89,7 @@ const Post = () => {
 					`http://localhost:3002/api/posts/getRandomFriendPosts/${userId}`
 				);
 				setRandomPosts(response.data);
+				console.log("Random posts from friends:", response.data);
 			} catch (err) {
 				console.error(err);
 			}
@@ -109,12 +110,11 @@ const Post = () => {
 			{randomPosts.map((randPost, index) => (
 				<div key={index} className="singlepost">
 					<div className="flex items-center relative top-[2.5vw] right-[5px] p-4 rounded-lg">
-						<Link to="/UserProfile">
-							<div
-								style={{ backgroundImage: `url(${randPost.user.profileUrl})` }}
-								className="usericon h-9 w-9 mb-2 pt-5 bg-gray-300 rounded-full"
-							></div>
-						</Link>
+						<div
+							style={{ backgroundImage: `url(${randPost.user.profileUrl})` }}
+							className="usericon h-9 w-9 mb-2 pt-5 bg-gray-300 rounded-full"
+						></div>
+
 						<p className="text-lg h-9 z-1">{randPost.user.username}</p>
 					</div>
 
