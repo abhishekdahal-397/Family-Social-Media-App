@@ -23,6 +23,6 @@ app.use("/api/posts", uploadRoutes);
 
 app.use("/api", friendRequestsRoutes);
 // Start the server
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
 	console.log(`Server is running on http://localhost:${PORT}`);
 });
